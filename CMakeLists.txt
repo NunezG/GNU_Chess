@@ -22,7 +22,8 @@ project(OgreApp)
  
 
 if(WIN32) # EN WINDOWS COGE LOS FIND*** DEL DIRECTORIO DONDE ESTA OGRESDK
-	set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
+	#set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
+	set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake/")
 	set(OGRE_SAMPLES_INCLUDEPATH
 		$ENV{OGRE_HOME}/Samples/include
 	)
@@ -113,9 +114,11 @@ set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 	# Set up referencing of Boost
 	 message(${Boost_INCLUDE_DIR})
 
+	 
+	 
 	include_directories(${Boost_INCLUDE_DIRS})
 	#add_definitions(-DBOOST_ALL_NO_LIB)
-	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
+	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_THREAD_LIBRARY_RELEASE} ${Boost_SYSTEM_LIBRARY_RELEASE} ${Boost_DATE_TIME_LIBRARY_RELEASE} ${Boost_CHRONO_LIBRARY_RELEASE})
 
 
 endif()
@@ -262,9 +265,9 @@ include_directories( ${OIS_INCLUDE_DIR}
 	${OGRE_INCLUDE_DIR}
 	#${OGRE_SAMPLES_INCLUDEPATH}
 	#NUEVA SECCIÓN
-        ${CEGUI_INCLUDE_DIR}
-		${CEGUIOGRE_INCLUDE_DIR}
-     ${BOOST_INCLUDE_DIR} 
+    ${CEGUI_INCLUDE_DIR}
+	${CEGUIOGRE_INCLUDE_DIR}
+    ${BOOST_INCLUDE_DIR} 
 	# FIN NUEVA SECCIÓN
 )
  
@@ -273,7 +276,7 @@ add_executable(OgreApp WIN32 ${HDRS} ${SRCS})
 set_target_properties(OgreApp PROPERTIES DEBUG_POSTFIX _d)
  
 # CAMBIA target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
- target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED} ${BOOST_LIBRARIES} )
+ target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED} )
   
   link_directories( 
   ${Boost_LIBRARY_DIRS} 
@@ -305,7 +308,7 @@ if(WIN32)
 		RUNTIME DESTINATION bin
 		CONFIGURATIONS All)
  
-	install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/Media
+	install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/media
 		DESTINATION ./
 		CONFIGURATIONS Release RelWithDebInfo Debug
 	)
@@ -325,11 +328,16 @@ if(WIN32)
         # NOTE: for the 1.7.1 sdk the OIS dll is called OIS.dll instead of libOIS.dll
         # so you'll have to change that to make it work with 1.7.1
 	install(FILES ${OGRE_PLUGIN_DIR_REL}/OgreMain.dll
-		${OGRE_PLUGIN_DIR_REL}/RenderSystem_Direct3D9.dll
+		${OGRE_PLUGIN_DIR_REL}/Plugin_OctreeSceneManager.dll
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
 		${OGRE_PLUGIN_DIR_REL}/OIS.dll
-		${OGRE_PLUGIN_DIR_DBG}/CEGUIBase-0.dll
-		${OGRE_PLUGIN_DIR_DBG}/CEGUIOgreRenderer-0.dll
+		${CEGUI_LIBRARY_DIRS}/CEGUIBase-0.dll
+		${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0.dll
+		${CEGUI_LIBRARY_DIRS}/CEGUITinyXMLParser.dll
+		#$ENV{CEGUI_DIR}/dependencies/bin/FreeImage.dll
+		$ENV{CEGUI_DIR}/dependencies/bin/freetype.dll
+		$ENV{CEGUI_DIR}/dependencies/bin/tinyxml.dll
+		${CEGUI_LIBRARY_DIRS}/CEGUICoreWindowRendererSet.dll
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo
 	)
@@ -338,8 +346,8 @@ if(WIN32)
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_Direct3D9_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_GL_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/OIS_d.dll
-		${OGRE_PLUGIN_DIR_DBG}/CEGUIBase-0_d.dll
-		${OGRE_PLUGIN_DIR_DBG}/CEGUIOgreRenderer-0_d.dll
+		${CEGUI_LIBRARY_DIRS}/CEGUIBase-0_d.dll
+		${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0_d.dll
 		DESTINATION bin
 		CONFIGURATIONS Debug
 	)

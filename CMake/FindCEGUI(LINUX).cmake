@@ -24,7 +24,7 @@
 #      ExpatParser LibXMLParser RapidXMLParser TinyXMLParser XercesParser)
 #   Script:
 #      LuaScriptModule
-      
+      message("ENTRA EN FINDCEGUI MODIFICADO")
 include(FindPkgMacros)
 include(PreprocessorUtils)
 
@@ -57,52 +57,37 @@ endif ()
  
 set(CEGUI_LIBRARY_NAMES "CEGUIBase${CEGUI_LIB_SUFFIX}")
 get_debug_names(CEGUI_LIBRARY_NAMES)
-
- message("Library names ANTEEEEES: " ${CEGUI_LIBRARY_NAMES})
  
 # construct search paths from environmental hints and
 # OS specific guesses
 if (WIN32)
   set(CEGUI_PREFIX_GUESSES
-  #  ${ENV_PROGRAMFILES}/cegui
+    #  ${ENV_PROGRAMFILES}/cegui
    # ${ENV_PROGRAMFILES}/CEGUI
    # C:/CEGUI-SDK
    # C:/lib/cegui
     #[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;CEGUI_HOME]
    # [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;CEGUI_DIR]
    # [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;CEGUI_ROOT]
-   $ENV{CEGUI_HOME}/cegui
-   $ENV{CEGUI_HOME}/CEGUI
-   $ENV{CEGUI_DIR}/cegui
-   $ENV{CEGUI_DIR}/CEGUI
   )
 elseif (UNIX)
   set(CEGUI_PREFIX_GUESSES
-    /opt/cegui
-    /opt/CEGUI
-    /usr
-    /usr/local
-    $ENV{HOME}/cegui
-    $ENV{HOME}/CEGUI
+    #/opt/cegui
+    #/opt/CEGUI
+    #/usr
+    #/usr/local
+    #$ENV{HOME}/cegui
+    #$ENV{HOME}/CEGUI
+    /home/guidebian/Descargas/cegui-0.8.2Comp5/cegui/include
+    /home/guidebian/Descargas/cegui-0.8.2Comp5
+    /home/guidebian/Descargas/cegui-0.8.2/cegui/include
   )
 endif ()
  
- message("CEGUI_HOME")
- message($ENV{CEGUI_HOME})
- 
- message("CEGUI_DIR")
- message($ENV{CEGUI_DIR})
- 
- 
- 
- 
- 
 set(CEGUI_PREFIX_PATH
-   $ENV{CEGUI_HOME} $ENV{CEGUI_DIR} #$ENV{CEGUI_ROOT}
+   $ENV{CEGUI_HOME}/cegui $ENV{CEGUI_DIR}/cegui #$ENV{CEGUI_ROOT}
    ${CEGUI_PREFIX_GUESSES}
 )
-message("CEGUI_PREFIX_PATH")
-message(${CEGUI_PREFIX_PATH})
  
 create_search_paths(CEGUI)
   
@@ -124,10 +109,6 @@ set(CEGUI_SCRIPT_COMPONENTS
 )
 set(CEGUI_COMPONENTS ${CEGUI_WINDOWSRENDERER_COMPONENTS} ${CEGUI_RENDERER_COMPONENTS} ${CEGUI_IMAGECODEC_COMPONENTS} ${CEGUI_PARSER_COMPONENTS} ${CEGUI_SCRIPT_COMPONENTS})
  
- message("CEGUI_COMPONENTS")
- message(${CEGUI_COMPONENTS})
-
- 
 set(CEGUI_RESET_VARS 
   CEGUI_CONFIG_INCLUDE_DIR CEGUI_INCLUDE_DIR 
   CEGUI_LIBRARY_REL CEGUI_LIBRARY_DBG
@@ -146,31 +127,22 @@ clear_if_changed(CEGUI_PREFIX_WATCH ${CEGUI_RESET_VARS})
 use_pkgconfig(CEGUI_PKGC "CEGUI${CEGUI_LIB_SUFFIX}")
 
 message("CEGUI_INC_SEARCH_PATH:" ${CEGUI_INC_SEARCH_PATH})
-message("CEGUI_FRAMEWORK_INCLUDES:" ${CEGUI_FRAMEWORK_INCLUDES})
-message("CEGUI_PKGC_INCLUDE_DIRS:" ${CEGUI_PKGC_INCLUDE_DIRS})
+#message("CEGUI_FRAMEWORK_INCLUDES:" ${CEGUI_FRAMEWORK_INCLUDES})
+#message("CEGUI_PKGC_INCLUDE_DIRS:" ${CEGUI_PKGC_INCLUDE_DIRS})
  
 # locate CEGUI include files
-find_path(CEGUI_CONFIG_INCLUDE_DIR NAMES Config.h 
-          HINTS ${CEGUI_INC_SEARCH_PATH} ${CEGUI_FRAMEWORK_INCLUDES} ${CEGUI_PKGC_INCLUDE_DIRS}
+find_path(CEGUI_CONFIG_INCLUDE_DIR NAMES CEGUI/Config.h 
+          HINTS ${CEGUI_PREFIX_PATH} ${CEGUI_FRAMEWORK_INCLUDES} ${CEGUI_PKGC_INCLUDE_DIRS}
         PATH_SUFFIXES "CEGUI" "cegui-0/CEGUI")
 
-		message("CEGUI_CONFIG_INCLUDE_DIR")
-				message(${CEGUI_CONFIG_INCLUDE_DIR})
-
-				
-
-find_path(CEGUI_INCLUDE_DIR NAMES CEGUI.h 
-          HINTS ${CEGUI_INC_SEARCH_PATH} ${CEGUI_FRAMEWORK_INCLUDES} ${CEGUI_PKGC_INCLUDE_DIRS}
+find_path(CEGUI_INCLUDE_DIR NAMES CEGUI/CEGUI.h 
+          HINTS ${CEGUI_PREFIX_PATH} ${CEGUI_FRAMEWORK_INCLUDES} ${CEGUI_PKGC_INCLUDE_DIRS}
         PATH_SUFFIXES "CEGUI" "cegui-0/CEGUI")
-		
-				message("CEGUI_INCLUDE_DIR")
-		message(${CEGUI_INCLUDE_DIR})
-
 set(CEGUI_INCOMPATIBLE FALSE)    
  
 if (CEGUI_INCLUDE_DIR)
   # determine CEGUI version
-  file(READ ${CEGUI_CONFIG_INCLUDE_DIR}/Version.h CEGUI_TEMP_VERSION_CONTENT)
+  file(READ ${CEGUI_CONFIG_INCLUDE_DIR}/CEGUI/Version.h CEGUI_TEMP_VERSION_CONTENT)
   get_preprocessor_entry(CEGUI_TEMP_VERSION_CONTENT CEGUI_VERSION_MAJOR CEGUI_VERSION_MAJOR)
   get_preprocessor_entry(CEGUI_TEMP_VERSION_CONTENT CEGUI_VERSION_MINOR CEGUI_VERSION_MINOR)
   get_preprocessor_entry(CEGUI_TEMP_VERSION_CONTENT CEGUI_VERSION_PATCH CEGUI_VERSION_PATCH)
@@ -179,10 +151,11 @@ if (CEGUI_INCLUDE_DIR)
   pkg_message(CEGUI "Found CEGUI headers ${CEGUI_VERSION_NAME} (${CEGUI_VERSION})")
   pkg_message(CEGUI "Include dir: " ${CEGUI_INCLUDE_DIR})
   
+ message("PASA")
+
   #set(CEGUI_VERSION "0.7.9")
   if ((${CEGUI_VERSION} VERSION_GREATER "0.8.0") OR (${CEGUI_VERSION} VERSION_EQUAL "0.8.0"))
      set(CEGUI_LIBRARY_NAMES "CEGUIBase-${CEGUI_VERSION_MAJOR}${CEGUI_LIB_SUFFIX}")
-	 message("Library names DESPUEEEEEEEEEEEEEs: " ${CEGUI_LIBRARY_NAMES})
   else()
    set(CEGUI_INCOMPATIBLE TRUE)
    message(FATAL_ERROR "CEGUI version 0.8.0 or greater required !")
@@ -190,10 +163,8 @@ if (CEGUI_INCLUDE_DIR)
  
   # determine configuration settings
   set(CEGUI_CONFIG_HEADERS
-    ${CEGUI_CONFIG_INCLUDE_DIR}/Config.h
+    ${CEGUI_CONFIG_INCLUDE_DIR}/CEGUI/Config.h
   )
-  message("CEGUI confighead")
-  
   set(CEGUI_CONFIG_HEADER NOTFOUND)
   foreach(CFG_FILE ${CEGUI_CONFIG_HEADERS})
     if (EXISTS ${CFG_FILE})
@@ -203,8 +174,7 @@ if (CEGUI_INCLUDE_DIR)
   endforeach()
 
   #message("Config header:" ${CEGUI_CONFIG_HEADER})
-   message("CEGUI confighead 22222222")
-
+ 
   if (CEGUI_CONFIG_HEADER)
     file(READ ${CEGUI_CONFIG_HEADER} CEGUI_TEMP_CONFIG_CONTENT)
     has_preprocessor_entry(CEGUI_TEMP_CONFIG_CONTENT CEGUI_STATIC_LIB CEGUI_CONFIG_STATIC)
@@ -227,48 +197,36 @@ endif ()
 message("Library names: " ${CEGUI_LIBRARY_NAMES})
 message("CEGUI_LIB_SEARCH_PATH: " ${CEGUI_LIB_SEARCH_PATH})
  
-   message("CEGUI FINDLIB")
+set(CEGUI_CONFIG_HEADERS
+    ${CEGUI_CONFIG_INCLUDE_DIR}/CEGUI/Config.h
+  )
 
- 
 find_library(CEGUI_LIBRARY_REL NAMES ${CEGUI_LIBRARY_NAMES} 
-             HINTS ${CEGUI_LIB_SEARCH_PATH} $ENV{CEGUI_HOME}/lib ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "release" "relwithdebinfo" "minsizerel")
+             HINTS ${CEGUI_LIB_SEARCH_PATH} ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "release" "relwithdebinfo" "minsizerel")
 
 find_library(CEGUI_LIBRARY_DBG NAMES ${CEGUI_LIBRARY_NAMES_DBG} 
-             HINTS ${CEGUI_LIB_SEARCH_PATH} $ENV{CEGUI_HOME}/lib ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "debug")
+             HINTS ${CEGUI_LIB_SEARCH_PATH} ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "debug")
 
 message("CEGUI_LIBRARY_REL : " ${CEGUI_LIBRARY_REL})
 message("CEGUI_FOUND : " ${CEGUI_FOUND})
+ message("CEGUI_INCOMPATIBLE : " ${CEGUI_INCOMPATIBLE})
+
 make_library_set(CEGUI_LIBRARY)
-  
+ message("CEGUI_INCOMPATIBLE : " ${CEGUI_INCOMPATIBLE})
+
 if (CEGUI_INCOMPATIBLE)
   set(CEGUI_LIBRARY "NOTFOUND")
 endif ()
 
-#message("CEGUI_INCOMPATIBLE : " ${CEGUI_INCOMPATIBLE})
-#message("CEGUI_LIBRARY : " ${CEGUI_LIBRARY})
-    message("JUNtSA")
-message(${CEGUI_INCLUDE_DIR})
-
-set(CEGUI_INCLUDE_DIR $ENV{CEGUI_HOME}/cegui/include $ENV{CEGUI_DIR}/cegui/include)
-      message("uno")
+message("CEGUI_INCOMPATIBLE : " ${CEGUI_INCOMPATIBLE})
+message("CEGUI_LIBRARY : " ${CEGUI_LIBRARY})
+  
+set(CEGUI_INCLUDE_DIR ${CEGUI_CONFIG_INCLUDE_DIR} ${CEGUI_INCLUDE_DIR})
 list(REMOVE_DUPLICATES CEGUI_INCLUDE_DIR)
-
-      message("dos")
-message(${CEGUI_INCLUDE_DIR})
-
 findpkg_finish(CEGUI)
-      message("tres")
-
 add_parent_dir(CEGUI_INCLUDE_DIRS CEGUI_INCLUDE_DIR)
  
-      message("ANTEEEEEES")
-
- 
 mark_as_advanced(CEGUI_CONFIG_INCLUDE_DIR)
- 
-     message("NOFOUND ESTOQUEEEES")
-
- 
  
 if (NOT CEGUI_FOUND)
   return()
@@ -281,7 +239,7 @@ set(CEGUI_LIBRARY_DIRS ${CEGUI_LIBRARY_DIR_REL} ${CEGUI_LIBRARY_DIR_DBG})
 #message("lib dirs0:" ${CEGUI_LIBRARY_DIRS})
 
 # find binaries WIN32
-if (NOT CEGUI_STATIC)
+#if (NOT CEGUI_STATIC)
    message("not static" ${CEGUI_BIN_SEARCH_PATH})
    if (WIN32)
       find_file(CEGUI_BINARY_REL NAMES "CEGUIBase-${CEGUI_VERSION_MAJOR}.dll" 
@@ -303,17 +261,17 @@ if (NOT CEGUI_STATIC)
       set(CEGUI_BINARY_DIR_DBG NOTFOUND)              
    endif()
       mark_as_advanced(CEGUI_BINARY_REL CEGUI_BINARY_DBG CEGUI_BINARY_DIR_REL CEGUI_BINARY_DIR_DBG)
-endif()
+#endif()
 
 #message("lib dirs1:" ${CEGUI_LIBRARY_DIRS})
  
 # look for CoreWindowRendererSet component
 findpkg_begin(CEGUI_CoreWindowRendererSet)
-find_path(CEGUI_Falagard_INCLUDE_DIR NAMES NamedArea.h 
+find_path(CEGUI_Falagard_INCLUDE_DIR NAMES CEGUI/NamedArea.h 
           HINTS ${CEGUI_INCLUDE_DIRS} 
           PATH_SUFFIXES falagard CEGUI/falagard)
 
-find_path(CEGUI_CoreWindowRendererSet_INCLUDE_DIR NAMES Module.h 
+find_path(CEGUI_CoreWindowRendererSet_INCLUDE_DIR NAMES CEGUI/Module.h 
           HINTS ${CEGUI_INCLUDE_DIRS} 
           PATH_SUFFIXES WindowRendererSets/Core CEGUI/WindowRendererSets/Core)
 
@@ -337,7 +295,7 @@ foreach (comp ${CEGUI_RENDERER_COMPONENTS})
     findpkg_begin(CEGUI_${comp})
     string(REPLACE "Renderer" "" compName ${comp})
     #message("compName:" ${compName})
-    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES Renderer.h 
+    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES CEGUI/Renderer.h 
               HINTS ${CEGUI_INCLUDE_DIRS} 
               PATH_SUFFIXES RendererModules/${compName} CEGUI/RendererModules/${compName})
 
@@ -363,7 +321,7 @@ endforeach (comp)
 #Search image codec components 
 foreach (comp ${CEGUI_IMAGECODEC_COMPONENTS})
     findpkg_begin(CEGUI_${comp})
-    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES ImageCodec.h 
+    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES CEGUI/ImageCodec.h 
               HINTS ${CEGUI_INCLUDE_DIRS} 
               PATH_SUFFIXES ImageCodecModules/${comp} CEGUI/ImageCodecModules/${comp})
 
@@ -388,7 +346,7 @@ endforeach (comp)
 #Search parser components 
 foreach (comp ${CEGUI_PARSER_COMPONENTS})
     findpkg_begin(CEGUI_${comp})
-    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES XMLParser.h 
+    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES CEGUI/XMLParser.h 
               HINTS ${CEGUI_INCLUDE_DIRS} 
               PATH_SUFFIXES XMLParserModules/${comp} CEGUI/XMLParserModules/${comp} )
    
@@ -417,7 +375,7 @@ foreach (comp ${CEGUI_SCRIPT_COMPONENTS})
 #   message("comp: " ${comp})
 #   message("compName: " ${compName})
    
-    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES /ScriptModule.h 
+    find_path(CEGUI_${comp}_INCLUDE_DIR NAMES CEGUI/ScriptModule.h 
               HINTS ${CEGUI_INCLUDE_DIRS} 
               PATH_SUFFIXES ScriptingModules/${compName} CEGUI/ScriptingModules/${compName})
 
@@ -439,6 +397,7 @@ foreach (comp ${CEGUI_SCRIPT_COMPONENTS})
     #PRINT_COMPONENT_INFO(${comp})
 endforeach (comp)
   
+
 clear_if_changed(CEGUI_PREFIX_WATCH)
 
 #stop the build to debug FindCEGUI.cmake

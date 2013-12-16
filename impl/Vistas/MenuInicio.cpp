@@ -61,7 +61,7 @@ bool MenuInicio::pantallaConfig()
 
         CEGUI::System::getSingleton().getDefaultGUIContext().getRootWindow()->addChild(ventanaConfig);
       
-		pantallaCompleta = static_cast<CEGUI::RadioButton*>(ventanaConfig->getChild("VentanaConf")->getChild("CheckPantallaC"));
+		pantallaCompleta = static_cast<CEGUI::ToggleButton*>(ventanaConfig->getChild("VentanaConf")->getChild("CheckPantallaC"));
 		pantallaCompleta->setMouseCursor("Vanilla-Images/MouseArrow");
 
 		listaResoluciones = static_cast<CEGUI::Listbox*>(ventanaConfig->getChild("VentanaConf")->getChild("ListaResol"));

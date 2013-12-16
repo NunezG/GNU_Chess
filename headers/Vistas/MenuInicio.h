@@ -40,7 +40,7 @@ private:
   //  CEGUI::Listbox *listaBlancas;
   //  CEGUI::Listbox *listaNegras;
 
-	CEGUI::RadioButton* pantallaCompleta;
+	CEGUI::ToggleButton* pantallaCompleta;
 };
 
 #endif

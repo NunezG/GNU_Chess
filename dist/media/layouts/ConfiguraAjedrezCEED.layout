@@ -16,7 +16,7 @@
             <AutoWindow namePath="__auto_closebutton__" >
                 <Property name="TooltipText" value="Window shows a simple Listbox demo." />
             </AutoWindow>
-            <Window type="Vanilla/RadioButton" name="CheckPantallaC" >
+            <Window type="Vanilla/Checkbox" name="CheckPantallaC" >
                 <Property name="Area" value="{{0.38,0},{0.28,0},{0.78,0},{0.6,0}}" />
                 <Property name="Text" value="Pantalla completa" />
                 <Property name="TooltipText" value="Window shows a simple Listbox demo." />
