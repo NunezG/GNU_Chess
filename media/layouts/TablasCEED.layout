@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="Tablas" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="Vanilla/FrameWindow" name="VentanaTablas" >
+            <Property name="Area" value="{{0.35,0},{0.35,0},{0.6,0},{0.55,0}}" />
+            <Property name="MaxSize" value="{{0.5,0},{1,0}}" />
+            <Property name="TooltipText" value="Contains some StaticText information panels" />
+            <Property name="DragDropTarget" value="False" />
+            <Property name="CloseButtonEnabled" value="False" />
+            <AutoWindow namePath="__auto_titlebar__" >
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+            </AutoWindow>
+            <AutoWindow namePath="__auto_closebutton__" >
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+            </AutoWindow>
+            <Window type="Vanilla/StaticText" name="TextoTablas" >
+                <Property name="Area" value="{{0.1,0},{0,0},{0.9,0},{0.5,0}}" />
+                <Property name="Text" value="Tablas" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+                <Property name="HorzFormatting" value="CentreAligned" />
+                <Property name="HorzScrollPageSize" value="355" />
+                <Property name="VertScrollPageSize" value="69" />
+                <Property name="HorzScrollDocumentSize" value="65" />
+                <Property name="VertScrollDocumentSize" value="20.5273" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_thumb__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_thumb__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+            <Window type="Vanilla/StaticText" name="TextoTipo" >
+                <Property name="Area" value="{{0.2,0},{0.6,0},{0.85,0},{0.8,0}}" />
+                <Property name="Text" value="Por rey ahogado" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                <Property name="FrameEnabled" value="False" />
+                <Property name="BackgroundEnabled" value="False" />
+                <Property name="HorzScrollPageSize" value="285" />
+                <Property name="VertScrollPageSize" value="17" />
+                <Property name="HorzScrollDocumentSize" value="163" />
+                <Property name="VertScrollDocumentSize" value="20.5273" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_thumb__" >
+                        <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_thumb__" >
+                        <Property name="TooltipText" value="Window shows a simple Listbox demo." />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

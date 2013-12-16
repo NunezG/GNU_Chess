@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="Jaque" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="Vanilla/FrameWindow" name="VentanaJaque" >
+            <Property name="Area" value="{{0.78,0},{0.02,0},{0.98,0},{0.17,0}}" />
+            <Property name="Text" value="Aviso" />
+            <Property name="MaxSize" value="{{0.5,0},{1,0}}" />
+            <Property name="TooltipText" value="Contains some StaticText information panels" />
+            <Property name="DragDropTarget" value="False" />
+            <Property name="CloseButtonEnabled" value="False" />
+            <AutoWindow namePath="__auto_titlebar__" >
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+            </AutoWindow>
+            <AutoWindow namePath="__auto_closebutton__" >
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+            </AutoWindow>
+            <Window type="Vanilla/StaticText" name="TextoJaque" >
+                <Property name="Area" value="{{0.05,0},{0,0},{0.95,0},{0.9,0}}" />
+                <Property name="Text" value="Jaque al rey" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+                <Property name="HorzFormatting" value="CentreAligned" />
+                <Property name="HorzScrollPageSize" value="315" />
+                <Property name="VertScrollPageSize" value="90" />
+                <Property name="HorzScrollDocumentSize" value="125" />
+                <Property name="VertScrollDocumentSize" value="20.5273" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_thumb__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_thumb__" >
+                        <Property name="TooltipText" value="Contains some StaticText information panels" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

@@ -1,0 +1,402 @@
+
+material _missing_material_
+{
+    receive_shadows off
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1 1.0
+            diffuse 0.8 0.0 0.0 1.0
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.3 0.3 0.3 1.0
+        }
+    }
+}
+
+// MaterialTablero genrated by blender2ogre 0.5.9
+
+material MaterialTablero 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialTablero
+        {
+
+            diffuse 0.1 0.1 0.1 1.0
+
+
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_tablero.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+        }
+    }
+}
+
+
+
+// MaterialCasillaBlanca genrated by blender2ogre 0.5.9
+
+material MaterialCasillaBlanca 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialCasillaBlanca
+        {
+            ambient 0.6 0.6 0.6 1.0
+            diffuse 0.4 0.4 0.4 1.0
+            specular 0.4 0.4 0.4 1.0 12.5
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_casilla_blanca.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+        }
+    }
+}
+// MaterialCasillaNegra genrated by blender2ogre 0.5.9
+
+material MaterialCasillaNegra 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialCasillaNegra
+        {
+            ambient 0.8 0.8 0.8 1.0
+            diffuse 0.3 0.3 0.3 1.0
+            specular 0.4 0.4 0.4 1.0 12.5
+
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_casilla_negra.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                tex_coord_set 0
+                colour_op modulate
+            }
+        }
+    }
+}
+// MaterialCasillaBlancaIlum genrated by blender2ogre 0.5.9
+
+material MaterialCasillaBlancaIlum 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialCasillaBlancaIlum
+        {
+            ambient 0.6 0.6 0.6 1.0
+            diffuse 0.0 0.3 0.0 1.0
+
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_casilla_blanca.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+
+
+        }
+    }
+}
+// MaterialCasillaNegraIlum genrated by blender2ogre 0.5.9
+
+material MaterialCasillaNegraIlum 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialCasillaNegraIlum
+        {
+
+  	
+            ambient 0.3 0.3 0.3 1.0
+            diffuse 0.0 0.3 0.0 1.0
+
+
+
+
+            alpha_to_coverage on
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_casilla_negra.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op add
+            }
+        }
+    }
+}
+
+// MaterialFichaBlanca genrated by blender2ogre 0.5.9
+
+material MaterialFichaBlanca 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialFichaBlanca
+        {
+            ambient 0.38 0.38 0.38 1.0
+            diffuse 0.38 0.38 0.38 1.0
+
+
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_marmol_gris.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                tex_coord_set 0
+                colour_op modulate
+            }
+        }
+    }
+}
+// MaterialFichaNegra genrated by blender2ogre 0.5.9
+
+material MaterialFichaNegra 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialFichaNegra
+        {
+            ambient 1 1 1 1.0
+            diffuse 1 1 1 1.0
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_marmol_negro_vetas_blancas.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                tex_coord_set 0
+                colour_op modulate
+            }
+        }
+    }
+}
+// MaterialFichaNegraIluminada genrated by blender2ogre 0.5.9
+
+material MaterialFichaNegraIluminada 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialFichaNegraIluminada
+        {
+            ambient 0.5 0.5 0.5 1.0
+            diffuse 1.0 0.3 0.0 1.0
+            specular 0.1 0.1 0.1 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_marmol_negro_vetas_blancas.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                tex_coord_set 0
+                colour_op add
+            }
+        }
+    }
+}
+
+
+material MaterialFichaBlancaIluminada 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass MaterialFichaBlancaIluminada
+        {
+           ambient 0.45 0.45 0.45 1.0
+            diffuse 1.0 0.3 0.0 1.0
+
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+
+            texture_unit 
+            {
+                texture textura_marmol_gris.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                tex_coord_set 0
+                colour_op modulate
+            }
+        }
+    }
+}

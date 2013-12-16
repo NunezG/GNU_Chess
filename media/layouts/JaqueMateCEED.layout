@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="JaqueMate" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="Vanilla/FrameWindow" name="VentanaJM" >
+            <Property name="Area" value="{{0.34,0},{0.4,0},{0.6,0},{0.6,0}}" />
+            <Property name="MaxSize" value="{{0.5,0},{1,0}}" />
+            <Property name="TooltipText" value="Contains some StaticText information panels" />
+            <Window type="Vanilla/StaticText" name="TextoJM" >
+                <Property name="Area" value="{{0.1,0},{0,-1},{0.9,0},{0.5,-1}}" />
+                <Property name="Text" value="Jaque Mate" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+                <Property name="HorzFormatting" value="CentreAligned" />
+                <Property name="HorzScrollPageSize" value="370" />
+                <Property name="VertScrollPageSize" value="69" />
+                <Property name="HorzScrollDocumentSize" value="114" />
+                <Property name="VertScrollDocumentSize" value="20.5273" />               
+            </Window>
+            <Window type="Vanilla/StaticText" name="TextoGanan" >
+                <Property name="Area" value="{{0.1,0},{0.6,0},{0.45,0},{0.8,0}}" />
+                <Property name="Text" value="Ganador:" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+                <Property name="FrameEnabled" value="False" />
+                <Property name="BackgroundEnabled" value="False" />
+                <Property name="HorzScrollPageSize" value="152" />
+                <Property name="VertScrollPageSize" value="17" />
+                <Property name="HorzScrollDocumentSize" value="87" />
+                <Property name="VertScrollDocumentSize" value="20.5273" />             
+            </Window>
+            <Window type="Vanilla/StaticText" name="VarGanador" >
+                <Property name="Area" value="{{0.45,0},{0.6,0},{0.95,0},{0.8,0}}" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="TooltipText" value="Contains some StaticText information panels" />
+                <Property name="FrameEnabled" value="False" />
+                <Property name="BackgroundEnabled" value="False" />
+                <Property name="HorzScrollPageSize" value="225" />
+                <Property name="VertScrollPageSize" value="17" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>
