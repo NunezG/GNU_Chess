@@ -6,7 +6,7 @@
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Window type="Vanilla/FrameWindow" name="VentanaConf" >
             <Property name="Area" value="{{0.25,0},{0.15,0},{0.85,0},{0.65,0}}" />
-            <Property name="Text" value="Configuracion" />
+            <Property name="Text" value="Settings" />
             <Property name="MaxSize" value="{{0.5,0},{1,0}}" />
             <Property name="TooltipText" value="Window shows a simple Listbox demo." />
             <Property name="CloseButtonEnabled" value="False" />
@@ -18,7 +18,7 @@
             </AutoWindow>
             <Window type="Vanilla/Checkbox" name="CheckPantallaC" >
                 <Property name="Area" value="{{0.38,0},{0.28,0},{0.78,0},{0.6,0}}" />
-                <Property name="Text" value="Pantalla completa" />
+                <Property name="Text" value="Full Screen" />
                 <Property name="TooltipText" value="Window shows a simple Listbox demo." />
             </Window>
             <Window type="Vanilla/Listbox" name="ListaDific" >
@@ -87,7 +87,7 @@
                 <Property name="VertScrollPageSize" value="268" />             
                 <Window type="Vanilla/StaticText" name="TextoBlancas" >
                     <Property name="Area" value="{{0.3,0},{0.03,0},{0.5,0},{0.4,0}}" />
-                    <Property name="Text" value="Blancas" />
+                    <Property name="Text" value="White" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="TooltipText" value="Window shows a simple Listbox demo." />
                     <Property name="FrameEnabled" value="False" />
@@ -95,17 +95,17 @@
                 </Window>
                 <Window type="Vanilla/Editbox" name="EditNegras" >
                     <Property name="Area" value="{{0.62,0},{0.4,0},{0.99,0},{0.7,0}}" />
-					<Property name="Text" value="Jugador 2" />
+					<Property name="Text" value="Player 2" />
                     <Property name="TooltipText" value="Enter the text for a new Listbox item here." />
                 </Window>
                 <Window type="Vanilla/Editbox" name="EditBlancas" >
                     <Property name="Area" value="{{0.23,0},{0.4,0},{0.6,0},{0.7,0}}" />
-					<Property name="Text" value="Jugador 1" />
+					<Property name="Text" value="Player 1" />
                     <Property name="TooltipText" value="Enter the text for a new Listbox item here." />
                 </Window>
                 <Window type="Vanilla/StaticText" name="TextoNombre" >
                     <Property name="Area" value="{{0.01,0},{0.4,0},{0.21,0},{0.7,0}}" />
-                    <Property name="Text" value="Nombre" />
+                    <Property name="Text" value="Name" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="TooltipText" value="Window shows a simple Listbox demo." />
                     <Property name="FrameEnabled" value="False" />
@@ -113,7 +113,7 @@
                 </Window>
                 <Window type="Vanilla/StaticText" name="TextoNegras" >
                     <Property name="Area" value="{{0.7,0},{0.03,0},{0.9,0},{0.4,0}}" />
-                    <Property name="Text" value="Negras" />
+                    <Property name="Text" value="Black" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="TooltipText" value="Window shows a simple Listbox demo." />
                     <Property name="FrameEnabled" value="False" />
@@ -122,17 +122,17 @@
             </Window>
             <Window type="Vanilla/Button" name="BotonCancelar" >
                 <Property name="Area" value="{{0.68,0},{0.89,0},{0.88,0},{0.99,0}}" />
-                <Property name="Text" value="Cancelar" />
+                <Property name="Text" value="Cancel" />
                 <Property name="TooltipText" value="Adds a new item to the Listbox." />
             </Window>
             <Window type="Vanilla/Button" name="BotonAceptar" >
                 <Property name="Area" value="{{0.1,0},{0.89,0},{0.3,0},{0.99,0}}" />
-                <Property name="Text" value="Aceptar" />
+                <Property name="Text" value="OK" />
                 <Property name="TooltipText" value="Adds a new item to the Listbox." />
             </Window>
             <Window type="Vanilla/StaticText" name="TextoResol" >
                 <Property name="Area" value="{{0.15,0},{-0,0},{0.35,0},{0.05,0}}" />
-                <Property name="Text" value="Resolucion" />
+                <Property name="Text" value="Resolution" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Window shows a simple Listbox demo." />
                 <Property name="FrameEnabled" value="False" />
@@ -144,7 +144,7 @@
             </Window>
             <Window type="Vanilla/StaticText" name="TextoDific" >
                 <Property name="Area" value="{{0.6,0},{0,0},{0.8,0},{0.05,0}}" />
-                <Property name="Text" value="Dificultad" />
+                <Property name="Text" value="Difficulty" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Window shows a simple Listbox demo." />
                 <Property name="FrameEnabled" value="False" />

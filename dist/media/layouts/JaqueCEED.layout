@@ -6,7 +6,7 @@
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Window type="Vanilla/FrameWindow" name="VentanaJaque" >
             <Property name="Area" value="{{0.78,0},{0.02,0},{0.98,0},{0.17,0}}" />
-            <Property name="Text" value="Aviso" />
+            <Property name="Text" value="Warning" />
             <Property name="MaxSize" value="{{0.5,0},{1,0}}" />
             <Property name="TooltipText" value="Contains some StaticText information panels" />
             <Property name="DragDropTarget" value="False" />
@@ -19,7 +19,7 @@
             </AutoWindow>
             <Window type="Vanilla/StaticText" name="TextoJaque" >
                 <Property name="Area" value="{{0.05,0},{0,0},{0.95,0},{0.9,0}}" />
-                <Property name="Text" value="Jaque al rey" />
+                <Property name="Text" value="Check" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Contains some StaticText information panels" />
                 <Property name="HorzFormatting" value="CentreAligned" />

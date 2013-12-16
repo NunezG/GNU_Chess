@@ -16,7 +16,7 @@
             </AutoWindow>
             <Window type="Vanilla/StaticText" name="VarFicha" >
                 <Property name="Area" value="{{0,0},{0.8,0},{0.6,0},{1,0}}" />
-                <Property name="Text" value="Ficha sobrevolada:" />
+                <Property name="Text" value="Name:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Contains some StaticText information panels" />
                 <Property name="FrameEnabled" value="False" />
@@ -190,7 +190,7 @@
             </Window>
             <Window type="Vanilla/StaticText" name="Info" >
                 <Property name="Area" value="{{0.15,0},{0,0},{0.85,0},{0.3,0}}" />
-                <Property name="Text" value="Información" />
+                <Property name="Text" value="Info" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Contains some StaticText information panels" />
                 <Property name="HorzFormatting" value="CentreAligned" />

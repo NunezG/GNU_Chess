@@ -10,7 +10,7 @@
             <Property name="TooltipText" value="Contains some StaticText information panels" />
             <Window type="Vanilla/StaticText" name="TextoJM" >
                 <Property name="Area" value="{{0.1,0},{0,-1},{0.9,0},{0.5,-1}}" />
-                <Property name="Text" value="Jaque Mate" />
+                <Property name="Text" value="Checkmate" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Contains some StaticText information panels" />
                 <Property name="HorzFormatting" value="CentreAligned" />
@@ -21,7 +21,7 @@
             </Window>
             <Window type="Vanilla/StaticText" name="TextoGanan" >
                 <Property name="Area" value="{{0.1,0},{0.6,0},{0.45,0},{0.8,0}}" />
-                <Property name="Text" value="Ganador:" />
+                <Property name="Text" value="Winner:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="TooltipText" value="Contains some StaticText information panels" />
                 <Property name="FrameEnabled" value="False" />
