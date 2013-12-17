@@ -46,13 +46,7 @@ bool MenuInicio::pantallaInicio()
 
 bool MenuInicio::pantallaConfig()
 {
-    if (ventanaConfig != NULL)
-    {
-        ventanaConfig->show();
-        ventanaConfig->activate();
-    }
-    else
-    {
+  
         ventanaConfig = CEGUI::WindowManager::getSingleton().loadLayoutFromFile("ConfiguraAjedrezCEED.layout");
 		ventanaConfig->setMouseCursor("Vanilla-Images/MouseArrow");
 		//ventanaConfig->getChild("VentanaConf")->getChild("BotonAceptar")->setMouseCursor("Vanilla-Images/MouseArrow");
@@ -63,6 +57,8 @@ bool MenuInicio::pantallaConfig()
       
 		pantallaCompleta = static_cast<CEGUI::ToggleButton*>(ventanaConfig->getChild("VentanaConf")->getChild("CheckPantallaC"));
 		pantallaCompleta->setMouseCursor("Vanilla-Images/MouseArrow");
+		if (modeloVista->pantallaCompleta) pantallaCompleta->setSelected(true);
+
 
 		listaResoluciones = static_cast<CEGUI::Listbox*>(ventanaConfig->getChild("VentanaConf")->getChild("ListaResol"));
       	listaResoluciones->setMouseCursor("Vanilla-Images/MouseArrow");
@@ -82,7 +78,7 @@ bool MenuInicio::pantallaConfig()
 		ventanaConfig->getChild("VentanaConf")->getChild("Jugadores")->setMouseCursor("Vanilla-Images/MouseArrow");
 		ventanaConfig->getChild("VentanaConf")->getChild("Jugadores")->getChild("EditBlancas")->setMouseCursor("Vanilla-Images/MouseArrow");
 			ventanaConfig->getChild("VentanaConf")->getChild("Jugadores")->getChild("EditNegras")->setMouseCursor("Vanilla-Images/MouseArrow");
-	}
+	
     std::vector<std::string>  listaElementos;
 
     listaElementos.push_back(std::string("640 x 480"));
@@ -138,12 +134,23 @@ bool MenuInicio::botonJuegoSolo(const CEGUI::EventArgs &e)
 
 bool MenuInicio::botonConfig(const CEGUI::EventArgs &e)
 {
+	  if (ventanaConfig != NULL)
+    {
+        ventanaConfig->show();
+        ventanaConfig->activate();
+    }
+    else
     pantallaConfig();
+
     return true;
 }
 
 bool MenuInicio::botonVolver(const CEGUI::EventArgs &e)
 {
+
+	pantallaCompleta->setSelected(modeloVista->pantallaCompleta);
+
+
     ventanaConfig->hide();
     return true;
 }
