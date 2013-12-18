@@ -138,8 +138,26 @@ endif()
 
 
 
+#APPLE
+#set(NUEVASLIBS ${OTHER_LIBS_FOR_YOUR_PROJ})
 
+#if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   # Mac OS X specific code
+#   set(OSX TRUE)
+#endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
+#if(OSX)
+if(APPLE)
+        find_library(COCOA_LIB Cocoa)
+        find_library(IOKIT_LIB IOKit)
+        find_library(CARBON_LIB Carbon)
+        find_library(COREGRAPHICS_LIB CoreGraphics)
+        find_library(FOUNDATION_LIB Foundation)
+		
+		
+		
+        set(NUEVASLIBS ${NUEVASLIBS} ${COCOA_LIB} ${IOKIT_LIB} ${CARBON_LIB} ${FOUNDATION_LIB} ${COREGRAPHICS_LIB})
+endif()
 
 
 
@@ -302,6 +320,11 @@ if(MINGW OR UNIX)
 	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/dist/bin)
 endif(MINGW OR UNIX)
  
+#set_target_properties(OgreApp PROPERTIES MACOSX_BUNDLE TRUE)
+ 
+# set_property(TARGET OgreApp PROPERTY MACOSX_BUNDLE TRUE)
+ #set_property(TARGET OgreApp PROPERTY MACOSX_BUNDLE_INFO_PLIST Info.plist)
+ 
 if(WIN32)
  
         install(TARGETS OgreApp
@@ -373,20 +396,72 @@ endif(WIN32)
 
 if(UNIX)
  
+	if(APPLE)
+		message("MANZANITA.")
+		set_property(TARGET OgreApp PROPERTY MACOSX_BUNDLE TRUE)
+	
+		#rm -rf ${CMAKE_CURRENT_BINARY_DIR}/dist/Components
+		#	rm -rf ${CMAKE_CURRENT_BINARY_DIR}/dist/Plugins
+		#	rm -rf ${CMAKE_CURRENT_BINARY_DIR}/dist/Resources
+		#	rm -rf ${CMAKE_CURRENT_BINARY_DIR}/dist/Frameworks
+	
+		# create directories (if they don't exist)
+		#	mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/dist/Components
+		#	mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/dist/Plugins
+		#	mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/dist/Resources
+		#	mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/dist/Frameworks
+ 
+ 
+			# copy components
+			#cp $(OGRE_SDK)/lib/libOgrePaging.dylib $(CONTENT_PATH)/Components
+			#cp $(OGRE_SDK)/lib/libOgreProperty.dylib $(CONTENT_PATH)/Components
+			#cp $(OGRE_SDK)/lib/libOgreRTShaderSystem.dylib $(CONTENT_PATH)/Components
+			#cp $(OGRE_SDK)/lib/libOgreTerrain.dylib $(CONTENT_PATH)/Components
+ 
+			# copy plugins
+			#cp $(OGRE_SDK)/lib/Plugin_BSPSceneManager.dylib $(CONTENT_PATH)/Plugins
+		#	cp $(OGRE_SDK)/lib/Plugin_CgProgramManager.dylib $(CONTENT_PATH)/Plugins
+		#	cp $(OGRE_SDK)/lib/Plugin_OctreeSceneManager.dylib $(CONTENT_PATH)/Plugins
+		#	cp $(OGRE_SDK)/lib/Plugin_OctreeZone.dylib $(CONTENT_PATH)/Plugins
+		#	cp $(OGRE_SDK)/lib/Plugin_PCZSceneManager.dylib $(CONTENT_PATH)/Plugins
+		#	cp $(OGRE_SDK)/lib/Plugin_ParticleFX.dylib $(CONTENT_PATH)/Plugins
+			#cp $(OGRE_SDK)/lib/RenderSystem_GL.dylib $(CONTENT_PATH)/Plugins
+ 
+			# copy frameworks
+			#cp -R /Library/Frameworks/Cg.framework $(CONTENT_PATH)/Frameworks/
+		#	cp -R $(OGRE_SDK)/lib/release/Ogre.framework $(CONTENT_PATH)/Frameworks/
+ 
+			# copy resource files
+			#cp -R Resources/* ${CMAKE_CURRENT_BINARY_DIR}/Resources/
+			#
+			# change permission on all files
+		#	chmod -R u+rwx ${CMAKE_CURRENT_BINARY_DIR}/dist/*
+		#	chmod -R go+r ${CMAKE_CURRENT_BINARY_DIR}/dist/*
+        install(TARGETS OgreApp
+		BUNDLE  DESTINATION .
+		RUNTIME DESTINATION bin
+		CONFIGURATIONS All)
+ 
+	else()
+		
         install(TARGETS OgreApp
 		RUNTIME DESTINATION bin
 		CONFIGURATIONS All)
  
-	install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/media
+		install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/media
 		DESTINATION ./
 		CONFIGURATIONS Release RelWithDebInfo Debug
-	)
+		)
  
-	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins.cfg
+		install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins.cfg
 		${CMAKE_SOURCE_DIR}/dist/bin/resources.cfg
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo Debug
-	)
+		)
+ 
+	endif(APPLE)
+ 
+	message("finunix.")
  
 endif(UNIX)
  

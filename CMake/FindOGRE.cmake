@@ -106,6 +106,16 @@ elseif (UNIX)
   if (APPLE)
     set(OGRE_PREFIX_GUESSES 
       ${CMAKE_CURRENT_SOURCE_DIR}/lib/macosx
+	  /Users/guiosx/ogre1.9buildBUENOttt/include
+	  /Users/guiosx/ogre1.9buildBUENOttt/lib/macosx/Release
+	  /Users/guiosx/ogre1.9src/OgreMain/include
+	  /Users/guiosx/ogre1.9src/OgreMain/include/OSX
+	  /Users/guiosx/ogre1.9src/OgreMain
+	  /Users/guiosx/ogre1.9src
+	  /Users/guiosx/ogogre1.9buildBUENOttt/lib/macosx/Release/OGRE.framework/Headers
+	  /Users/guiosx/ogre1.9buildBUENOttt/lib/macosx/Release/OGRE.framework
+	   /Users/guiosx/ogre1.9buildBUENOttt/lib/macosx/Release/RenderSystem_GL.framework
+	   /Users/guiosx/ogre1.9buildBUENOttt/lib/macosx/Release/RenderSystem_GL.framework/Headers
       ${OGRE_PREFIX_GUESSES}
     )
   endif ()
@@ -372,7 +382,7 @@ set(OGRE_COMPONENT_SEARCH_PATH_DBG
 
 macro(ogre_find_component COMPONENT HEADER)
   findpkg_begin(OGRE_${COMPONENT})
-  find_path(OGRE_${COMPONENT}_INCLUDE_DIR NAMES ${HEADER} HINTS ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE} PATH_SUFFIXES ${COMPONENT} OGRE/${COMPONENT} Components/${COMPONENT}/include)
+  find_path(OGRE_${COMPONENT}_INCLUDE_DIR NAMES ${HEADER} HINTS ${OGRE_LIBRARY_DIR_REL} ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE} PATH_SUFFIXES ${COMPONENT} OGRE/${COMPONENT} Components/${COMPONENT}/include)
   set(OGRE_${COMPONENT}_LIBRARY_NAMES "Ogre${COMPONENT}${OGRE_LIB_SUFFIX}")
   get_debug_names(OGRE_${COMPONENT}_LIBRARY_NAMES)
   find_library(OGRE_${COMPONENT}_LIBRARY_REL NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES} HINTS ${OGRE_LIBRARY_DIR_REL} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
@@ -423,7 +433,7 @@ macro(ogre_find_plugin PLUGIN HEADER)
     PlugIns PlugIns/${PLUGIN_NAME} Plugins Plugins/${PLUGIN_NAME} ${PLUGIN} 
     RenderSystems RenderSystems/${PLUGIN_NAME} ${ARGN})
   find_path(OGRE_${PLUGIN}_INCLUDE_DIR NAMES ${HEADER} 
-    HINTS ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE}  
+    HINTS ${OGRE_LIBRARY_DIR_REL} ${OGRE_INCLUDE_DIRS} ${OGRE_PREFIX_SOURCE}  
     PATH_SUFFIXES ${OGRE_PLUGIN_PATH_SUFFIXES})
   # find link libraries for plugins
   set(OGRE_${PLUGIN}_LIBRARY_NAMES "${PLUGIN}${OGRE_LIB_SUFFIX}")

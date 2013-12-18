@@ -24,7 +24,7 @@
 #      ExpatParser LibXMLParser RapidXMLParser TinyXMLParser XercesParser)
 #   Script:
 #      LuaScriptModule
-      
+      message("ENTRA EN FINDCEGUI")
 include(FindPkgMacros)
 include(PreprocessorUtils)
 
@@ -57,8 +57,6 @@ endif ()
  
 set(CEGUI_LIBRARY_NAMES "CEGUIBase${CEGUI_LIB_SUFFIX}")
 get_debug_names(CEGUI_LIBRARY_NAMES)
-
- message("Library names ANTEEEEES: " ${CEGUI_LIBRARY_NAMES})
  
 # construct search paths from environmental hints and
 # OS specific guesses
@@ -78,31 +76,31 @@ if (WIN32)
   )
 elseif (UNIX)
   set(CEGUI_PREFIX_GUESSES
-    /opt/cegui
-    /opt/CEGUI
-    /usr
-    /usr/local
-    $ENV{HOME}/cegui
-    $ENV{HOME}/CEGUI
+    #/opt/cegui
+    #/opt/CEGUI
+    #/usr
+    #/usr/local
+    #$ENV{HOME}/cegui
+    #$ENV{HOME}/CEGUI
+    /home/guidebian/Descargas/cegui-0.8.2Comp5/cegui/include
+    /home/guidebian/Descargas/cegui-0.8.2Comp5
+    /home/guidebian/Descargas/cegui-0.8.2/cegui/include
   )
+  if (APPLE)
+    set(CEGUI_PREFIX_GUESSES 
+      ${CMAKE_CURRENT_SOURCE_DIR}/lib/macosx
+  	/Users/guiosx/Downloads/cegui-0.8.3BUENO4/cegui/include
+  	/Users/guiosx/Downloads/cegui-0.8.3BUENO4/lib
+  	/Users/guiosx/Downloads/cegui-0.8.3/cegui/include
+      ${OGRE_PREFIX_GUESSES}
+    )
+  endif ()
 endif ()
  
- message("CEGUI_HOME")
- message($ENV{CEGUI_HOME})
- 
- message("CEGUI_DIR")
- message($ENV{CEGUI_DIR})
- 
- 
- 
- 
- 
 set(CEGUI_PREFIX_PATH
-   $ENV{CEGUI_HOME} $ENV{CEGUI_DIR} #$ENV{CEGUI_ROOT}
+   $ENV{CEGUI_HOME} $ENV{CEGUI_DIR} $ENV{CEGUI_ROOT}
    ${CEGUI_PREFIX_GUESSES}
 )
-message("CEGUI_PREFIX_PATH")
-message(${CEGUI_PREFIX_PATH})
  
 create_search_paths(CEGUI)
   
@@ -124,10 +122,6 @@ set(CEGUI_SCRIPT_COMPONENTS
 )
 set(CEGUI_COMPONENTS ${CEGUI_WINDOWSRENDERER_COMPONENTS} ${CEGUI_RENDERER_COMPONENTS} ${CEGUI_IMAGECODEC_COMPONENTS} ${CEGUI_PARSER_COMPONENTS} ${CEGUI_SCRIPT_COMPONENTS})
  
- message("CEGUI_COMPONENTS")
- message(${CEGUI_COMPONENTS})
-
- 
 set(CEGUI_RESET_VARS 
   CEGUI_CONFIG_INCLUDE_DIR CEGUI_INCLUDE_DIR 
   CEGUI_LIBRARY_REL CEGUI_LIBRARY_DBG
@@ -146,8 +140,8 @@ clear_if_changed(CEGUI_PREFIX_WATCH ${CEGUI_RESET_VARS})
 use_pkgconfig(CEGUI_PKGC "CEGUI${CEGUI_LIB_SUFFIX}")
 
 message("CEGUI_INC_SEARCH_PATH:" ${CEGUI_INC_SEARCH_PATH})
-message("CEGUI_FRAMEWORK_INCLUDES:" ${CEGUI_FRAMEWORK_INCLUDES})
-message("CEGUI_PKGC_INCLUDE_DIRS:" ${CEGUI_PKGC_INCLUDE_DIRS})
+#message("CEGUI_FRAMEWORK_INCLUDES:" ${CEGUI_FRAMEWORK_INCLUDES})
+#message("CEGUI_PKGC_INCLUDE_DIRS:" ${CEGUI_PKGC_INCLUDE_DIRS})
  
 # locate CEGUI include files
 find_path(CEGUI_CONFIG_INCLUDE_DIR NAMES Config.h 
@@ -179,6 +173,8 @@ if (CEGUI_INCLUDE_DIR)
   pkg_message(CEGUI "Found CEGUI headers ${CEGUI_VERSION_NAME} (${CEGUI_VERSION})")
   pkg_message(CEGUI "Include dir: " ${CEGUI_INCLUDE_DIR})
   
+ message("PASA")
+
   #set(CEGUI_VERSION "0.7.9")
   if ((${CEGUI_VERSION} VERSION_GREATER "0.8.0") OR (${CEGUI_VERSION} VERSION_EQUAL "0.8.0"))
      set(CEGUI_LIBRARY_NAMES "CEGUIBase-${CEGUI_VERSION_MAJOR}${CEGUI_LIB_SUFFIX}")
@@ -257,18 +253,9 @@ list(REMOVE_DUPLICATES CEGUI_INCLUDE_DIR)
 message(${CEGUI_INCLUDE_DIR})
 
 findpkg_finish(CEGUI)
-      message("tres")
-
 add_parent_dir(CEGUI_INCLUDE_DIRS CEGUI_INCLUDE_DIR)
  
-      message("ANTEEEEEES")
-
- 
 mark_as_advanced(CEGUI_CONFIG_INCLUDE_DIR)
- 
-     message("NOFOUND ESTOQUEEEES")
-
- 
  
 if (NOT CEGUI_FOUND)
   return()
@@ -282,7 +269,7 @@ set(CEGUI_LIBRARY_DIRS ${CEGUI_LIBRARY_DIR_REL} ${CEGUI_LIBRARY_DIR_DBG})
 
 # find binaries WIN32
 if (NOT CEGUI_STATIC)
-   message("not static" ${CEGUI_BIN_SEARCH_PATH})
+   #message("not static" ${CEGUI_BIN_SEARCH_PATH})
    if (WIN32)
       find_file(CEGUI_BINARY_REL NAMES "CEGUIBase-${CEGUI_VERSION_MAJOR}.dll" 
                 HINTS ${CEGUI_BIN_SEARCH_PATH}
