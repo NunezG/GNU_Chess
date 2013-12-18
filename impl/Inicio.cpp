@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 {
     try
     {
-            std::ofstream out("./Salida.txt");
-    std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+//  std::ofstream out("./Salida.txt");
+//    std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
     Ventana* punteroVentana= new Ventana();
         punteroVentana->go();
