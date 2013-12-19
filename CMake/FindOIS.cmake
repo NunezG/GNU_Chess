@@ -1,4 +1,4 @@
-#-------------------------------------------------------------------
+ #-------------------------------------------------------------------
 # This file is part of the CMake build system for OGRE
 #     (Object-oriented Graphics Rendering Engine)
 # For the latest info, see http://www.ogre3d.org/
@@ -33,7 +33,7 @@ set(OIS_PREFIX_PATH ${OIS_HOME} ${ENV_OIS_HOME}
   ${OGRE_DEPENDENCIES_DIR} ${ENV_OGRE_DEPENDENCIES_DIR}
   ${OGRE_SOURCE}/iOSDependencies ${ENV_OGRE_SOURCE}/iOSDependencies
   ${OGRE_SOURCE}/Dependencies ${ENV_OGRE_SOURCE}/Dependencies
-  ${OGRE_SDK} ${ENV_OGRE_SDK}
+  ${OGRE_SDK} ${ENV_OGRE_SDK} ./Dependencies /Users/guiosx/ogre1.9src/Dependencies
   ${OGRE_HOME} ${ENV_OGRE_HOME})
 create_search_paths(OIS)
 # redo search if prefix path changed

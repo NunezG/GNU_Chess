@@ -89,9 +89,9 @@ elseif (UNIX)
   if (APPLE)
     set(CEGUI_PREFIX_GUESSES 
       ${CMAKE_CURRENT_SOURCE_DIR}/lib/macosx
-  	/Users/guiosx/Downloads/cegui-0.8.3BUENO4/cegui/include
-  	/Users/guiosx/Downloads/cegui-0.8.3BUENO4/lib
-  	/Users/guiosx/Downloads/cegui-0.8.3/cegui/include
+  	/Users/guiosx/Downloads/cegui-0.8.3BUENO4/cegui
+	/Users/guiosx/Downloads/cegui-0.8.3/lib
+  	/Users/guiosx/Downloads/cegui-0.8.3/cegui
       ${OGRE_PREFIX_GUESSES}
     )
   endif ()
@@ -225,12 +225,12 @@ message("CEGUI_LIB_SEARCH_PATH: " ${CEGUI_LIB_SEARCH_PATH})
  
    message("CEGUI FINDLIB")
 
- 
+  
 find_library(CEGUI_LIBRARY_REL NAMES ${CEGUI_LIBRARY_NAMES} 
-             HINTS ${CEGUI_LIB_SEARCH_PATH} $ENV{CEGUI_HOME}/lib ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "release" "relwithdebinfo" "minsizerel")
+             HINTS ${CEGUI_PREFIX_GUESSES} ${CEGUI_LIB_SEARCH_PATH} $ENV{CEGUI_HOME}/lib ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "release" "relwithdebinfo" "minsizerel")
 
 find_library(CEGUI_LIBRARY_DBG NAMES ${CEGUI_LIBRARY_NAMES_DBG} 
-             HINTS ${CEGUI_LIB_SEARCH_PATH} $ENV{CEGUI_HOME}/lib ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "debug")
+             HINTS ${CEGUI_PREFIX_GUESSES} ${CEGUI_LIB_SEARCH_PATH} $ENV{CEGUI_HOME}/lib ${CEGUI_PKGC_LIBRARY_DIRS} ${CEGUI_FRAMEWORK_SEARCH_PATH} PATH_SUFFIXES "" "debug")
 
 message("CEGUI_LIBRARY_REL : " ${CEGUI_LIBRARY_REL})
 message("CEGUI_FOUND : " ${CEGUI_FOUND})
@@ -245,7 +245,7 @@ endif ()
     message("JUNtSA")
 message(${CEGUI_INCLUDE_DIR})
 
-set(CEGUI_INCLUDE_DIR $ENV{CEGUI_HOME}/cegui/include $ENV{CEGUI_DIR}/cegui/include)
+set(CEGUI_INCLUDE_DIR ${CEGUI_INCLUDE_DIR} $ENV{CEGUI_HOME}/cegui/include $ENV{CEGUI_DIR}/cegui/include)
       message("uno")
 list(REMOVE_DUPLICATES CEGUI_INCLUDE_DIR)
 

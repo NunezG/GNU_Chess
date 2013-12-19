@@ -79,6 +79,8 @@ message("ACABA FINDOGRE.")
   message(${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/dist")
  
+ if(WIN32)
+ 
 # #Find Boost
 if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 
@@ -121,7 +123,6 @@ set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_THREAD_LIBRARY_RELEASE} ${Boost_SYSTEM_LIBRARY_RELEASE} ${Boost_DATE_TIME_LIBRARY_RELEASE} ${Boost_CHRONO_LIBRARY_RELEASE})
 
 
-endif()
 
 
 ###################################################
@@ -135,6 +136,9 @@ endif()
  include_directories( ${Boost_INCLUDE_DIR} )
 #target_link_libraries( ${APP_NAME} ${Boost_LIBRARIES} )
 ##################################################
+endif()
+
+endif()
 
 
 
