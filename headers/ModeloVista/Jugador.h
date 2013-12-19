@@ -16,7 +16,6 @@ public:
     virtual bool casillaSobrevolada(const std::string nombreCasilla);
     virtual bool esHumano() = 0;
   //  bool jugadorNegras;
-    virtual bool botonDerecho() = 0;
     virtual bool botonIzquierdo(CEGUI::Vector2<float> pos) = 0;
 		int jaqueMate();
 	virtual bool aplicaSeleccion();

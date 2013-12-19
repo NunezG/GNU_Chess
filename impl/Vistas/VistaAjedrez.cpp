@@ -139,18 +139,14 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
     //int posx = arg.state.X.abs;   // Posicion del puntero
     //int posy = arg.state.Y.abs;   //  en pixeles.
     if (id == OIS::MB_Left)
-    {  // Boton izquierdo o derecho -------------
-        modeloVista->JugadorActivo->botonIzquierdo(mCursorPosition);
-    }
-    else if (id == OIS::MB_Right)
-    {
-        if (modeloVista->JugadorActivo->botonDerecho())
-        {
+    {  // Boton izquierdo o derecho ------------- 
+        if (modeloVista->jugadaElegida())
             modeloVista->aplicaCambio();
 
-        }
-  
-    }else if (id == OIS::MB_Middle)
+       else modeloVista->JugadorActivo->botonIzquierdo(mCursorPosition);
+	}
+    
+    else if (id == OIS::MB_Middle)
     {
         escenaAjedrez->setModoCamara(true);
     }

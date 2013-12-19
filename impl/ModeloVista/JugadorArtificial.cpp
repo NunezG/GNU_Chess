@@ -13,10 +13,7 @@ bool JugadorArtificial::botonIzquierdo(CEGUI::Vector2<float> pos)
 	return true;
 }
 
-bool JugadorArtificial::botonDerecho()
-{ 
-	return true;
-}
+
 
 bool JugadorArtificial::iniciaTurno()
 {

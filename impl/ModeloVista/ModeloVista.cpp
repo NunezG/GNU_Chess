@@ -73,6 +73,10 @@ void ModeloVista::generaJugadores()
     numJugadores++;
 }
 
+bool ModeloVista::jugadaElegida()
+{
+    return (modelo->jugadaElegida[1] != modelo->jugadaElegida[0]);
+}
 
 void ModeloVista::creaEscenaYModelo()
 {

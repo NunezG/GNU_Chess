@@ -29,6 +29,7 @@ public:
 
     void aplicaCambio();
 		std::string nombres[2];
+		bool jugadaElegida();
 
 private:   
     void traduceTablero();

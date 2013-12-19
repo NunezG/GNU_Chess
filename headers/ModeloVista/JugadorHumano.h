@@ -16,7 +16,6 @@ private:
    bool casillaSobrevolada(const std::string nombreCasilla);
 
    bool botonIzquierdo(CEGUI::Vector2<float> pos);
-   bool botonDerecho();
    int jaqueMate();
 
 

@@ -40,10 +40,6 @@ bool JugadorHumano::botonIzquierdo(CEGUI::Vector2<float> pos)
     return false;
 }
 
-bool JugadorHumano::botonDerecho()
-{
-    return (modelo->jugadaElegida[1] != modelo->jugadaElegida[0]);
-}
 
 bool JugadorHumano::casillaSobrevolada(const std::string nombreCasilla)
 {
