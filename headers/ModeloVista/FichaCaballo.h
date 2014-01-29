@@ -9,7 +9,7 @@ class FichaCaballo : public Ficha
 public:
 
     ~FichaCaballo(void);
-    FichaCaballo(std::string nombre);
+    FichaCaballo(std::string nombre, std::string materialName);
 
 private:  
 

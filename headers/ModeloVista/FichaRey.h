@@ -8,7 +8,7 @@ class FichaRey : public Ficha
 public:
 
     ~FichaRey(void);
-    FichaRey(std::string nombre);
+    FichaRey(std::string nombre, std::string materialName);
 
 
 

@@ -1,7 +1,10 @@
 #ifndef __Casilla_
 #define __Casilla_
 
-#include "ObjetoOgre.h"
+#include <iostream>
+#include <vector>
+
+#include "ObjetoEscena.h"
 
 
 struct posicion{
@@ -11,11 +14,11 @@ struct posicion{
 };
 
 
-class Casilla : public ObjetoOgre
+class Casilla : public ObjetoEscena
 {
 public:
     ~Casilla(void);
-    Casilla(std::string nombre);
+    Casilla(std::string nombre, std::string material);
 
     void setPosicion(int posFila, int posCol);
     posicion getPosicion();
@@ -24,11 +27,12 @@ public:
 
     bool esNegra;
 
-
+    std::string getNombre();
 private:
 
     posicion posCasilla;
-
+	
+    std::string nombreObjeto;
 };
 
 #endif

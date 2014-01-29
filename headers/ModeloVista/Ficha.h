@@ -1,8 +1,8 @@
 #ifndef __Ficha_
 #define __Ficha_
-
-#include "ObjetoOgre.h"
-
+#include <iostream>
+//#include "ObjetoOgre.h"
+#include "ObjetoEscena.h"
 
 /*
 struct FichaPrueba{
@@ -19,21 +19,23 @@ struct ListaPosiciones{
 };
 */
 
-class Ficha : public ObjetoOgre
+class Ficha : public ObjetoEscena
 {
 public:
 
     ~Ficha(void);
     //constructor de copia
     Ficha(const Ficha& fichaOriginal, std::string nombre, int tipo);
-    void creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask);
+    //void creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask);
     int tipo_Ficha;
     bool esNegra;
+	bool seleccionada;
     void apaga();
     void ilumina();
+	    std::string getNombre();
+    Ficha(std::string nombre, int mask, std::string meshName, std::string materialName);
 
 protected:
-    Ficha(std::string nombre, int tipo);
 private: 
    // virtual bool setCasilla(int fila, int col);
    // bool salto;
@@ -47,6 +49,7 @@ private:
    //  Stack<byte> ValidMoves; // lista de movimientos válidos
    // bool muerta;
     //int casilla[2];
+	    std::string nombreObjeto;
 
 
     //ObjetoOgre* objetoOgreAsociado;

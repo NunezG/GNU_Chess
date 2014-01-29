@@ -14,7 +14,7 @@
 #      http://www.ogre3d.org/tikiwiki/
 #-----------------------------------------------------------------------------
 #*/
-
+ 
 
 cmake_minimum_required(VERSION 2.6)
  
@@ -172,19 +172,24 @@ endif()
  
 # NUEVA SECCIÓN
 
-message("llama a FINDCEGUI LO QUE OYES")
-find_package(CEGUI REQUIRED)
-message("ACABA FINDCEGUI.")
+#message("llama a FINDCEGUI LO QUE OYES")
+#find_package(CEGUI REQUIRED)
+#message("ACABA FINDCEGUI.")
  #if(NOT CEGUI_FOUND)
  #message(SEND_ERROR "Failed to find CEGUI.")
 #endif()
-message("INICIA CEGUIOGRE.")
-find_package(CEGUIOGRE REQUIRED)
-message("ACABA CEGUIOGRE.")
+#message("INICIA CEGUIOGRE.")
+#find_package(CEGUIOGRE REQUIRED)
+#message("ACABA CEGUIOGRE.")
  #if(NOT CEGUIOGRE_FOUND)
 #message("Failed to find CEGUIOGRE.")
 #endif()
 
+message("INICIA LIBROCKET.")
+find_package(LIBROCKET REQUIRED)
+if(NOT LIBROCKET_FOUND)
+	message("Failed to find LIBROCKET.")
+endif()
 # FIN NUEVA SECCIÓN
 
 
@@ -199,8 +204,17 @@ set(HDRS
         ./headers/Vistas/Ventana.h
         ./headers/Vistas/VistaAjedrez.h
         ./headers/Vistas/VistaAjedrezSolo.h
-        ./headers/Vistas/MenuInicio.h
+      #  ./headers/Vistas/MenuInicio.h
+		./headers/Vistas/MenuRocket.h	
         ./headers/Vistas/BaseVistas.h
+		 ./headers/Vistas/RocketListener.h
+		 ./headers/Vistas/RenderInterfaceOgre3D.h
+		#./headers/Vistas/RocketApplication.h
+		./headers/Vistas/SystemInterfaceOgre3D.h
+		./headers/Vistas/Escena.h
+		        ./headers/Vistas/ObjetoOgre.h
+			#	       ./headers/Vistas/Tablero.h
+
 
         # headers de modelo
       #  ./headers/Modelo/InputMan.h
@@ -215,7 +229,6 @@ set(HDRS
        # ./headers/Modelo/ModeloMenu.h
       #  ./headers/Modelo/ModuloIA.h
 
-       ./headers/ModeloVista/Tablero.h
        ./headers/ModeloVista/FichaRey.h
        ./headers/ModeloVista/FichaReina.h
        ./headers/ModeloVista/FichaPeon.h
@@ -223,13 +236,14 @@ set(HDRS
        ./headers/ModeloVista/FichaCaballo.h
        ./headers/ModeloVista/FichaTorre.h
        ./headers/ModeloVista/Ficha.h
-        ./headers/ModeloVista/ObjetoOgre.h
         ./headers/ModeloVista/Casilla.h
         ./headers/ModeloVista/EscenaAjedrez.h
         ./headers/ModeloVista/ModeloVista.h
         ./headers/ModeloVista/Jugador.h
         ./headers/ModeloVista/JugadorHumano.h
         ./headers/ModeloVista/JugadorArtificial.h
+		./headers/ModeloVista/TableroMV.h
+		./headers/ModeloVista/ObjetoEscena.h
 )
  
 set(SRCS
@@ -245,8 +259,17 @@ set(SRCS
         ./impl/Vistas/VistaAjedrez.cpp
         ./impl/Vistas/VistaAjedrezSolo.cpp
         ./impl/Vistas/Ventana.cpp
-        ./impl/Vistas/MenuInicio.cpp
+       # ./impl/Vistas/MenuInicio.cpp
+		./impl/Vistas/MenuRocket.cpp	
         ./impl/Vistas/BaseVistas.cpp
+	 	./impl/Vistas/RocketListener.cpp
+		./impl/Vistas/RenderInterfaceOgre3D.cpp
+		#./impl/Vistas/RocketApplication.cpp
+		./impl/Vistas/SystemInterfaceOgre3D.cpp
+	 		./impl/Vistas/Escena.cpp
+			        ./impl/Vistas/ObjetoOgre.cpp
+					    #   ./impl/Vistas/Tablero.cpp
+
 
        # ./impl/CreacionJuego.cpp
        # ./impl/MenuInicial.cpp
@@ -264,7 +287,6 @@ set(SRCS
       #    ./impl/Modelo/ModuloIA.cpp
 
         # MODELOVISTA
-       ./impl/ModeloVista/Tablero.cpp
        ./impl/ModeloVista/FichaRey.cpp
        ./impl/ModeloVista/FichaReina.cpp
        ./impl/ModeloVista/FichaPeon.cpp
@@ -272,24 +294,27 @@ set(SRCS
        ./impl/ModeloVista/FichaCaballo.cpp
        ./impl/ModeloVista/FichaTorre.cpp
        ./impl/ModeloVista/Ficha.cpp
-        ./impl/ModeloVista/ObjetoOgre.cpp
        ./impl/ModeloVista/Casilla.cpp
         ./impl/ModeloVista/EscenaAjedrez.cpp
         ./impl/ModeloVista/ModeloVista.cpp
        ./impl/ModeloVista/Jugador.cpp
       ./impl/ModeloVista/JugadorHumano.cpp
        ./impl/ModeloVista/JugadorArtificial.cpp
+	   ./impl/ModeloVista/TableroMV.cpp
+		./impl/ModeloVista/ObjetoEscena.cpp
 
      #  ./impl/Modelo/ModeloMenu.cpp
 )
- 
-include_directories( ${OIS_INCLUDE_DIR}
+  
+include_directories( 
+    ${OIS_INCLUDE_DIR}
 	${OGRE_INCLUDE_DIR}
 	#${OGRE_SAMPLES_INCLUDEPATH}
 	#NUEVA SECCIÓN
-    ${CEGUI_INCLUDE_DIR}
-	${CEGUIOGRE_INCLUDE_DIR}
+    #${CEGUI_INCLUDE_DIR}
+	#${CEGUIOGRE_INCLUDE_DIR}
     ${BOOST_INCLUDE_DIR} 
+	${LIBROCKET_INCLUDE_DIR}
 	# FIN NUEVA SECCIÓN
 )
  
@@ -298,14 +323,15 @@ add_executable(OgreApp WIN32 ${HDRS} ${SRCS})
 set_target_properties(OgreApp PROPERTIES DEBUG_POSTFIX _d)
  
 # CAMBIA target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
- target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED} )
+ target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES}  ${LIBROCKET_CORE_LIBRARY} ${LIBROCKET_CONTROLS_LIBRARY} ${LIBROCKET_DEBUGGER_LIBRARY} ) # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
   
   link_directories( 
   ${Boost_LIBRARY_DIRS} 
   ${OGRE_LIBRARY_DIRS} 
   ${OIS_LIBRARY_DIRS} 
-  ${CEGUI_LIBRARY_DIRS} 
- ${CEGUIOGRE_LIBRARY_DIRS} 
+ # ${CEGUI_LIBRARY_DIRS} 
+ #${CEGUIOGRE_LIBRARY_DIRS} 
+ ${LIBROCKET_LIBRARY_DIRS} 
   )
 
 
@@ -358,13 +384,16 @@ if(WIN32)
 		${OGRE_PLUGIN_DIR_REL}/Plugin_OctreeSceneManager.dll
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
 		${OGRE_PLUGIN_DIR_REL}/OIS.dll
-		${CEGUI_LIBRARY_DIRS}/CEGUIBase-0.dll
-		${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0.dll
-		${CEGUI_LIBRARY_DIRS}/CEGUITinyXMLParser.dll
+		#${CEGUI_LIBRARY_DIRS}/CEGUIBase-0.dll
+		#${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0.dll
+		#${CEGUI_LIBRARY_DIRS}/CEGUITinyXMLParser.dll
 		#$ENV{CEGUI_DIR}/dependencies/bin/FreeImage.dll
-		$ENV{CEGUI_DIR}/dependencies/bin/freetype.dll
-		$ENV{CEGUI_DIR}/dependencies/bin/tinyxml.dll
-		${CEGUI_LIBRARY_DIRS}/CEGUICoreWindowRendererSet.dll
+		#$ENV{CEGUI_DIR}/dependencies/bin/freetype.dll
+		#$ENV{CEGUI_DIR}/dependencies/bin/tinyxml.dll
+		#${CEGUI_LIBRARY_DIRS}/CEGUICoreWindowRendererSet.dll
+		${ENV_LIBROCKET}/RocketControls.dll
+		${ENV_LIBROCKET}/RocketCore.dll
+		${ENV_LIBROCKET}/RocketDebugger.dll
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo
 	)
@@ -373,8 +402,8 @@ if(WIN32)
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_Direct3D9_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_GL_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/OIS_d.dll
-		${CEGUI_LIBRARY_DIRS}/CEGUIBase-0_d.dll
-		${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0_d.dll
+		#${CEGUI_LIBRARY_DIRS}/CEGUIBase-0_d.dll
+		#${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0_d.dll
 		DESTINATION bin
 		CONFIGURATIONS Debug
 	)

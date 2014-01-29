@@ -8,7 +8,7 @@ JugadorArtificial::~JugadorArtificial()
 {
 }
 
-bool JugadorArtificial::botonIzquierdo(CEGUI::Vector2<float> pos)
+bool JugadorArtificial::botonIzquierdo(ObjetoEscena* obj)
 {  
 	return true;
 }

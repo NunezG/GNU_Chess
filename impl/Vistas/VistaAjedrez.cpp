@@ -2,56 +2,115 @@
 #include "../../headers/Vistas/VistaAjedrez.h"
 
 //-------------------------------------------------------------------------------------
-VistaAjedrez::VistaAjedrez(ModeloVista* modeloV) :
-    BaseVistas(modeloV, "Root Ajedrez")
+VistaAjedrez::VistaAjedrez(ModeloVista* modeloV, Ogre::RenderWindow* mWindow) : BaseVistas(modeloV, mWindow), Escena()
 {  
     //  modelo =Modelo::getSingletonPtr();
     //  mWindow = mRoot->initialise(true, "Root Ajedrez");
-    // escenaAjedrez = EscenaAjedrez::getSingletonPtr();
+    // Escena = Escena::getSingletonPtr();
     //  BaseVistas::iniciaOIS();
 
-    escenaAjedrez = new EscenaAjedrez();
+   // Escena = new Escena();
+    				    std::cout << "vistaajedreeez "<<std::endl;
+
     
-    //modeloVista = modeloV;
+   // modeloVista->escena = this;
     
-    modeloVista->escena = escenaAjedrez;
+    //Escena= modelov
     
-    //escenaAjedrez= modelov
-    
-    //modeloVista->escena = escenaAjedrez;
+    //modeloVista->escena = Escena;
     //escena
-    escenaAjedrez->createCamera();
-    escenaAjedrez->createViewports(mWindow);
+
+						escenaMV = modeloV->escenaMV;
+
+    createCamera();
+    createViewports(mWindow);
+	    				    std::cout << "generaJugadores "<<std::endl;
+
+	modeloVista->generaJugadores();
+	    				    std::cout << "inicia creaEscenaYModelo "<<std::endl;
+
+
+
+
+    modeloVista->creaEscenaYModelo();
+		    				    std::cout << "finnnnn creaEscenaYModelo "<<std::endl;
+
 }
 
 VistaAjedrez::~VistaAjedrez(void)
 {    
 }
 
+void VistaAjedrez::actualizaNodo(ObjetoOgre* nodo)
+{
+//	std::cout << "actualizaNodo: "<< nodo->getNombre()<<std::endl;
+
+	ObjetoEscena* objEsc;
+
+	for (int i = 0; i<escenaMV->getTablero()->vectorHijos.size(); i++)
+	{
+		objEsc = escenaMV->getTablero()->getHijo(i);
+		if (!tablero->getHijo(i)->sinHijos())
+			tablero->getHijo(i)->getHijo(0)->cambiaMaterial(objEsc->getHijo(0)->materialName);
+
+
+	}
+
+	//ObjetoEscena* objEsc = escenaMV->getTablero()->getHijo(nodo->getNombre());
+
+		//std::cout << "actualizaNodo222: "<< objEsc->getNombre()<<std::endl;
+
+				//std::cout << "actualizaNodo333: "<< nodo->getHijo(0)->getNombre()<<std::endl;
+								//std::cout << "actualizaNodomat: "<< nodo->getHijo(0)->materia<<std::endl;
+
+		//std::cout << "actualizaNodo444: "<< objEsc->getHijo(0)->getNombre()<<std::endl;
+			//	std::cout << "actualizaNodoMAT: "<< objEsc->getHijo(0)->materialName<<std::endl;
+
+
+		
+
+
+
+}
+
+
+void VistaAjedrez::createScene()
+{
+
+
+			std::cout << "createScene VistaAjedrez "<<std::endl;
+			BaseVistas::createScene();
+						std::cout << "2222222 createScene VistaAjedrez"<<std::endl;
+
+				Escena::createScene();
+
+}
+
+
 //-------------------------------------------------------------------------------------
-bool VistaAjedrez::keyPressed( const OIS::KeyEvent &arg )
+bool VistaAjedrez::keyPressed(const OIS::KeyEvent &arg)
 {    
     
-    BaseVistas::keyPressed(arg);
+   // BaseVistas::keyPressed(arg);
     
     if (arg.key == OIS::KC_A || arg.key == OIS::KC_LEFT)
     {
-        escenaAjedrez->setCamaraIzquierda();
-        //  escenaAjedrez->mueveCamaraIzquierda();
+        setCamaraIzquierda();
+        //  Escena->mueveCamaraIzquierda();
         //   mCamera->moveRelative(Ogre::Vector3(-1,0,0));//yaw(Ogre::Degree(-1.25f));
     }else if (arg.key == OIS::KC_D || arg.key == OIS::KC_RIGHT)
     {
-        escenaAjedrez->setCamaraDerecha();
+        setCamaraDerecha();
 
-        //  escenaAjedrez->mueveCamaraDerecha();       
+        //  Escena->mueveCamaraDerecha();       
         // mCamera->moveRelative(Ogre::Vector3(1,0,0));
         // mCamera->pitch(Ogre::Degree(1.025f));
     }else if (arg.key == OIS::KC_C)
     {
-        if (escenaAjedrez->getModoCamara())
-            escenaAjedrez->setModoCamara(false);
+        if (getModoCamara())
+            setModoCamara(false);
         else
-            escenaAjedrez->setModoCamara(true);
+            setModoCamara(true);
         
     }else if (arg.key == OIS::KC_P)
     {
@@ -65,32 +124,33 @@ bool VistaAjedrez::keyPressed( const OIS::KeyEvent &arg )
 
 bool VistaAjedrez::keyReleased( const OIS::KeyEvent &arg )
 { 
-    BaseVistas::keyReleased(arg);
-    escenaAjedrez->noMueveCamara();
+    //BaseVistas::keyReleased(arg);
+    noMueveCamara();
     return true;
 }
 
 bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
 {  
+
     BaseVistas::mouseMoved(arg);
     
-    CEGUI::Vector2<float> mCursorPosition=sys->getDefaultGUIContext().getMouseCursor().getPosition();
+   // CEGUI::Vector2<float> mCursorPosition=sys->getDefaultGUIContext().getMouseCursor().getPosition();
 //	sys->getDefaultGUIContext().getMouseCursor().get
    
-    if (escenaAjedrez->getModoCamara())   // yaw around the target, and pitch locally
+    if (getModoCamara())   // yaw around the target, and pitch locally
     {
-        escenaAjedrez->rotacionCamara(Ogre::Degree(arg.state.X.rel/6));
+        rotacionCamara(Ogre::Degree(arg.state.X.rel/6));
     }
     else if (arg.state.Z.rel != 0)  // move the camera toward or away from the target
     {
-        escenaAjedrez->DistanciaCamara(arg.state.Z.rel);
+        DistanciaCamara(arg.state.Z.rel);
     }
     else{
 
-        const std::string casilla = escenaAjedrez->encuentraCasillaSobrevolada(mCursorPosition);
+    //    const std::string casilla = encuentraCasillaSobrevolada(mCursorPosition);
 
-        if (casilla != "")
-        modeloVista->JugadorActivo->casillaSobrevolada(casilla);
+     //   if (casilla != "")
+      //  modeloVista->JugadorActivo->casillaSobrevolada(casilla);
 
 
     }
@@ -98,17 +158,19 @@ bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
     return true;
 }
 
-bool VistaAjedrez::frameRenderingQueued(const Ogre::FrameEvent& evt)
-{
-    if (!BaseVistas::frameRenderingQueued(evt)) return false;
-    else
-    {
-        Tablero* tablero = escenaAjedrez->getTablero();
+//void VistaAjedrez::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& ROCKET_UNUSED(skipThisInvocation))
+//{
+	//	std::cout << "renderQueueStarted EN VISTA AJEDREZ"<<std::endl;
 
-        if(escenaAjedrez->getCamaraIzquierda())
+    //if (!BaseVistas::renderQueueStarted(queueGroupId, invocation, true)) return false;
+    //else
+    //{
+   /*     Tablero* tablero = getTablero();
+
+        if(getCamaraIzquierda())
             tablero->rotacionCamara = Ogre::Degree(18 * evt.timeSinceLastFrame);
 
-        else if (escenaAjedrez->getCamaraDerecha())
+        else if (getCamaraDerecha())
             tablero->rotacionCamara = Ogre::Degree(18 * -evt.timeSinceLastFrame);
 
         if(tablero->rotacionCamara != Ogre::Degree(0))
@@ -118,47 +180,68 @@ bool VistaAjedrez::frameRenderingQueued(const Ogre::FrameEvent& evt)
             //Rota la camara
             if (rot > tablero->rotacionCamara)
             {
-                escenaAjedrez->rotacionCamara(tablero->rotacionCamara);
+                rotacionCamara(tablero->rotacionCamara);
                 tablero->rotacionCamara = Ogre::Real(0.0f);
             }
             else
             {
-                escenaAjedrez->rotacionCamara(rot);
+                rotacionCamara(rot);
                 tablero->rotacionCamara = tablero->rotacionCamara - rot;
             }
-        }
-    }
-    return true;
-}
+      }
+	    */
+    //}
+    //return true;
+//}
 
 bool VistaAjedrez::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {  
-    BaseVistas::mousePressed(arg, id);
+    //BaseVistas::mousePressed(arg, id);
     
-    CEGUI::Vector2<float> mCursorPosition=sys->getDefaultGUIContext().getMouseCursor().getPosition();
-    //int posx = arg.state.X.abs;   // Posicion del puntero
-    //int posy = arg.state.Y.abs;   //  en pixeles.
+//    CEGUI::Vector2<float> mCursorPosition=sys->getDefaultGUIContext().getMouseCursor().getPosition();
+    int posx = arg.state.X.abs;   // Posicion del puntero
+    int posy = arg.state.Y.abs;   //  en pixeles.
     if (id == OIS::MB_Left)
     {  // Boton izquierdo o derecho ------------- 
         if (modeloVista->jugadaElegida())
             modeloVista->aplicaCambio();
 
-       else modeloVista->JugadorActivo->botonIzquierdo(mCursorPosition);
+       else 
+		   {
+			   	std::cout << "pulsa1"<<std::endl;
+
+				   //ObjetoOgre* tableroOgre = tablero
+				   std::string nombreCasilla = encuentraCasillaSobrevolada(posx, posy);
+				   			   	std::cout << "pulsa2: "<<  nombreCasilla <<std::endl;
+
+				   modeloVista->procesaNodoPulsado(nombreCasilla);
+			       			   	std::cout << "pulsa3"<<std::endl;
+
+				   //HAY QUE ACTUALIZAR EL ESTADO DE LA VISTA DEL TABLERO
+				//   tablero->getHijo(nombreCasilla);
+
+								ObjetoOgre* casilla = tablero->getHijo(nombreCasilla);
+											       			   	std::cout << "pulsa4"<<std::endl;
+
+				   actualizaNodo(casilla);
+				   			   	std::cout << "pulsaend"<<std::endl;
+
+		}
 	}
     
     else if (id == OIS::MB_Middle)
     {
-        escenaAjedrez->setModoCamara(true);
+        setModoCamara(true);
     }
     return true;
 }
 
 bool VistaAjedrez::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {   
-    BaseVistas::mouseReleased(arg, id);
+   // BaseVistas::mouseReleased(arg, id);
     bool mbMiddle= (id == OIS::MB_Middle);
     
-    if(mbMiddle) escenaAjedrez->setModoCamara(false);
+    if(mbMiddle) setModoCamara(false);
     
     return true;
 }

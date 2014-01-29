@@ -2,8 +2,8 @@
 
 
 
-FichaPeon::FichaPeon(std::string nombre) :
-    Ficha("P_"+nombre, 1)
+FichaPeon::FichaPeon(std::string nombre, std::string materialName) :
+    Ficha(std::string("P_").append(nombre), 1, "Peon", materialName)
 
 
 

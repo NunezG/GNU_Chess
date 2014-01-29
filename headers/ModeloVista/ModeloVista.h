@@ -3,7 +3,8 @@
 
 #include "JugadorArtificial.h"
 #include "JugadorHumano.h"
-
+#include "EscenaAjedrez.h"
+//#include "Casilla.h"
 
 class  ModeloVista
 {
@@ -19,8 +20,11 @@ public:
     void generaJugadores();
     void creaEscenaYModelo();
 
+	    ObjetoEscena* getScene();
+
+
     Jugador* JugadorActivo;
-    EscenaAjedrez* escena;
+    EscenaAjedrez* escenaMV;
     Modelo* modelo;
     std::string resolucion;
 	bool pantallaCompleta;
@@ -31,6 +35,14 @@ public:
 		std::string nombres[2];
 		bool jugadaElegida();
 
+		    bool getTurnoNegras();
+
+ void actualizaTablero();
+
+
+	  	void procesaNodoPulsado(std::string nombreNodo);
+
+
 private:   
     void traduceTablero();
   //  virtual bool aplicaSeleccion();
@@ -40,6 +52,12 @@ private:
     bool mShutDown;
     int numPantalla;
     bool reiniciar;
+		std::string posInicial;
+
+
+
+    
+   // bool turnoNegras;
 };
 
 #endif

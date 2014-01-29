@@ -12,6 +12,7 @@ public:
     ~Modelo(void);
     //Singleton
     static Modelo* getSingletonPtr();
+			  		std::string posInicial;
 
     void mueveTablero();
 

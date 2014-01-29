@@ -15,7 +15,7 @@ public:
 bool iniciaTurno();
 
 private:
-    bool botonIzquierdo(CEGUI::Vector2<float> pos);
+    bool botonIzquierdo(ObjetoEscena* obj);
     bool mueveRaton(std::string casilla);
     bool esHumano();
 };

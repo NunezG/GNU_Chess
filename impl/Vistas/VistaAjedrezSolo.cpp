@@ -1,8 +1,8 @@
 #include "../../headers/Vistas/VistaAjedrezSolo.h"
 
 //-------------------------------------------------------------------------------------
-VistaAjedrezSolo::VistaAjedrezSolo(ModeloVista* modeloV)
-    : VistaAjedrez(modeloV)
+VistaAjedrezSolo::VistaAjedrezSolo(ModeloVista* modeloV, Ogre::RenderWindow* mWindow)
+    : VistaAjedrez(modeloV, mWindow)
 
 {
 }
@@ -59,9 +59,9 @@ bool VistaAjedrezSolo::mouseReleased( const OIS::MouseEvent &arg,OIS::MouseButto
 }
 
 
-bool VistaAjedrezSolo::frameRenderingQueued(const Ogre::FrameEvent& evt)
-{
-   return VistaAjedrez::frameRenderingQueued(evt);
+//bool VistaAjedrezSolo::frameRenderingQueued(const Ogre::FrameEvent& evt)
+//{
+  // return VistaAjedrez::frameRenderingQueued(evt);
 
   /*  if (!BaseVistas::frameRenderingQueued(evt)) return false;
     else if(escenaAjedrez->tablero->rotacionCamara != Ogre::Degree(0))
@@ -70,7 +70,7 @@ bool VistaAjedrezSolo::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     }*/
 
-}
+//}
 
 //-------------------------------------------------------------------------------------
 //bool VistaAjedrezSolo::frameRenderingQueued(float frecuencia)

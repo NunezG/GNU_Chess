@@ -8,7 +8,7 @@ class FichaTorre : public Ficha
 public:
 
     ~FichaTorre(void);
-    FichaTorre(std::string nombre);
+    FichaTorre(std::string nombre, std::string materialName);
 
 
 

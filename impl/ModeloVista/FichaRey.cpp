@@ -2,8 +2,8 @@
 
 
 
-FichaRey::FichaRey(std::string nombre) :
-    Ficha("R_"+nombre, 6)
+FichaRey::FichaRey(std::string nombre, std::string materialName) :
+    Ficha(std::string("R_").append(nombre), 6, "Rey", materialName)
 
 
 

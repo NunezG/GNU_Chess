@@ -8,6 +8,8 @@
 #include "../Modelo/Modelo.h"
 #include "../Modelo/Autorizaciones.h"
 #include "EscenaAjedrez.h"
+//#include ".h"
+
 
 class Jugador
 {
@@ -16,7 +18,7 @@ public:
     virtual bool casillaSobrevolada(const std::string nombreCasilla);
     virtual bool esHumano() = 0;
   //  bool jugadorNegras;
-    virtual bool botonIzquierdo(CEGUI::Vector2<float> pos) = 0;
+    virtual bool botonIzquierdo(ObjetoEscena* obj) = 0;
 		int jaqueMate();
 	virtual bool aplicaSeleccion();
 

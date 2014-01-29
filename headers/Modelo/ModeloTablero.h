@@ -44,7 +44,7 @@ enum tipoFicha
 struct ModeloTablero
 {   
     // StringClass(char *ptr);
-    ModeloTablero();
+    ModeloTablero(std::string posicion);
     ~ModeloTablero();
 
     //constructor de copia
@@ -53,7 +53,7 @@ struct ModeloTablero
 
    // std::vector<ModeloTablero*> vectorMov;
     void cambiaTurno();
-
+	void generaTablero();
     //* movIniciales;
 
     // unsigned char* test[2];
@@ -73,6 +73,7 @@ struct ModeloTablero
     unsigned char alPaso;
     bool turnoN;
     bool nodoInicial;
+	
 
     // Ficha* fichasNegras[16];
     // Ficha* fichasBlancas[16];

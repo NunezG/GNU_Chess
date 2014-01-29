@@ -1,9 +1,9 @@
 #include "../../headers/ModeloVista/Ficha.h"
-Ficha::Ficha(std::string nombre, int tipo) :
-    esNegra(0),
+Ficha::Ficha(std::string nombre, int mask, std::string meshName, std::string materialName) : ObjetoEscena(nombre, mask, meshName, materialName)
+    , esNegra(0),
     //muerta(0),
-    tipo_Ficha(tipo),
-    ObjetoOgre(nombre)
+    tipo_Ficha(mask),
+	seleccionada(0)
    // salto(false)
     // ,casilla(0)
 {
@@ -13,41 +13,64 @@ Ficha::~Ficha()
 {
 }
 
-Ficha::Ficha( const Ficha& fichaOriginal, std::string nombre, int tipo ):
-    esNegra(fichaOriginal.esNegra),
+Ficha::Ficha( const Ficha& fichaOriginal, std::string nombre, int tipo ): ObjetoEscena(fichaOriginal, nombre, tipo)
+    , esNegra(fichaOriginal.esNegra),
    // muerta(0),
     tipo_Ficha(tipo),
-    ObjetoOgre(nombre)
+	seleccionada(0)
+   // ObjetoOgre(nombre)
    // salto(false)
   //  tipo_Ficha = fichaOriginal
 {
 }
 
-void Ficha::creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask)
+/*void Ficha::creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask)
 {
     if (mask == NEGRAS) esNegra = true;
     else if (mask == BLANCAS )esNegra = false;
 
    ObjetoOgre::creaModelo3D(sceneMgr, nombreMalla, mask);
+}*/
+
+
+std::string Ficha::getNombre()
+{
+    return nombreObjeto;
 }
 
 void Ficha::apaga()
 {
-   // getNodoOgre()->showBoundingBox(false);
-    if (!esNegra)
+	seleccionada = false;
+
+							   	std::cout << "APAGA EN ESCENA"<<std::endl;
+
+   // getNodoOgre()->showBoundingBox(true);
+ 
+    if (esNegra)
     {
-        cambiaMaterial("MaterialFichaBlanca");
+		materialName = ("MaterialFichaNegra");
+       // cambiaMaterial("MaterialFichaNegraIluminada");
     }
-    else cambiaMaterial("MaterialFichaNegra");
+    else //cambiaMaterial("MaterialFichaBlancaIluminada"); 
+		materialName = ("MaterialFichaBlanca");
+
+	
 }
 
 void Ficha::ilumina()
 {
-   // getNodoOgre()->showBoundingBox(true);
+		seleccionada = true;
 
+							   	std::cout << "ILUMINAFICHA EN ESCENA"<<std::endl;
+
+   // getNodoOgre()->showBoundingBox(true);
+ 
     if (esNegra)
     {
-        cambiaMaterial("MaterialFichaNegraIluminada");
+		materialName = ("MaterialFichaNegraIluminada");
+       // cambiaMaterial("MaterialFichaNegraIluminada");
     }
-    else cambiaMaterial("MaterialFichaBlancaIluminada");
+    else //cambiaMaterial("MaterialFichaBlancaIluminada"); 
+		materialName = ("MaterialFichaBlancaIluminada");
+	
 }

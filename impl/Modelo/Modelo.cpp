@@ -6,10 +6,11 @@ Modelo::Modelo():
   //, nombreNegras("Jugador 2")
   //,  jugadores(NULL)
      dificultad(3)
+	   , posInicial("bcdefdcbaaaaaaaa00000000000000000000000000000000zzzzzzzzyxwvuwxy")
 
 {   
     //mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "MIMANAGERDEESCENA");
-    tableroModelo = new ModeloTablero();
+    tableroModelo = new ModeloTablero(posInicial);
     jugadaElegida[0] = 0;
     jugadaElegida[1] = 0;
 }

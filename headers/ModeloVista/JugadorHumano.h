@@ -15,7 +15,7 @@ private:
     bool esHumano();
    bool casillaSobrevolada(const std::string nombreCasilla);
 
-   bool botonIzquierdo(CEGUI::Vector2<float> pos);
+  bool botonIzquierdo(ObjetoEscena* obj);
    int jaqueMate();
 
 

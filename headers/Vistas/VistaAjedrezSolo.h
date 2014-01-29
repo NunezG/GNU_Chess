@@ -6,7 +6,7 @@
 class VistaAjedrezSolo : public VistaAjedrez
 {
 public:
-    VistaAjedrezSolo(ModeloVista* modeloV);
+    VistaAjedrezSolo(ModeloVista* modeloV, Ogre::RenderWindow* mWindow);
     ~VistaAjedrezSolo(void);
 
 
@@ -24,7 +24,7 @@ private:
     bool mousePressed( const OIS::MouseEvent &arg,OIS::MouseButtonID id );
     bool mouseReleased( const OIS::MouseEvent &arg,OIS::MouseButtonID id );
 
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    //bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
 };
 

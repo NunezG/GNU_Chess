@@ -9,7 +9,7 @@ class FichaAlfil : public Ficha
 public:
 
     ~FichaAlfil(void);
-    FichaAlfil(std::string nombre);
+    FichaAlfil(std::string nombre, std::string materialName);
 
 
 

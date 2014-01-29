@@ -2,8 +2,8 @@
 
 
 
-FichaTorre::FichaTorre( std::string nombre) :
-    Ficha("T_"+nombre, 4)
+FichaTorre::FichaTorre(std::string nombre, std::string materialName) :
+    Ficha(std::string("T_").append(nombre), 4, "Torre", materialName)
 
 
 

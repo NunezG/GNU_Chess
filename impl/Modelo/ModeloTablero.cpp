@@ -1,6 +1,6 @@
 #include "../../headers/Modelo/ModeloTablero.h"
 
-ModeloTablero::ModeloTablero() :
+ModeloTablero::ModeloTablero(std::string posicion) :
     //numeroHijos(0),
     //Score(0),
     //fichaMovida(""),
@@ -14,9 +14,87 @@ ModeloTablero::ModeloTablero() :
     // jugada = new unsigned char[2];
     jugada[0] = 0;
     jugada[1] = 0;
+		 std::string nombreObjeto;
 
+
+int i = 0;
+
+
+    //AÑADE LOS BORDES
+    for (int i = 0; i<12; i++)
+    {
+        for (int y = 0; y<12; y++)
+        {
+            if((i > 9)
+                    || (y > 9)
+                    || (i < 2)
+                    || (y < 2))
+            {
+					    //std::cout << "encuentraalgo "<<std::endl;
+
+                casillasInt[(i*12)+y] = 99;
+
+            }else
+            {
+
+
+			casillasInt[(i*12)+y] =	posicion[((i-2)*8)+y-2];
+
+
+			}
+		}
+	}
+/*
+	for(std::string::iterator it = posicion.begin(); it != posicion.end(); ++it) 
+	{
+  i++;
+			 nombreObjeto = "";
+
+			
+	switch (*it)
+	{	
+	case 'a':
+
+	break;
+	case 'b':
+       	break;
+	case 'c':
+		
+	break;
+	case 'd':
+		
+	break;
+	case 'e':
+		
+	break;
+	case 'f':
+	
+	break;
+	case 'z':
+	
+	break;
+	case 'y':
+		
+	break;
+	case 'x':
+		
+	break;
+	case 'w':
+		
+	break;
+	case 'v':
+		
+	break;
+	case 'u':
+		
+	break;
+	}
 
 }
+*/
+}
+
+
 
 ModeloTablero::ModeloTablero( const ModeloTablero& original, int casInicial, int casFinal):
     //  numeroHijos(0),
@@ -108,6 +186,14 @@ ModeloTablero::~ModeloTablero()
     //jugada = NULL;
 }
 
+
+
+	void ModeloTablero::generaTablero()
+	{
+
+
+
+	}
 
 void ModeloTablero::cambiaTurno()
 {

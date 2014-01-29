@@ -1,4 +1,4 @@
-#include "../../headers/ModeloVista/ObjetoOgre.h"
+#include "../../headers/Vistas/ObjetoOgre.h"
 
 
 ObjetoOgre::ObjetoOgre(std::string nombre) :
@@ -7,6 +7,8 @@ ObjetoOgre::ObjetoOgre(std::string nombre) :
   , entidad(NULL)
 {
     nombreObjeto = nombre;
+								    std::cout << "objetoogre"<<std::endl;
+
 }
 
 ObjetoOgre::~ObjetoOgre()
@@ -29,13 +31,30 @@ ObjetoOgre::~ObjetoOgre()
     }
 }
 
-std::string ObjetoOgre::getNombre()
+
+ObjetoOgre* ObjetoOgre::getHijo(int numero)
 {
-    return nombreObjeto;
+    return vectorHijos.at(numero);
 }
 
+ObjetoOgre* ObjetoOgre::getHijo(std::string posicion)
+{
+    for (int i = 0; i< vectorHijos.size(); i++)
+    {
+        ObjetoOgre* obj = vectorHijos[i];
+        if (std::string(posicion) == std::string(obj->nombreObjeto))
+       {
+           return obj;
+       }
+    }
+    return NULL;
+}
 void ObjetoOgre::cambiaMaterial(std::string material)
 {
+						std::cout << "obj: "<<getNombre()<<std::endl;
+
+					std::cout << "cambiaMaterial aaaa: "<<material<<std::endl;
+
     entidad->setMaterialName(material);
 }
 
@@ -52,6 +71,11 @@ void ObjetoOgre::creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreM
     entidad->setQueryFlags(mask);
 }
 
+std::string ObjetoOgre::getNombre()
+{
+    return nombreObjeto;
+}
+
 void ObjetoOgre::trasladar(int x, int z)
 {
     nodoEscena->translate(x,0,z);
@@ -62,23 +86,6 @@ void ObjetoOgre::rota(int grados)
     nodoEscena->yaw(Ogre::Degree(grados));
 }
 
-ObjetoOgre* ObjetoOgre::getHijo(int numero)
-{
-    return vectorHijos.at(numero);
-}
-
-ObjetoOgre* ObjetoOgre::getHijo(std::string posicion)
-{
-    for (int i = 0; i< vectorHijos.size(); i++)
-    {
-        ObjetoOgre* obj = vectorHijos[i];
-        if (obj->getNombre() == posicion)
-        {
-            return obj;
-        }
-    }
-    return NULL;
-}
 
 void ObjetoOgre::eliminaHijo(int hijo)
 {

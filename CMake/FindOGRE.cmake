@@ -159,10 +159,11 @@ else()
 endif ()
 
 # redo search if any of the environmental hints changed
-set(OGRE_COMPONENTS Paging Terrain Volume Overlay 
-  Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
-  Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
-  RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2)
+set(OGRE_COMPONENTS #Paging Terrain Volume Overlay 
+  Plugin_OctreeSceneManager #Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
+ # Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
+ RenderSystem_GL # RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2
+ )
 set(OGRE_RESET_VARS 
   OGRE_CONFIG_INCLUDE_DIR OGRE_INCLUDE_DIR 
   OGRE_LIBRARY_FWK OGRE_LIBRARY_REL OGRE_LIBRARY_DBG
@@ -402,17 +403,17 @@ macro(ogre_find_component COMPONENT HEADER)
 endmacro()
 
 # look for Paging component
-ogre_find_component(Paging OgrePaging.h)
+#ogre_find_component(Paging OgrePaging.h)
 # look for Terrain component
-ogre_find_component(Terrain OgreTerrain.h)
+#ogre_find_component(Terrain OgreTerrain.h)
 # look for Property component
-ogre_find_component(Property OgreProperty.h)
+#ogre_find_component(Property OgreProperty.h)
 # look for RTShaderSystem component
-ogre_find_component(RTShaderSystem OgreRTShaderSystem.h)
+#ogre_find_component(RTShaderSystem OgreRTShaderSystem.h)
 # look for Volume component
-ogre_find_component(Volume OgreVolumePrerequisites.h)
+#ogre_find_component(Volume OgreVolumePrerequisites.h)
 # look for Overlay component
-ogre_find_component(Overlay OgreOverlaySystem.h)
+#ogre_find_component(Overlay OgreOverlaySystem.h)
 
 #########################################################
 # Find Ogre plugins
@@ -497,18 +498,18 @@ macro(ogre_find_plugin PLUGIN HEADER)
   endif ()
 endmacro(ogre_find_plugin)
 
-ogre_find_plugin(Plugin_PCZSceneManager OgrePCZSceneManager.h PCZ PlugIns/PCZSceneManager/include)
-ogre_find_plugin(Plugin_OctreeZone OgreOctreeZone.h PCZ PlugIns/OctreeZone/include)
-ogre_find_plugin(Plugin_BSPSceneManager OgreBspSceneManager.h PlugIns/BSPSceneManager/include)
-ogre_find_plugin(Plugin_CgProgramManager OgreCgProgram.h PlugIns/CgProgramManager/include)
+#ogre_find_plugin(Plugin_PCZSceneManager OgrePCZSceneManager.h PCZ PlugIns/PCZSceneManager/include)
+#ogre_find_plugin(Plugin_OctreeZone OgreOctreeZone.h PCZ PlugIns/OctreeZone/include)
+#ogre_find_plugin(Plugin_BSPSceneManager OgreBspSceneManager.h PlugIns/BSPSceneManager/include)
+#ogre_find_plugin(Plugin_CgProgramManager OgreCgProgram.h PlugIns/CgProgramManager/include)
 ogre_find_plugin(Plugin_OctreeSceneManager OgreOctreeSceneManager.h PlugIns/OctreeSceneManager/include)
-ogre_find_plugin(Plugin_ParticleFX OgreParticleFXPrerequisites.h PlugIns/ParticleFX/include)
+#ogre_find_plugin(Plugin_ParticleFX OgreParticleFXPrerequisites.h PlugIns/ParticleFX/include)
 ogre_find_plugin(RenderSystem_GL OgreGLRenderSystem.h RenderSystems/GL/include)
-ogre_find_plugin(RenderSystem_GL3Plus OgreGL3PlusRenderSystem.h RenderSystems/GL3Plus/include)
-ogre_find_plugin(RenderSystem_GLES OgreGLESRenderSystem.h RenderSystems/GLES/include)
-ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2/include)
-ogre_find_plugin(RenderSystem_Direct3D9 OgreD3D9RenderSystem.h RenderSystems/Direct3D9/include)
-ogre_find_plugin(RenderSystem_Direct3D11 OgreD3D11RenderSystem.h RenderSystems/Direct3D11/include)
+#ogre_find_plugin(RenderSystem_GL3Plus OgreGL3PlusRenderSystem.h RenderSystems/GL3Plus/include)
+#ogre_find_plugin(RenderSystem_GLES OgreGLESRenderSystem.h RenderSystems/GLES/include)
+#ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2/include)
+#ogre_find_plugin(RenderSystem_Direct3D9 OgreD3D9RenderSystem.h RenderSystems/Direct3D9/include)
+#ogre_find_plugin(RenderSystem_Direct3D11 OgreD3D11RenderSystem.h RenderSystems/Direct3D11/include)
         
 if (OGRE_STATIC)
   # check if dependencies for plugins are met

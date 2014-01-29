@@ -15,27 +15,32 @@ public:
     ~ObjetoOgre(void);
 
     Ogre::SceneNode* getNodoOgre();
-    void eliminaHijo(int hijo);
+    	  std::string getNombre();
+
     void creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask);
+	void eliminaHijo(int hijo);
     void agregaHijo(ObjetoOgre* objetoHijo);
     bool sinHijos();
     void cambiaMaterial(std::string material);
     void rota(int grados);
     void trasladar(int x, int z);
-    ObjetoOgre* getHijo(int numero);
+        ObjetoOgre(std::string nombre);
+		
+	ObjetoOgre* getHijo(int numero);
     ObjetoOgre* getHijo(std::string posicion);
-    std::string getNombre();
+
 
 protected:
-    ObjetoOgre(std::string nombre);
 
 private:
     Ogre::uint32 tipoObjeto;
-    std::vector<ObjetoOgre*> vectorHijos;
-    std::string nombreObjeto;
+
     Ogre::Entity* entidad;
     Ogre::SceneNode* nodoEscena;
     Ogre::SceneManager* mSceneMgr;
+			std::vector<ObjetoOgre*> vectorHijos;
+
+		std::string nombreObjeto;
 
 };
 

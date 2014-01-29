@@ -111,8 +111,8 @@ bool Jugador::aplicaSeleccion()
      modelo->mueveTablero();
 
 	int resultado = jaqueMate();
-
-    escena->getTablero()->actualizaTablero(escena->mSceneMgr);
+	
+   // escena->actualizaTablero();
 
     //PROMOCIONA PEÓN
     //  escena->getTablero()->promocionaPeon(escena->mSceneMgr);

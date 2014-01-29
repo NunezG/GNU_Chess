@@ -1,25 +1,24 @@
 #ifndef __EscenaAjedrez_
 #define __EscenaAjedrez_
 
-#include <OgreCamera.h>
-#include <OgreLogManager.h>
-#include <OgreViewport.h>
-#include <OgreRenderWindow.h>
-#include <OgreRoot.h>
-
+//#include <OgreCamera.h>
+//#include <OgreLogManager.h>
+//#include <OgreViewport.h>
+//#include <OgreRenderWindow.h>
+//#include <OgreRoot.h>
+/*
 #include <CEGUI/Vector.h>
 #include <CEGUI/WindowManager.h>
 #include <CEGUI/Window.h>
 #include <CEGUI/System.h>
-
-#include "Tablero.h"
+*/
+#include "TableroMV.h"
 
 class  EscenaAjedrez
 {
 public:
     EscenaAjedrez();
     ~EscenaAjedrez(void);
-    Tablero* getTablero();
     void setModoCamara(bool modo);
     bool getModoCamara();
     void noMueveCamara();
@@ -28,31 +27,30 @@ public:
     void setCamaraIzquierda();
     void setCamaraDerecha();
 
-    std::string encuentraCasillaSobrevolada(CEGUI::Vector2<float> mCursorPosition);
 
-    void DistanciaCamara(int distanciaRelativa);
-    void rotacionCamara(Ogre::Degree angulo);
-    void createScene();
+
+	void createSceneMV();
     void createCamera(void);
-    void createViewports(Ogre::RenderWindow* window);
 
     void apagaVentanaEmergente();
     void muestraVentanaEmergente(std::string nombreLayout);
 
-    Ogre::SceneManager* mSceneMgr;
     bool modoVS;
 		 std::string nombreActivo;
+		 		   int rotaCamara;
+
+		  
+
+	    TableroMV* getTablero();
 
 private:
-    CEGUI::Window *ventanaEmergente;
-    Ogre::RenderWindow* mWindow;
+  //  CEGUI::Window *ventanaEmergente;
     bool camaraIzquierda;
     bool camaraDerecha;
     bool modoCamara;
-    Ogre::SceneNode* mTarget;
-    Ogre::Camera* mCamera;
-    Tablero* tablero;
-     Ogre::RaySceneQuery *mRaySceneQuery;
+    //ObjetoEscena* tablero;
+	 	TableroMV* tablero;
+
 };
 
 #endif

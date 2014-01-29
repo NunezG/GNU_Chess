@@ -9,29 +9,29 @@ JugadorHumano::~JugadorHumano()
 { 
 }
 
-bool JugadorHumano::botonIzquierdo(CEGUI::Vector2<float> pos)
+bool JugadorHumano::botonIzquierdo(ObjetoEscena* obj)
 {
 
-    Tablero* tablero = escena->getTablero();
-
- //   if (tablero->getCasillaSeleccionada() != NULL)
-   // {  // Si habia alguno seleccionado...
-        //Ficha* ficha = static_cast<Ficha*>(tablero->getCasillaSeleccionada()->getHijo(0));
-        // ficha->getNodoOgre()->showBoundingBox(false);
-   //     tablero->setCasillaSeleccionada(-1);
- //   }
-
-    Casilla* casilla = static_cast<Casilla*>(tablero->getHijo(escena->encuentraCasillaSobrevolada(pos)));
-
-    if (casilla != NULL && !casilla->sinHijos())
+					std::cout << "botonIzquierdo de jugadorhumano "<<std::endl;
+/*
+    if (escena->getTablero()->getCasillaSeleccionada() != NULL)
+    {  // Si habia alguno seleccionado...
+        Ficha* ficha = static_cast<Ficha*>(escena->getTablero()->getCasillaSeleccionada()->getHijo(0));
+       //ficha->getNodoOgre()->showBoundingBox(false);
+        escena->getTablero()->setCasillaSeleccionada(-1);
+    }
+	
+	*/
+    if (obj != NULL && !obj->sinHijos())
     {
-        Ficha* ficha = static_cast<Ficha*>(casilla->getHijo(0));
-        if ((tablero->getTurnoNegras()
-             && ficha->esNegra)
-                || (!tablero->getTurnoNegras()
-                    && !ficha->esNegra))
+
+        Ficha* ficha = static_cast<Ficha*>(obj->getHijo(0));
+        if ((modelo->tableroModelo->turnoN
+             && ficha->mask == NEGRAS)
+                || (!modelo->tableroModelo->turnoN
+                    && ficha->mask == BLANCAS))
         {
-            tablero->setCasillaSeleccionada(casilla);
+            escena->getTablero()->setCasillaSeleccionada(static_cast<Casilla*>(obj));
 
             // ficha->getNodoOgre()->showBoundingBox(true);
             return true;
