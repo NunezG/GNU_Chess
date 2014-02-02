@@ -14,10 +14,13 @@ EscenaAjedrez::EscenaAjedrez() :
  // , columnas("ABCDEFGH")
  // , ventanaEmergente(0)
   , modoVS(0)
+ // , listaNodos(0)
 {
 		std::cout << "INCIA ESCNAAJEDREZ "<<std::endl;
 
-   
+   			 tablero = new TableroMV();
+
+
 
 }
 
@@ -38,7 +41,6 @@ void EscenaAjedrez::createSceneMV()
 
 							//std::cout << "creaT 2"<< tablero->getNombre() <<std::endl;
 
-						 tablero = new TableroMV("tablero", 0);
 
    // tablero->creaTableroYCasillas(mSceneMgr);
 						    std::cout << "creaTableroYCasillas "<<std::endl;

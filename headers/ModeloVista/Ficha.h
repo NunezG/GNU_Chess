@@ -1,6 +1,8 @@
 #ifndef __Ficha_
 #define __Ficha_
 #include <iostream>
+#include <string>
+#include <stdlib.h>
 //#include "ObjetoOgre.h"
 #include "ObjetoEscena.h"
 
@@ -19,7 +21,7 @@ struct ListaPosiciones{
 };
 */
 
-class Ficha : public ObjetoEscena
+class Ficha //: public ObjetoEscena
 {
 public:
 
@@ -32,8 +34,8 @@ public:
 	bool seleccionada;
     void apaga();
     void ilumina();
-	    std::string getNombre();
-    Ficha(std::string nombre, int mask, std::string meshName, std::string materialName);
+	   // std::string getNombre();
+    Ficha(std::string nombre, int tipo, std::string meshName, std::string materialName);
 
 protected:
 private: 
@@ -49,7 +51,7 @@ private:
    //  Stack<byte> ValidMoves; // lista de movimientos válidos
    // bool muerta;
     //int casilla[2];
-	    std::string nombreObjeto;
+	   // std::string nombreObjeto;
 
 
     //ObjetoOgre* objetoOgreAsociado;

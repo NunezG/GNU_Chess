@@ -6,11 +6,6 @@
 #include <Rocket/Core/SystemInterface.h>
 #include <Ogre.h>
 
-/**
-	A sample system interface for Rocket into Ogre3D.
-
-	@author Peter Curry
- */
 
 class SystemInterfaceOgre3D : public Rocket::Core::SystemInterface
 {

@@ -29,7 +29,7 @@ protected:
     Jugador(EscenaAjedrez* miEscena, Modelo* modelo, std::string nombreJugador);
 
     Modelo* modelo;
-   EscenaAjedrez* escena;
+   EscenaAjedrez* escenaMV;
 private:
    //bool aplicaCambio();
     std::string getNombre();

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "ObjetoEscena.h"
+//#include "ObjetoEscena.h"
 
 
 struct posicion{
@@ -14,7 +14,7 @@ struct posicion{
 };
 
 
-class Casilla : public ObjetoEscena
+class Casilla //: public ObjetoEscena
 {
 public:
     ~Casilla(void);
@@ -27,12 +27,12 @@ public:
 
     bool esNegra;
 
-    std::string getNombre();
+   // std::string getNombre();
 private:
 
     posicion posCasilla;
 	
-    std::string nombreObjeto;
+   // std::string nombreObjeto;
 };
 
 #endif

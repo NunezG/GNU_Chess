@@ -1,13 +1,29 @@
 #include "../../headers/Vistas/RocketListener.h"
+
+
+
+
+//#include "EventManager.h"
+
+#include <Rocket/Core/Context.h>
+#include <Rocket/Core/ElementDocument.h>
+#include <Rocket/Core/ElementUtilities.h>
+//#include <Shell.h>
+//#include "EventHandler.h"
+//#include "GameDetails.h"
+#include <map>
 //#include <Rocket/Core/Context.h>
 
-//#include "RocketApplication.h"
 
-RocketListener::RocketListener()  
+RocketListener::RocketListener(ModeloVista* modeloV):  BaseVistas(modeloV)   
+	//,vista(0)
+
 {
+
+	modeloVista= modeloV;
+											std::cout << "rocketl OGRE"<<std::endl;
+
 	
-		ogre_system = NULL;
-		ogre_renderer = NULL;
 
 	// Switch the working directory to Ogre's bin directory.
 //#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -34,11 +50,6 @@ RocketListener::RocketListener()
 	//mWindow = window;
 
 
-		modeloVista = new ModeloVista();
-    //INICIA OGRE
-    mRoot =new Ogre::Root("plugins.cfg");
-	  configuraGraficos("OpenGL Rendering Subsystem");
-    mWindow = mRoot->initialise(true,"3D CHESS");
 	 
     
 	//mInputManager->inpu
@@ -86,34 +97,6 @@ RocketListener::RocketListener()
 
 	*/
 
-	//INICIA ROCKET??
-							std::cout << "INICIA ROCKET"<<std::endl;
-														std::cout << mWindow->getWidth()<<std::endl;
-							std::cout << mWindow->getHeight()<<std::endl;
-
-        //Register as a Window listener
-        Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
-	
-
-			// Rocket initialisation.
-	ogre_renderer = new RenderInterfaceOgre3D(mWindow->getWidth(), mWindow->getHeight());
-	Rocket::Core::SetRenderInterface(ogre_renderer);
-									std::cout << "TRES"<<std::endl;
-
-	ogre_system = new SystemInterfaceOgre3D();
-	Rocket::Core::SetSystemInterface(ogre_system);
-
-
-
-
-
-									std::cout << "Uno"<<std::endl;
-	
-		Rocket::Core::Initialise();
-											std::cout << "UNODOS"<<std::endl;
-
-	Rocket::Controls::Initialise();
-								std::cout << "FIN INICIA ROCKET"<<std::endl;
 
 
 }
@@ -122,7 +105,12 @@ RocketListener::~RocketListener()
 {
 	
    // CEGUI::OgreRenderer::destroySystem();
-    
+    OIS::InputManager::destroyInputSystem(mInputManager);
+        mMouse = 0;
+        mKeyboard = 0;
+        mInputManager = 0;
+
+
     if (mRoot )
     {
 			//Ogre::WindowEventUtilities::addWindowEventListener(mWindow, vista);
@@ -137,12 +125,6 @@ RocketListener::~RocketListener()
         mRoot = NULL;
     }
 
-	
-	delete ogre_system;
-	ogre_system = NULL;
-
-	delete ogre_renderer;
-	ogre_renderer = NULL;
 		Rocket::Core::Shutdown();
 		    delete modeloVista;
 
@@ -152,125 +134,70 @@ RocketListener::~RocketListener()
 
 
 
-
-
-
-bool RocketListener::configuraGraficos(const char *desiredRenderer)
-{
-    //SETUP RESOURCES
-    // Load resource paths from config file
-    Ogre::ConfigFile cf;
-    cf.load("resources.cfg");
-    // Go through all sections & settings in the file
-    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-    Ogre::String secName, typeName, archName;
-    while (seci.hasMoreElements())
-    {
-        secName = seci.peekNextKey();
-        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-        Ogre::ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
-            typeName = i->first;
-            archName = i->second;
-            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-                        archName, typeName, secName);
-        }
-    }
-    
-    //CONFIGUREOPENGL
-    Ogre::RenderSystem *renderSystem;
-    bool ok = false;
-    
-    Ogre::RenderSystemList renderers =
-            Ogre::Root::getSingleton().getAvailableRenderers();
-    
-    // See if the list is empty (no renderers available)
-    if(renderers.empty())
-        return false;
-    
-    for(Ogre::RenderSystemList::iterator it = renderers.begin();
-        it != renderers.end(); it++)
-    {
-        renderSystem = *it;
-        if(strstr(renderSystem->getName().c_str(), desiredRenderer))
-        {
-            ok = true;
-            break;
-        }
-    }
-    if(!ok)
-    {
-        // We still don't have a renderer; pick
-        // up the first one from the list
-        renderSystem = *renderers.begin();
-    }
-    Ogre::Root::getSingleton().setRenderSystem(renderSystem);
-    // Manually set some configuration options (optional)
-    
-    for(Ogre::ConfigOptionMap::iterator it = renderSystem->getConfigOptions().begin();
-        it != renderSystem->getConfigOptions().end(); it++)
-    {
-        std::pair<const std::basic_string<char>,Ogre::ConfigOption> CO = *it;
-    }
-
-	if (modeloVista->pantallaCompleta){
-	renderSystem->setConfigOption("Full Screen", "Yes");
-
-	}else{
-    renderSystem->setConfigOption("Full Screen", "No");
-	}
-
-	renderSystem->setConfigOption("Video Mode", modeloVista->resolucion);
-
-    for(Ogre::ConfigOptionMap::iterator it = renderSystem->getConfigOptions().begin();
-        it != renderSystem->getConfigOptions().end(); it++)
-    {
-        std::pair<const std::basic_string<char>,Ogre::ConfigOption> CO = *it;
-    }
-    
-    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-    return true;
-}
-
-
 void RocketListener::empieza()
 {
     mRoot->startRendering();
+	//mRoot->stop
 }
 
 
-void RocketListener::creaVista()
+
+/*
+// Releases all event handlers registered with the manager.
+void RocketListener::Shutdown()
 {
-	delete vista;
-				std::cout << "creaVista "<<std::endl;
+	for (EventHandlerMap::iterator i = event_handlers.begin(); i != event_handlers.end(); ++i)
+		delete (*i).second;
 
-	
+	event_handlers.clear();
+	event_handler = NULL;
+}*/
+/*
+// Registers a new event handler with the manager.
+void RocketListener::RegisterEventHandler(const Rocket::Core::String& handler_name)
+{
+	// Release any handler bound under the same name.
+	EventHandlerMap::iterator iterator = event_handlers.find(handler_name);
+	if (iterator != event_handlers.end())
+		delete (*iterator).second;
 
-    if (modeloVista->getNumPantalla() == 0)
-	{
-			std::cout << "1 "<<std::endl;
-		vista = new VistaAjedrez(modeloVista, mWindow);
-			    std::cout << "escensa "<<std::endl;
-
-				   vista->createScene();
-
-	}else
-        {
-            if (modeloVista->getNumPantalla() == 1)
-               vista =  new VistaAjedrez(modeloVista, mWindow);
-
-            else if (modeloVista->getNumPantalla() == 2) //EL CONTRUCTOR DE BASEVISTAS CONFIGURA OPENGL, INICIA mWINDOW, INICIA OIS Y CEGUI
-               vista =  new VistaAjedrezSolo(modeloVista, mWindow);
-                   
-        }
-
-
-
-	  //LISTENERS
-        mRoot->addFrameListener(vista);
-
-	 
+	event_handlers[handler_name] = this;
 }
+*/
 
 
+/*
+// Loads a window and binds the event handler for it.
+bool RocketListener::LoadWindow(const Rocket::Core::String& window_name)
+{
+	// Set the event handler for the new screen, if one has been registered.
+	EventHandler* old_event_handler = event_handler;
+	EventHandlerMap::iterator iterator = event_handlers.find(window_name);
+	if (iterator != event_handlers.end())
+		event_handler = (*iterator).second;
+	else
+		event_handler = NULL;
+
+	// Attempt to load the referenced RML document.
+	Rocket::Core::String document_path = Rocket::Core::String("data/") + window_name + Rocket::Core::String(".rml");
+	Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+	if (document == NULL)
+	{
+		event_handler = old_event_handler;
+		return false;
+	}
+
+	// Set the element's title on the title; IDd 'title' in the RML.
+	Rocket::Core::Element* title = document->GetElementById("title");
+	if (title != NULL)
+		title->SetInnerRML(document->GetTitle());
+
+	document->Focus();
+	document->Show();
+
+	// Remove the caller's reference.
+	document->RemoveReference();
+
+	return true;
+}
+*/

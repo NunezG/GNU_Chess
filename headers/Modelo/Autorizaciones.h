@@ -9,7 +9,7 @@ public:
 	    static bool pruebaJaqueMate(ModeloTablero* miTablero);
 
 
-	  static int autorizaCasilla(tipoFicha tipo);
+	  static int autorizaCasilla();
 
     static int autorizaRey(ModeloTablero* miTablero);
     static int autorizaReina(ModeloTablero* miTablero);

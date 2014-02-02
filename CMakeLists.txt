@@ -214,6 +214,8 @@ set(HDRS
 		./headers/Vistas/Escena.h
 		        ./headers/Vistas/ObjetoOgre.h
 			#	       ./headers/Vistas/Tablero.h
+			./headers/Vistas/BaseListeners.h
+
 
 
         # headers de modelo
@@ -229,14 +231,14 @@ set(HDRS
        # ./headers/Modelo/ModeloMenu.h
       #  ./headers/Modelo/ModuloIA.h
 
-       ./headers/ModeloVista/FichaRey.h
-       ./headers/ModeloVista/FichaReina.h
-       ./headers/ModeloVista/FichaPeon.h
-       ./headers/ModeloVista/FichaAlfil.h
-       ./headers/ModeloVista/FichaCaballo.h
-       ./headers/ModeloVista/FichaTorre.h
-       ./headers/ModeloVista/Ficha.h
-        ./headers/ModeloVista/Casilla.h
+        #./headers/ModeloVista/FichaRey.h
+        #./headers/ModeloVista/FichaReina.h
+        #./headers/ModeloVista/FichaPeon.h
+        #./headers/ModeloVista/FichaAlfil.h
+        #./headers/ModeloVista/FichaCaballo.h
+        #./headers/ModeloVista/FichaTorre.h
+        #./headers/ModeloVista/Ficha.h
+        # ./headers/ModeloVista/Casilla.h
         ./headers/ModeloVista/EscenaAjedrez.h
         ./headers/ModeloVista/ModeloVista.h
         ./headers/ModeloVista/Jugador.h
@@ -267,8 +269,10 @@ set(SRCS
 		#./impl/Vistas/RocketApplication.cpp
 		./impl/Vistas/SystemInterfaceOgre3D.cpp
 	 		./impl/Vistas/Escena.cpp
-			        ./impl/Vistas/ObjetoOgre.cpp
-					    #   ./impl/Vistas/Tablero.cpp
+			 ./impl/Vistas/ObjetoOgre.cpp
+			 #   ./impl/Vistas/Tablero.cpp
+		
+			./impl/Vistas/BaseListeners.cpp
 
 
        # ./impl/CreacionJuego.cpp
@@ -287,14 +291,14 @@ set(SRCS
       #    ./impl/Modelo/ModuloIA.cpp
 
         # MODELOVISTA
-       ./impl/ModeloVista/FichaRey.cpp
-       ./impl/ModeloVista/FichaReina.cpp
-       ./impl/ModeloVista/FichaPeon.cpp
-       ./impl/ModeloVista/FichaAlfil.cpp
-       ./impl/ModeloVista/FichaCaballo.cpp
-       ./impl/ModeloVista/FichaTorre.cpp
-       ./impl/ModeloVista/Ficha.cpp
-       ./impl/ModeloVista/Casilla.cpp
+        #./impl/ModeloVista/FichaRey.cpp
+        #./impl/ModeloVista/FichaReina.cpp
+    #    ./impl/ModeloVista/FichaPeon.cpp
+      #  ./impl/ModeloVista/FichaAlfil.cpp
+    #    ./impl/ModeloVista/FichaCaballo.cpp
+     #   ./impl/ModeloVista/FichaTorre.cpp
+     #   ./impl/ModeloVista/Ficha.cpp
+      #  ./impl/ModeloVista/Casilla.cpp
         ./impl/ModeloVista/EscenaAjedrez.cpp
         ./impl/ModeloVista/ModeloVista.cpp
        ./impl/ModeloVista/Jugador.cpp

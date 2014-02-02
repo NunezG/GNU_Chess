@@ -1,7 +1,7 @@
 #include "../../headers/ModeloVista/ObjetoEscena.h"
 
 
-ObjetoEscena::ObjetoEscena(std::string nombre, int mascara, std::string meshName, std::string material) :
+ObjetoEscena::ObjetoEscena(std::string nombre, int mascara, std::string meshName, std::string materials[2]) :
    // esNegra(0),
     //muerta(0),
   //  tipo_ObjetoEscena(tipo),
@@ -10,10 +10,14 @@ ObjetoEscena::ObjetoEscena(std::string nombre, int mascara, std::string meshName
      nombreMalla(meshName)
 	, nombreObjeto(nombre)
 	, mask(mascara)
-	, materialName(material)
+	
 	, rotate(0)
 {
-	
+											    std::cout << "crea ObjetoEscena"<<std::endl;
+
+   materialNames[0] = materials[0];
+      materialNames[1] = materials[1];
+
 }
 
 ObjetoEscena::~ObjetoEscena()
@@ -57,6 +61,8 @@ void ObjetoEscena::agregaHijo(ObjetoEscena* objetoHijo)
     //if (nodoEscena != NULL) nodoEscena->addChild(objetoHijo->getNodoOgre());
 }
 
+
+
 std::string ObjetoEscena::getNombre()
 {
     return nombreObjeto;
@@ -76,7 +82,7 @@ ObjetoEscena* ObjetoEscena::getHijo(std::string posicion)
         if (posicion.compare(obj->nombreObjeto) == 0)
       {
 		  	std::cout << "ObjetoEscena::getHijo con no mbre: "<<std::endl;
-					  	std::cout <<posicion.c_str()<<std::endl;
+					  	std::cout <<obj->getNombre()<<std::endl;
 
           return obj;
         }
@@ -84,4 +90,16 @@ ObjetoEscena* ObjetoEscena::getHijo(std::string posicion)
 			  	std::cout << "no encuentra hijo con nombre: "<< posicion.c_str()<<std::endl;
 
     return NULL;
+}
+
+
+posicion ObjetoEscena::getPosicion()
+{
+    return posInView;
+}
+
+void ObjetoEscena::setPosicion(int posFila, int posCol)
+{
+    posInView.Fila = posFila;
+    posInView.Columna = posCol;
 }

@@ -49,7 +49,7 @@ private:
     bool camaraDerecha;
     bool modoCamara;
     //ObjetoEscena* tablero;
-	 	TableroMV* tablero;
+	TableroMV* tablero;
 
 };
 

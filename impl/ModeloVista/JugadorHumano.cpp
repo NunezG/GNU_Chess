@@ -2,7 +2,9 @@
 
 JugadorHumano::JugadorHumano(EscenaAjedrez* miEscena, Modelo* modelo, std::string nombreJugador) :
     Jugador(miEscena, modelo, nombreJugador)
-{   
+{ 
+		    				    std::cout << "JugadorHumano "<<std::endl;
+
 }
 
 JugadorHumano::~JugadorHumano()
@@ -25,13 +27,13 @@ bool JugadorHumano::botonIzquierdo(ObjetoEscena* obj)
     if (obj != NULL && !obj->sinHijos())
     {
 
-        Ficha* ficha = static_cast<Ficha*>(obj->getHijo(0));
+        ObjetoEscena* ficha = obj->getHijo(0);
         if ((modelo->tableroModelo->turnoN
              && ficha->mask == NEGRAS)
                 || (!modelo->tableroModelo->turnoN
                     && ficha->mask == BLANCAS))
         {
-            escena->getTablero()->setCasillaSeleccionada(static_cast<Casilla*>(obj));
+            escenaMV->getTablero()->setCasillaSeleccionada(obj);
 
             // ficha->getNodoOgre()->showBoundingBox(true);
             return true;
@@ -43,31 +45,53 @@ bool JugadorHumano::botonIzquierdo(ObjetoEscena* obj)
 
 bool JugadorHumano::casillaSobrevolada(const std::string nombreCasilla)
 {
-    if (escena->getTablero()->getCasillaSeleccionada() != NULL && Jugador::casillaSobrevolada(nombreCasilla))
+						std::cout << "casillaSobrevolada "<< nombreCasilla <<std::endl;
+												//std::cout << escena->getTablero()->getCasillaSeleccionada()<<std::endl;
+					//	std::cout << "casillaSobrevolada"<<std::endl;
+
+    if (escenaMV->getTablero()->getCasillaSeleccionada() != NULL && Jugador::casillaSobrevolada(nombreCasilla))
     {
-        Casilla* nodoSeleccionado = escena->getTablero()->getCasillaSeleccionada();
+		std::cout << "casillaSobrevolada innnnnnnnn111"<<escenaMV->getTablero()->getCasillaSeleccionada()->getNombre()   <<std::endl;
+
+        ObjetoEscena* nodoSeleccionado = escenaMV->getTablero()->getCasillaSeleccionada();
 
         // if(diferencia.Fila != 0)   diferencia= diferencia;
         // else diferencia= diferenciaZ;
+				  						std::cout << "cnodoSeleccionado: "<<   nodoSeleccionado->getNombre()  <<std::endl;
 
-        Ficha *mFicha = static_cast<Ficha*>(nodoSeleccionado->getHijo(0));
-        tipoFicha tipo = tipoFicha(mFicha->tipo_Ficha);
+        ObjetoEscena *mFicha = nodoSeleccionado->getHijo(0);
+		std::cout << "mFicha: "<<   mFicha->getNombre()  <<std::endl;
+
+      //  tipoFicha tipo = tipoFicha(mFicha->tipo_Ficha);
 
         //   tableroModelo->casillasInt = tablero->traduceTablero();
-  
-        modelo->tableroModelo->jugada[0] = 24 + (nodoSeleccionado->getPosicion().Fila * 12) + nodoSeleccionado->getPosicion().Columna + 2;
-        modelo->tableroModelo->jugada[1] = 24 + (escena->getTablero()->getCasillaSobrevolada()->getPosicion().Fila * 12) + escena->getTablero()->getCasillaSobrevolada()->getPosicion().Columna + 2;
+		  					//	std::cout << "tipo111: "<< mFicha->tipo_Ficha<<std::endl;
+
+  						//std::cout << "tipo: "<< tipo<<std::endl;
+
+
+
+						  						std::cout << "filasel: "<< nodoSeleccionado->posInView.Fila <<std::endl;
+											     std::cout << "colasel: "<< nodoSeleccionado->posInView.Columna <<std::endl;
+												 std::cout << "filasobre: "<< escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Fila<<std::endl;
+											     std::cout << "colasobre: "<< escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Columna <<std::endl;
+
+
+        modelo->tableroModelo->jugada[0] = 24 + (nodoSeleccionado->posInView.Fila * 12) + nodoSeleccionado->posInView.Columna + 2;
+        modelo->tableroModelo->jugada[1] = 24 + (escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Fila * 12) + escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Columna + 2;
 
         //AUTORIZA
-        int resultado = Autorizaciones::autorizaCasilla(tipo);
+        int resultado = Autorizaciones::autorizaCasilla();
 
         if (resultado == 1)
         {
             modelo->jugadaElegida[0] = modelo->tableroModelo->jugada[0];
             modelo->jugadaElegida[1] = modelo->tableroModelo->jugada[1];
 
+			  						std::cout << "ASILLA AUTORIZADA"<<std::endl;
+
             // CASILLA AUTORIZADA
-            escena->getTablero()->getCasillaSobrevolada()->iluminaCasilla();
+            escenaMV->getTablero()->getCasillaSobrevolada()->cambiaMaterial(1);
             return true;
         }
         else
@@ -82,7 +106,7 @@ bool JugadorHumano::casillaSobrevolada(const std::string nombreCasilla)
             if (resultado == 2)
             {
                 //JAQUE AL SOBREVOLAR CASILLA
-                escena->muestraVentanaEmergente("Jaque");
+                escenaMV->muestraVentanaEmergente("Jaque");
             }
             return false;
         }

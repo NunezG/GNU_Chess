@@ -7,11 +7,13 @@ Jugador::Jugador(EscenaAjedrez* miEscena, Modelo* modelo, std::string nombreJuga
     nombre(nombreJugador),
     // miTablero(0)
     //tableroModelo(modeloTablero)
-    escena(miEscena)
+    escenaMV(miEscena)
   //, tablero(miEscena->tablero)
   , modelo(modelo)
   //esperaEleccion(false)
 {
+			    				    std::cout << "Jugadorrr "<<std::endl;
+
     // tablero = escena->tablero;
 }
 
@@ -21,28 +23,33 @@ Jugador::~Jugador()
 
 bool Jugador::casillaSobrevolada(const std::string nombreCasilla)
 {
-    //  std::cout << "auto1: " << nombreCasilla<< std::endl;
-    Casilla* casillaSobrevolada = static_cast<Casilla*>(escena->getTablero()->getHijo(nombreCasilla));
-    Casilla* casillaSobreAnterior = escena->getTablero()->getCasillaSobrevolada();
-    //   std::cout << "CasillaSobrevolada: "<<   casillaSobrevolada->getNombre()  << std::endl;
+      std::cout << "auto1: " << nombreCasilla<< std::endl;
+	  ObjetoEscena* casillaSobre = escenaMV->getTablero()->objetoPadre->getHijo(nombreCasilla);
+    ObjetoEscena* casillaSobreAnterior =  escenaMV->getTablero()->getCasillaSobrevolada();
+      std::cout << "CasillaSobrevolada: "<<   casillaSobre->getNombre()  << std::endl;
 
     //devulve true si ha cambiado de casilla
-    if (!casillaSobreAnterior || casillaSobrevolada->getNombre() != casillaSobreAnterior-> getNombre())
+    if (!casillaSobreAnterior || casillaSobre->getNombre() != casillaSobreAnterior-> getNombre())
     {
+		      std::cout << "poozzzz: "<<    std::endl;
+
         if (casillaSobreAnterior )
         {
-            //     std::cout << "CasillaSobrevolada ANTERIOR: "<<   casillaSobreAnterior->getNombre()  << std::endl;
-            escena->apagaVentanaEmergente();
+                 std::cout << "CasillaSobrevolada ANTERIOR: "<<   casillaSobreAnterior->getNombre()  << std::endl;
+             escenaMV->apagaVentanaEmergente();
 
-            casillaSobreAnterior->apagaCasilla();
+            casillaSobreAnterior->cambiaMaterial(0);
             //tablero->setNodoCasillaSobrevolada(-1);
         }
 
-        //   std::cout << "CAMBIA LA CASILLA SOBREVOLADA: " << std::endl;
-        escena->getTablero()->setCasillaSobrevolada(casillaSobrevolada);
+           std::cout << "CAMBIA LA CASILLA SOBREVOLADA: " << std::endl;
+         escenaMV->getTablero()->setCasillaSobrevolada(casillaSobre);
 
         return true;
     }
+
+			  						std::cout << "algo val mal en casillasobrevolada"<<std::endl;
+
     return false;
 }
 
@@ -100,19 +107,19 @@ int Jugador::jaqueMate()
 
 bool Jugador::iniciaTurno()
 {
-	escena->nombreActivo = nombre;
+	 escenaMV->nombreActivo = nombre;
 	return false;
 }
 
 bool Jugador::aplicaSeleccion()
 {
     //ATUALIZA EL TABLERO DE LA VISTA
-    escena->apagaVentanaEmergente();
+     escenaMV->apagaVentanaEmergente();
      modelo->mueveTablero();
 
 	int resultado = jaqueMate();
 	
-   // escena->actualizaTablero();
+     escenaMV->getTablero()->actualizaTablero();
 
     //PROMOCIONA PEÓN
     //  escena->getTablero()->promocionaPeon(escena->mSceneMgr);
@@ -121,22 +128,30 @@ bool Jugador::aplicaSeleccion()
     modelo->jugadaElegida[0] = 0;
     modelo->jugadaElegida[1] = 0;
 
+
+															   	std::cout << "result aplicaseleccion"<<  resultado <<std::endl;
+
+
     switch (resultado)
     {
     case 2:
+												   	std::cout << "Jaque"<<std::endl;
 
-        escena->muestraVentanaEmergente("Jaque");
+        escenaMV->muestraVentanaEmergente("Jaque");
         return true;
     case 3:
+												   	std::cout << "JaqueMate"<<std::endl;
 
 		//escena->nom
-        escena->muestraVentanaEmergente("JaqueMate");
+        escenaMV->muestraVentanaEmergente("JaqueMate");
         return false;
     case 4:
+												   	std::cout << "Tablas"<<std::endl;
 
-        escena->muestraVentanaEmergente("Tablas");
+        escenaMV->muestraVentanaEmergente("Tablas");
         return false;
     default: //MOVIMIENTO NORMAL
+														   	std::cout << "normal"<<std::endl;
 
         return true;
     }  

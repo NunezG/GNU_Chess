@@ -2,53 +2,73 @@
 
 
 //return: 1 para autorizado, 2 para no autorizado, 3 para jaque
-int Autorizaciones::autorizaCasilla(tipoFicha tipo)
+int Autorizaciones::autorizaCasilla()
 {   
 
 	ModeloTablero* tableroModelo = Modelo::getSingletonPtr()->tableroModelo;
 
 	if (Modelo::getSingletonPtr()->tableroModelo->turnoN)
     {
+						  						std::cout << "TURNOONNNNNN"<<std::endl;
+
         tableroModelo->jugada[0] = 143-tableroModelo->jugada[0];
         tableroModelo->jugada[1] = 143-tableroModelo->jugada[1];
     }
+					  						std::cout << "MIRA SI ES COMESTIBLE"<<std::endl;
+											std::cout << tableroModelo->casillasInt[tableroModelo->jugada[1]]<<std::endl;
+
+
+											//el tipo es la ficha de casillasint
+		int tipoo =  tableroModelo->casillasInt[tableroModelo->jugada[0]];
+
+							  						std::cout << "TIPO: "<< tipoo<<std::endl;
+
 
     //MIRA SI ES COMESTIBLE O VACIO
-    if(tableroModelo->casillasInt[tableroModelo->jugada[1]] <= 0)
+    if(tableroModelo->casillasInt[tableroModelo->jugada[1]] == '0')
     {
-        switch (tipo)
+				  						std::cout << "PUEDE MOVER"<<std::endl;
+
+        switch (tipoo)
         {
         case Rey: //REY SELECCIONADO
+			  						std::cout << "REY SELECCIONADO "<<std::endl;
 
             return Autorizaciones::autorizaRey(tableroModelo);
             break;
 
         case Reina: //REINA SELECCIONADO
-
+				std::cout << "REINA SELECCIONADO "<<std::endl;
             return Autorizaciones::autorizaReina(tableroModelo);
             break;
 
         case Alfil: //ALFIL SELECCIONADO
+							std::cout << "ALFIL SELECCIONADO "<<std::endl;
 
             return Autorizaciones::autorizaAlfil(tableroModelo);
             break;
 
         case Torre: //TORRE SELECCIONADA
+										std::cout << "TORRE SELECCIONADO "<<std::endl;
 
             return Autorizaciones::autorizaTorre(tableroModelo);
             break;
 
         case Caballo: //CABALLO SELECCIONADO
+													std::cout << "CABALLO SELECCIONADO "<<std::endl;
 
             return Autorizaciones::autorizaCaballo(tableroModelo);
             break;
 
         case Peon: //PEON SELECCIONADO
+													std::cout << "PEON SELECCIONADO "<<std::endl;
 
             return Autorizaciones::autorizaPeon(tableroModelo);
             break;
 
         default:
+																std::cout << "NAAAADA SELECCIONADO "<<std::endl;
+
             return 0;
             break;
         }
@@ -66,15 +86,27 @@ int Autorizaciones::autorizaPeon (ModeloTablero* miTablero)
    //     Dif = -Dif;
    // }
     // int filaSobreTraducida = 24 + (filaNueva * 12);
+					std::cout << "autorizaPeon : " <<Dif <<std::endl;
 
     if (Dif == 12 ||
 		( Dif== 24 && miTablero->jugada[0]/12 == 3))
     {
+
+		//std::cout << "miTablero->jugada[0]] : "  <<  (int)miTablero->jugada[0] <<std::endl;
+
+			//std::cout << "miTablero->jugada[1]] : "  <<  (int)miTablero->jugada[1] <<std::endl;
+				//	std::cout << "(miTablero->casillasInt[miTablero->jugada[0]] : "  <<  miTablero->casillasInt[miTablero->jugada[0]] <<std::endl;
+
+			//std::cout << "(miTablero->casillasInt[miTablero->jugada[1]] : "  <<  miTablero->casillasInt[(int)miTablero->jugada[1]] <<std::endl;
+					//	std::cout << "(miTablero->casil22222 : "  <<  miTablero->casillasInt[miTablero->jugada[1]] <<std::endl;
+
         //SALTA 2 CASILLAS (ESCAQUES) o PASA UNA CASILLA
-        if (miTablero->casillasInt[miTablero->jugada[1]] != 0)
+        if (miTablero->casillasInt[miTablero->jugada[1]] != '0')
             return 0;
         else
         {
+								std::cout << "pruebaCamino esteee : "  <<std::endl;
+
             return pruebaCamino(miTablero, 12);
         }
     }
@@ -224,13 +256,19 @@ int Autorizaciones::pruebaCamino(ModeloTablero* miTablero, int salto)
     int resultado = 0;
     // int ocupado = false;
     int nuevaCasilla = miTablero->jugada[0];
+
     bool pasa = true;
+					std::cout << "salto"  << salto <<std::endl;
 
     while(pasa)
     {
-        nuevaCasilla = nuevaCasilla+salto;
+				std::cout << "nuevaCasilla"  << nuevaCasilla <<std::endl;
+								std::cout << "miTablero->casillasInt[nuevaCasilla] "  << miTablero->casillasInt[nuevaCasilla]  <<std::endl;
 
-        pasa = miTablero->casillasInt[nuevaCasilla] == 0;
+        nuevaCasilla = nuevaCasilla+salto;
+				std::cout << "nuevaCasilla2"  << nuevaCasilla <<std::endl;
+				std::cout << "miTablero->casillasInt[nuevaCasilla] "  << miTablero->casillasInt[nuevaCasilla]  <<std::endl;
+        pasa = miTablero->casillasInt[nuevaCasilla] == '0';
 
         if (nuevaCasilla == miTablero->jugada[1])
         {
@@ -238,7 +276,7 @@ int Autorizaciones::pruebaCamino(ModeloTablero* miTablero, int salto)
             int fichaNueva = miTablero->casillasInt[nuevaCasilla];
 
             miTablero->casillasInt[nuevaCasilla] = fichavieja;
-            miTablero->casillasInt[miTablero->jugada[0]] = 0;
+            miTablero->casillasInt[miTablero->jugada[0]] = '0';
 
             if (miTablero->evaluaJaque())
             {
@@ -249,9 +287,12 @@ int Autorizaciones::pruebaCamino(ModeloTablero* miTablero, int salto)
 
             miTablero->casillasInt[nuevaCasilla] = fichaNueva;
             miTablero->casillasInt[miTablero->jugada[0]] = fichavieja;
+					std::cout << "resultado"  << resultado <<std::endl;
+
             return resultado;
         }
     }
+						std::cout << "resultado al final"  << resultado <<std::endl;
 
     return resultado;
 }

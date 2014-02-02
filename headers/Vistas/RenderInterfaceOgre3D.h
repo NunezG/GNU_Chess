@@ -5,11 +5,6 @@
 #include <Rocket/Core/RenderInterface.h>
 #include <Ogre.h>
 
-/**
-	A sample render interface for Rocket into Ogre3D.
-
-	@author Peter Curry
- */
 
 class RenderInterfaceOgre3D : public Rocket::Core::RenderInterface
 {

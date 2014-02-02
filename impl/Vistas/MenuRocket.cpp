@@ -1,10 +1,11 @@
 ﻿#include "../../headers/Vistas/MenuRocket.h"
 
 //-------------------------------------------------------------------------------------
-MenuRocket::MenuRocket(ModeloVista* modeloV, Ogre::RenderWindow* mWindow) : BaseVistas(modeloV, mWindow)
+MenuRocket::MenuRocket(RocketListener* vistaOgre) : BaseListeners( vistaOgre)
    //  ,ventanaConfig(NULL),
   //  listaResoluciones(NULL)
 {
+	//modeloVista = vistaOgre->modeloVista;
 				    std::cout << "menuuu "<<std::endl;
 
 	pantallaInicio();
@@ -16,6 +17,8 @@ MenuRocket::MenuRocket(ModeloVista* modeloV, Ogre::RenderWindow* mWindow) : Base
 
 MenuRocket::~MenuRocket(void)
 {
+					std::cout << "MenuRocket"<<std::endl;
+
     //¿¿¿BORRA MEJOR CON EL PUNTERO ventanaEmergente???
 
           //CEGUI::Window*CEGUI = CEGUI::WindowManager::getSingleton();
@@ -309,3 +312,100 @@ bool MenuRocket::pantallaConfig()
    */
     return true;
 }
+
+
+
+
+	void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
+	{
+
+		//BaseListeners::ProcessEvent(event);
+				//std::cout << "ProcessEvent1111111:  "<< event.GetCurrentElement()->GetTagName().CString()<<std::endl;
+		Rocket::Core::Element* element =  event.GetTargetElement();
+		//element->Get
+	std::cout << "ProcessEvent11111211:  "<< element->GetTagName().CString()<<std::endl;
+	std::cout << "ProcessEvent11111211:  "<< event.GetType().CString()<<std::endl;
+	//	std::cout << "ProcessEvent11111211:  "<< event.Get<<std::endl;
+
+	std::cout << "ProcessEvent1ffffff1:  "<< element->GetId().CString()<<std::endl;
+	//std::cout << "ProcessEvent1ffffff1:  "<< event.GetTargetElement()->Get<<std::endl;
+
+	//Rocket::Core::StringList commands;
+	//Rocket::Core::StringUtilities::ExpandString(commands,"hooo", ';');
+	//for (size_t i = 0; i < commands.size(); ++i)
+	//{
+		// Check for a generic 'load' or 'exit' command.
+	//	Rocket::Core::StringList values;
+		//Rocket::Core::StringUtilities::ExpandString(values, commands[i], ' ');
+
+	//	if (values.empty())
+	//		return;
+
+		if (std::string("options") == element->GetId().CString())
+		{
+			std::cout << "options:  "<<std::endl;
+
+			Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/options.rml");
+			Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+			document->Show();
+		document->RemoveReference();
+			// Load the window, and if successful close the old window.
+			//if (LoadWindow(values[1]))
+				event.GetTargetElement()->GetOwnerDocument()->Close();
+		}
+		else 
+		if (element->GetId().CString() == std::string("twoPlayer"))
+		{
+							std::cout << "twoPlayer:  "<<std::endl;
+							vistaOgre->modeloVista->setNumPantalla(1);
+							vistaOgre->modeloVista->reiniciar = true;
+							//vistaOgre->reinicia = true;
+							//mWindow->setVisible(false);
+			//Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/game.rml");
+			//Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+
+		}else if (element->GetId().CString() == std::string("onePlayer"))
+		{
+							std::cout << "onePlayer:  "<<std::endl;
+							vistaOgre->modeloVista->setNumPantalla(2);
+							vistaOgre->modeloVista->reiniciar = true;
+
+							//mWindow->setVisible(false);
+
+			//Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/start_game.rml");
+			//Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+
+		}else 
+		if (element->GetId().CString() == std::string("exit"))
+		{
+				std::cout << "exitttttttt:  "<<std::endl;
+
+
+		//	vista->c
+
+			// Load the window.
+			//LoadWindow(values[1]);
+		}
+		
+		else
+		{
+			//if (event_handler != NULL)
+				//event_handler->ProcessEvent(event, commands[i]);
+		}
+	//}
+}
+
+
+					void MenuRocket::createOverlay(){
+
+						Rocket::Core::ElementDocument* document = context->LoadDocument("../media/librocket/demo.rml");
+		//	document->AddEventListener("click", this);
+			
+	if (document)
+	{
+				std::cout << "document "<<std::endl;
+
+		document->Show();
+		document->RemoveReference();
+	}
+					}

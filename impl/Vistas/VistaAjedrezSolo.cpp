@@ -1,14 +1,16 @@
 #include "../../headers/Vistas/VistaAjedrezSolo.h"
 
 //-------------------------------------------------------------------------------------
-VistaAjedrezSolo::VistaAjedrezSolo(ModeloVista* modeloV, Ogre::RenderWindow* mWindow)
-    : VistaAjedrez(modeloV, mWindow)
+VistaAjedrezSolo::VistaAjedrezSolo(RocketListener* vistaOgre)
+    : VistaAjedrez(vistaOgre)
 
 {
 }
 
 VistaAjedrezSolo::~VistaAjedrezSolo(void)
 {    
+					std::cout << "del VistaAjedrez"<<std::endl;
+
 }
 
 

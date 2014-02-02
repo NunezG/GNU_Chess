@@ -1,15 +1,93 @@
 #include "../../headers/Vistas/BaseVistas.h"
 
-BaseVistas::BaseVistas(ModeloVista* modeloV, Ogre::RenderWindow* window) :
+BaseVistas::BaseVistas(ModeloVista* modeloV) :
     //mInputManager(0),
     //mMouse(0),
     //mKeyboard(0)
   //, sys(0)
   //, mRoot(0)
-  context(0)
+    mCamera(0)
+  //, tablero(0)
+  , mTarget(0)
+  ,context(0)
+
 {  
-		mWindow = window;
+	//	mWindow = window;
 		modeloVista = modeloV;
+										std::cout << "BaseVistas OGRE"<<std::endl;
+
+	
+
+
+
+			ogre_system = NULL;
+		ogre_renderer = NULL;
+
+
+									std::cout << "NICIA OGRE"<<std::endl;
+
+		
+    //INICIA OGRE
+    mRoot =new Ogre::Root("plugins.cfg");
+										std::cout << "NICIA OGRE 2222"<<std::endl;
+
+
+	  configuraGraficos("OpenGL Rendering Subsystem");
+	  									std::cout << "NItalize"<<std::endl;
+
+    mWindow = mRoot->initialise(true,"3D CHESS");
+
+
+
+	
+	//INICIA ROCKET??
+							std::cout << "INICIA ROCKET"<<std::endl;
+														std::cout << mWindow->getWidth()<<std::endl;
+							std::cout << mWindow->getHeight()<<std::endl;
+
+        //Register as a Window listener
+        Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+	
+
+			// Rocket initialisation.
+	ogre_renderer = new RenderInterfaceOgre3D(mWindow->getWidth(), mWindow->getHeight());
+	Rocket::Core::SetRenderInterface(ogre_renderer);
+									std::cout << "TRES"<<std::endl;
+
+	ogre_system = new SystemInterfaceOgre3D();
+	Rocket::Core::SetSystemInterface(ogre_system);
+
+
+
+									std::cout << "Uno"<<std::endl;
+	
+		Rocket::Core::Initialise();
+											std::cout << "UNODOS"<<std::endl;
+
+	Rocket::Controls::Initialise();
+								std::cout << "FIN INICIA ROCKET"<<std::endl;
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
 
 		mSceneMgr = Ogre::Root::getSingletonPtr()->createSceneManager(Ogre::ST_GENERIC, "MANAGER");
 
@@ -32,12 +110,11 @@ BaseVistas::BaseVistas(ModeloVista* modeloV, Ogre::RenderWindow* window) :
     mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
 					    std::cout << "finois "<<std::endl;
 
-    
         //mMouse->setEventCallback(vista);
        // mKeyboard->setEventCallback(vista);
 	
-	mMouse->setEventCallback(this);
-	mKeyboard->setEventCallback(this);
+//	mMouse->setEventCallback(this);
+//	mKeyboard->setEventCallback(this);
 
 	running = true;
 
@@ -45,7 +122,6 @@ BaseVistas::BaseVistas(ModeloVista* modeloV, Ogre::RenderWindow* window) :
 
 						    std::cout << "mWindow->getWidth() "<< mWindow->getWidth()<<std::endl;
 						    std::cout << "mWindow->getHeight() "<< mWindow->getHeight()<<std::endl;
-
 
 	context = Rocket::Core::CreateContext("main", Rocket::Core::Vector2i(mWindow->getWidth(), mWindow->getHeight()));
 	Rocket::Debugger::Initialise(context);
@@ -55,24 +131,48 @@ BaseVistas::BaseVistas(ModeloVista* modeloV, Ogre::RenderWindow* window) :
 	std::cout << "context->GetDimensions) x"<< context->GetDimensions().x<<std::endl;
 		std::cout << "context->GetDimensions) y"<< context->GetDimensions().y<<std::endl;
 
-
 		//Set initial mouse clipping size
-   mMouse->getMouseState().width = mWindow->getWidth();
-   mMouse->getMouseState().height = mWindow->getHeight();
+    mMouse->getMouseState().width = mWindow->getWidth();
+    mMouse->getMouseState().height = mWindow->getHeight();
+
+    createCamera();
+    createViewports(mWindow);
+	//context->AddEventListener("click", this); 
+
+////////////////////////////////////////////////////////////
+
+	
+			//std::cout << "createScene "<<suma<<std::endl;
+
+		std::cout << "createScene basevistas "<<std::endl;
+	//Ogre::ResourceGroupManager::getSingleton().createResourceGroup("Rocket");
+	//Ogre::ResourceGroupManager::getSingleton().addResourceLocation(rocket_path.Replace("\\", "/").CString(), "FileSystem", "Rocket");
+		
+
+
+	// Load the fonts from the path to the sample directory.
+	Rocket::Core::FontDatabase::LoadFontFace(/*sample_path + "../../assets/*/"../media/librocket/Delicious-Roman.otf");
+	Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-Bold.otf");
+	Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-Italic.otf");
+	Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-BoldItalic.otf");
+
+	
+	// Load the mouse cursor and release the caller's reference.
+	Rocket::Core::ElementDocument* cursor = context->LoadMouseCursor("../media/librocket/cursor.rml");
+	if (cursor)
+		cursor->RemoveReference();
+
 
 
 }
 
 BaseVistas::~BaseVistas()
 {
-
 			std::cout << "del BaseVistas"<<std::endl;
-
 	// Shutdown Rocket.
 	context->RemoveReference();
     
 				std::cout << "del BaseVistas222"<<std::endl;
-
 
 	//Unattach OIS before window shutdown (very important under Linux)
     if( mInputManager )
@@ -87,15 +187,15 @@ BaseVistas::~BaseVistas()
 				std::cout << "findel BaseVistas"<<std::endl;
 
     		mSceneMgr->removeRenderQueueListener( this );
+			
+	delete ogre_system;
+	ogre_system = NULL;
 
+	delete ogre_renderer;
+	ogre_renderer = NULL;
     // delete mWindow;
     // mWindow = 0;
 }
-
-
-
-
-
 
 //void BaseVistas::createFrameListener()
 //{
@@ -107,10 +207,6 @@ BaseVistas::~BaseVistas()
 	// Show the frame stats overlay.
 	//mFrameListener->showDebugOverlay(true);
 //}
-
-
-
-
 
 //int BaseVistas::getFPS()
 //{
@@ -124,145 +220,29 @@ bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
 		return	Ogre::FrameListener::frameStarted(evt) && running; 
 }
 
-bool BaseVistas::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
-{
-
-		context->ProcessMouseButtonDown((int) id, GetKeyModifierState());
-
-   // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-
-    //context.injectMouseButtonDown(CEGUI::MouseButton(id));
-    //  sys->injectMouseButtonDown(convertButton(id));
-    return true;
-}
-
-bool BaseVistas::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
-{
-		context->ProcessMouseButtonUp((int) id, GetKeyModifierState());
-
-    //CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-    //CEGUI::MouseButton(buttonID);
-
-   // context.injectMouseButtonUp(CEGUI::MouseButton(id));
-    // sys->injectMouseButtonUp(convertButton(id));
-    return true;
-}
-
-bool BaseVistas::keyPressed( const OIS::KeyEvent &evt )
-{
-   // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-
-   // context.injectKeyDown(CEGUI::Key::Scan(evt.key));
-   // context.injectChar(evt.text);
-
-    if (evt.key == OIS::KC_ESCAPE)// Pulsa Esc
-    {
-        mWindow->setHidden(true);
-        modeloVista->setApagar(true);
-    }
-    else if (evt.key == OIS::KC_SYSRQ)   // take a screenshot
-    {
-        // mWindow->writeContentsToTimestampedFile("screenshot", ".jpg");
-    }
 
 
-		Rocket::Core::Input::KeyIdentifier key_identifier = key_identifiers[evt.key];
-
-	// Toggle the debugger on a shift-~ press.
-	if (key_identifier == Rocket::Core::Input::KI_OEM_3 &&
-		(GetKeyModifierState() & Rocket::Core::Input::KM_SHIFT))
-	{
-		Rocket::Debugger::SetVisible(!Rocket::Debugger::IsVisible());
-		return true;
-	}
-
-	if (key_identifier != Rocket::Core::Input::KI_UNKNOWN)
-		context->ProcessKeyDown(key_identifier, GetKeyModifierState());
-
-	// Send through the ASCII value as text input if it is printable.
-	if (evt.text >= 32)
-		context->ProcessTextInput((Rocket::Core::word) evt.text);
-	else if (key_identifier == Rocket::Core::Input::KI_RETURN)
-		context->ProcessTextInput((Rocket::Core::word) '\n');
-
-
-    return true;
-}
-
-bool BaseVistas::keyReleased( const OIS::KeyEvent &e )
-{
-	Rocket::Core::Input::KeyIdentifier key_identifier = key_identifiers[e.key];
-
-	if (key_identifier != Rocket::Core::Input::KI_UNKNOWN)
-		context->ProcessKeyUp(key_identifier, GetKeyModifierState());
-
-	if (e.key == OIS::KC_ESCAPE)
-		running = false;
-
-   // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-
-      //  context.injectKeyUp(CEGUI::Key::Scan(arg.key));
-        return true;
-}
-
-bool BaseVistas::mouseMoved( const OIS::MouseEvent &e )
-{
-					std::cout << "mouseMoved"<<std::endl;
-
-	int key_modifier_state = GetKeyModifierState();
-
-						std::cout << key_modifier_state<<std::endl;
-												std::cout << e.state.X.abs<<std::endl;
-												std::cout <<e.state.Y.abs<<std::endl;
-												std::cout << e.state.X.rel<<std::endl;
-												std::cout <<e.state.Y.rel<<std::endl;
-
-
-	context->ProcessMouseMove(e.state.X.abs, e.state.Y.abs, key_modifier_state);
-	if (e.state.Z.rel != 0)
-		context->ProcessMouseWheel(e.state.Z.rel / -120, key_modifier_state);
-
-
-					//	std::cout << "fin"<<std::endl;
-
-	//VistaAjedrez::mouseMoved(e);
-   // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-    // context.injectMouseMove(evt.state.X.rel, evt.state.Y.rel) ;
-        return true;
-
-}
-/*
-CEGUI::MouseButton BaseVistas::convertButton(OIS::MouseButtonID buttonID)
-{
-    switch (buttonID)
-    {
-    case OIS::MB_Left:
-        return CEGUI::LeftButton;
-        
-    case OIS::MB_Right:
-        return CEGUI::RightButton;
-        
-    case OIS::MB_Middle:
-        return CEGUI::MiddleButton;
-        
-    default:
-        return CEGUI::LeftButton;
-    }
-}
-*/
 
     bool BaseVistas::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	{
 
-		
-	 if(mWindow->isClosed() || !mWindow->isVisible() || mWindow->isHidden())
-       return false;
+
+	 if(modeloVista->reiniciar || mWindow->isClosed() || !mWindow->isVisible() || mWindow->isHidden()){
+      	   					 	std::cout << "frameRenderingQueued"<< modeloVista->reiniciar <<mWindow->isClosed() << !mWindow->isVisible()<< mWindow->isHidden() <<std::endl;
+
+		 return false;
+
+	 }
+
+
+
+	 					 //	std::cout << "frameRenderingQueued PPPPPASAASASA"<<std::endl;
 
 			//std::cout << "frameRenderingQueued"<<std::endl;
 		 mKeyboard->capture();
     mMouse->capture();
 
-			 	std::cout << "cacacacaca"<<std::endl;
+			 	//std::cout << "cacacacaca"<<std::endl;
 
 	//	if (Ogre::Root::getSingleton().getRenderSystem()->_getViewport()->getOverlaysEnabled())
 //	{
@@ -287,7 +267,11 @@ void BaseVistas::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String
 
 		context->Update();
 		configureRenderSystem();
+																	std::cout << "Render"<<std::endl;
+
 		context->Render();
+																			std::cout << "finrender"<<std::endl;
+
 	}
 }
 
@@ -380,6 +364,7 @@ void BaseVistas::configureRenderSystem()
 
 	// Disable depth bias.
 	render_system->_setDepthBias(0, 0);
+																std::cout << "finconfigureRenderSystem22"<<std::endl;
 
 }
 
@@ -580,41 +565,6 @@ int BaseVistas::GetKeyModifierState()
 
 
 
-void BaseVistas::createScene()
-{
-	
-			//std::cout << "createScene "<<suma<<std::endl;
-
-		std::cout << "createScene basevistas "<<std::endl;
-	//Ogre::ResourceGroupManager::getSingleton().createResourceGroup("Rocket");
-	//Ogre::ResourceGroupManager::getSingleton().addResourceLocation(rocket_path.Replace("\\", "/").CString(), "FileSystem", "Rocket");
-		
-
-
-	// Load the fonts from the path to the sample directory.
-	Rocket::Core::FontDatabase::LoadFontFace(/*sample_path + "../../assets/*/"../media/librocket/Delicious-Roman.otf");
-	Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-Bold.otf");
-	Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-Italic.otf");
-	Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-BoldItalic.otf");
-
-	//context->AddEventListener
-	// Load the mouse cursor and release the caller's reference.
-	Rocket::Core::ElementDocument* cursor = context->LoadMouseCursor("../media/librocket/cursor.rml");
-	if (cursor)
-		cursor->RemoveReference();
-
-	Rocket::Core::ElementDocument* document = context->LoadDocument("../media/librocket/demo.rml");
-	if (document)
-	{
-				std::cout << "document "<<std::endl;
-
-		document->Show();
-		document->RemoveReference();
-	}
-
-}
-
-
 
 //Adjust mouse clipping area
 void BaseVistas::windowResized()
@@ -627,4 +577,170 @@ void BaseVistas::windowResized()
     
     ms.width = width;
     ms.height = height;
+}
+/*
+Ogre::Ray BaseVistas ::getCameraToViewportRay()
+{
+
+	return mCamera->getCameraToViewportRay
+            (posx/float(mWindow->getWidth()), posy/float(mWindow->getHeight()));
+
+}
+
+*/
+void BaseVistas::createCamera(void)
+{
+    // Create the camera
+    mCamera = mSceneMgr->createCamera("PlayerCam");
+
+    // Position it at 500 in Z direction
+    mCamera->setPosition(Ogre::Vector3(-40,-40,150));
+    // Look back along -Z
+    mCamera->lookAt(Ogre::Vector3(0,0,0));
+    mCamera->setNearClipDistance(5);
+
+
+    if (mCamera->getSceneManager()->getRootSceneNode() != mTarget)
+    {
+        mTarget = mCamera->getSceneManager()->getRootSceneNode();
+        if(mTarget)
+        {
+            mCamera->setPosition(mTarget->_getDerivedPosition());
+            mCamera->setOrientation(mTarget->_getDerivedOrientation());
+            mCamera->yaw(Ogre::Degree(90));
+            mCamera->pitch(-Ogre::Degree(50));
+            mCamera->moveRelative(Ogre::Vector3(0, 0, 110));
+            mCamera->setAutoTracking(true, mTarget);
+        }
+        else
+        {
+            mCamera->setAutoTracking(false);
+        }
+    }
+
+    mCamera->setFixedYawAxis(true);
+
+    // mInputMan = new InputMan::SdkCameraMan(mCamera);   // create a default camera controller
+    //  mTopSpeed = topSpeed;
+
+   // return mCamera;
+}
+
+void BaseVistas::createViewports(Ogre::RenderWindow* window)
+{
+    mWindow = window;
+    // Create one viewport, entire window
+    Ogre::Viewport* vp = mWindow->addViewport(mCamera);
+    vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+
+    // Alter the camera aspect ratio to match the viewport
+    mCamera->setAspectRatio(
+                Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+}
+
+
+void BaseVistas::DistanciaCamara(int distanciaRelativa)
+{
+    Ogre::Real dist = (mCamera->getPosition() - mTarget->_getDerivedPosition()).length();
+    mCamera->moveRelative(Ogre::Vector3(0, 0, -distanciaRelativa * 0.0008f * dist));
+}
+
+
+
+void BaseVistas::rotacionCamara(Ogre::Degree angulo)
+{
+    Ogre::Real dist = (mCamera->getPosition() - mTarget->_getDerivedPosition()).length();
+
+    //Mueve la camara a la posicion central
+    mCamera->setPosition(mTarget->_getDerivedPosition());
+    //Rota la camara
+    mCamera->yaw(-angulo);
+
+    //Devuelve la camara a su posicion original
+    mCamera->moveRelative(Ogre::Vector3(0, 0, dist));
+}
+
+
+
+
+
+
+
+
+bool BaseVistas::configuraGraficos(const char *desiredRenderer)
+{
+    //SETUP RESOURCES
+    // Load resource paths from config file
+    Ogre::ConfigFile cf;
+    cf.load("resources.cfg");
+    // Go through all sections & settings in the file
+    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
+    Ogre::String secName, typeName, archName;
+    while (seci.hasMoreElements())
+    {
+        secName = seci.peekNextKey();
+        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
+        Ogre::ConfigFile::SettingsMultiMap::iterator i;
+        for (i = settings->begin(); i != settings->end(); ++i)
+        {
+            typeName = i->first;
+            archName = i->second;
+            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+                        archName, typeName, secName);
+        }
+    }
+    
+    //CONFIGUREOPENGL
+    Ogre::RenderSystem *renderSystem;
+    bool ok = false;
+    
+    Ogre::RenderSystemList renderers =
+            Ogre::Root::getSingleton().getAvailableRenderers();
+    
+    // See if the list is empty (no renderers available)
+    if(renderers.empty())
+        return false;
+    
+    for(Ogre::RenderSystemList::iterator it = renderers.begin();
+        it != renderers.end(); it++)
+    {
+        renderSystem = *it;
+        if(strstr(renderSystem->getName().c_str(), desiredRenderer))
+        {
+            ok = true;
+            break;
+        }
+    }
+    if(!ok)
+    {
+        // We still don't have a renderer; pick
+        // up the first one from the list
+        renderSystem = *renderers.begin();
+    }
+    Ogre::Root::getSingleton().setRenderSystem(renderSystem);
+    // Manually set some configuration options (optional)
+    
+    for(Ogre::ConfigOptionMap::iterator it = renderSystem->getConfigOptions().begin();
+        it != renderSystem->getConfigOptions().end(); it++)
+    {
+        std::pair<const std::basic_string<char>,Ogre::ConfigOption> CO = *it;
+    }
+
+	if (modeloVista->pantallaCompleta){
+	renderSystem->setConfigOption("Full Screen", "Yes");
+
+	}else{
+    renderSystem->setConfigOption("Full Screen", "No");
+	}
+
+	renderSystem->setConfigOption("Video Mode", modeloVista->resolucion);
+
+    for(Ogre::ConfigOptionMap::iterator it = renderSystem->getConfigOptions().begin();
+        it != renderSystem->getConfigOptions().end(); it++)
+    {
+        std::pair<const std::basic_string<char>,Ogre::ConfigOption> CO = *it;
+    }
+    
+    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+    return true;
 }

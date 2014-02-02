@@ -6,7 +6,7 @@
 class VistaAjedrezSolo : public VistaAjedrez
 {
 public:
-    VistaAjedrezSolo(ModeloVista* modeloV, Ogre::RenderWindow* mWindow);
+    VistaAjedrezSolo(RocketListener* vistaOgre);
     ~VistaAjedrezSolo(void);
 
 

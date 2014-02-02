@@ -20,7 +20,7 @@ public:
     void generaJugadores();
     void creaEscenaYModelo();
 
-	    ObjetoEscena* getScene();
+	  //  ObjetoEscena* getScene();
 
 
     Jugador* JugadorActivo;
@@ -37,10 +37,10 @@ public:
 
 		    bool getTurnoNegras();
 
- void actualizaTablero();
 
 
 	  	void procesaNodoPulsado(std::string nombreNodo);
+		    bool reiniciar;
 
 
 private:   
@@ -51,7 +51,6 @@ private:
     int numJugadores;
     bool mShutDown;
     int numPantalla;
-    bool reiniciar;
 		std::string posInicial;
 
 

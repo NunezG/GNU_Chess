@@ -35,6 +35,11 @@ bool JugadorArtificial::iniciaTurno()
 
 bool JugadorArtificial::aplicaSeleccion()
 {
+
+						    std::cout << "APLICASELECCION EN JUGADOR ARTIFICIAL"<<std::endl;
+
+
+
     posicion inicial;
     posicion final;
 
@@ -51,8 +56,8 @@ bool JugadorArtificial::aplicaSeleccion()
           final.Columna =  7-final.Columna;  
       }
 
-    escena->getTablero()->setCasillaSeleccionada((inicial.Fila * 8) + inicial.Columna);
-    escena->getTablero()->setCasillaSobrevolada((final.Fila* 8) + final.Columna);
+    escenaMV->getTablero()->setCasillaSeleccionada((inicial.Fila * 8) + inicial.Columna);
+    escenaMV->getTablero()->setCasillaSobrevolada((final.Fila* 8) + final.Columna);
 
     return Jugador::aplicaSeleccion();
 }

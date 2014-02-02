@@ -1,8 +1,8 @@
 #include "../../headers/ModeloVista/Ficha.h"
-Ficha::Ficha(std::string nombre, int mask, std::string meshName, std::string materialName) : ObjetoEscena(nombre, mask, meshName, materialName)
-    , esNegra(0),
+Ficha::Ficha(std::string nombre, int tipo, std::string meshName, std::string materialName) :// ObjetoEscena(nombre, tipo, meshName, materialName)
+     esNegra(0),
     //muerta(0),
-    tipo_Ficha(mask),
+    tipo_Ficha(tipo),
 	seleccionada(0)
    // salto(false)
     // ,casilla(0)
@@ -13,8 +13,8 @@ Ficha::~Ficha()
 {
 }
 
-Ficha::Ficha( const Ficha& fichaOriginal, std::string nombre, int tipo ): ObjetoEscena(fichaOriginal, nombre, tipo)
-    , esNegra(fichaOriginal.esNegra),
+Ficha::Ficha( const Ficha& fichaOriginal, std::string nombre, int tipo ):// ObjetoEscena(fichaOriginal, nombre, tipo)
+    esNegra(fichaOriginal.esNegra),
    // muerta(0),
     tipo_Ficha(tipo),
 	seleccionada(0)
@@ -33,10 +33,6 @@ Ficha::Ficha( const Ficha& fichaOriginal, std::string nombre, int tipo ): Objeto
 }*/
 
 
-std::string Ficha::getNombre()
-{
-    return nombreObjeto;
-}
 
 void Ficha::apaga()
 {
@@ -48,11 +44,11 @@ void Ficha::apaga()
  
     if (esNegra)
     {
-		materialName = ("MaterialFichaNegra");
+		//materialName = ("MaterialFichaNegra");
        // cambiaMaterial("MaterialFichaNegraIluminada");
     }
-    else //cambiaMaterial("MaterialFichaBlancaIluminada"); 
-		materialName = ("MaterialFichaBlanca");
+	else{} //cambiaMaterial("MaterialFichaBlancaIluminada"); 
+		//materialName = ("MaterialFichaBlanca");
 
 	
 }
@@ -67,10 +63,10 @@ void Ficha::ilumina()
  
     if (esNegra)
     {
-		materialName = ("MaterialFichaNegraIluminada");
+		//materialName = ("MaterialFichaNegraIluminada");
        // cambiaMaterial("MaterialFichaNegraIluminada");
     }
-    else //cambiaMaterial("MaterialFichaBlancaIluminada"); 
-		materialName = ("MaterialFichaBlancaIluminada");
+	else {}//cambiaMaterial("MaterialFichaBlancaIluminada"); 
+		///materialName = ("MaterialFichaBlancaIluminada");
 	
 }

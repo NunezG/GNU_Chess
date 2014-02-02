@@ -1,0 +1,62 @@
+<rml>
+	<head>
+		<title>Options</title>
+		<link type="text/template" href="window.rml" />
+		<style>
+			body
+			{
+				width: 350px;
+				height: 350px;
+				
+				margin: auto;
+			}
+
+			div#title_bar div#icon
+			{
+				icon-image-s: 230px 281px;
+				icon-image-t: 152px 191px;
+
+				display: none;
+			}
+
+			form div
+			{
+				width: 200px;
+				margin: auto;
+			}
+		</style>
+	</head>
+	<body template="window" onload="restore">
+		<form onsubmit="store; goto main_menu">
+			<div>
+				<p>
+					Difficulty:<br />
+					<input id="easy" type="radio" name="difficulty" value="easy" checked="true" /> Easy<br />
+					<input id="hard" type="radio" name="difficulty" value="hard" onchange="bad_warning"/> Hard <br />
+				</p>
+				<p id="bad_warning" style="display: none;">Are you sure about this? Bad graphics are just plain <em>bad.</em></p>
+				<p>
+					Resolution:<br />
+					
+					<select name="algorithm">
+						<option fields="algorithms">Algorithms:</option>
+						<option value="640x480">640x480</option>
+						<option value="1024x768">1024x768</option>
+						<option value="1080x1024">1080x1024</option>
+						<option value="1920x1080">1920x1080</option>
+					</select>
+					
+					<input id="1024x768" type="radio" name="resolution" value="1024x768" /> 1024x768<br />
+					<input id="1080x1024" type="radio" name="resolution" value="1080x1024" checked="true" /> 1080x1024<br />
+					<input id="1920x1080" type="radio" name="resolution" value="1920x1080" onchange="bad_graphics" /> 1920x1080<br />
+					<input id="fullscreen" type="checkbox" name="fullscreen" value="false" /> Full Screen
+				</p>
+				<p>
+				
+</p>
+			</div>
+			<input type="submit" value="accept">Accept</input>
+			<input type="submit" value="cancel">Cancel</input>
+		</form>
+	</body>
+</rml>

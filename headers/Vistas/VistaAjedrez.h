@@ -2,24 +2,28 @@
 #define __VistaAjedrez_h_
 #include "Escena.h"
 
-#include "BaseVistas.h"
+#include "BaseListeners.h"
 
 
-class VistaAjedrez : public BaseVistas, public Escena
+class VistaAjedrez : public Escena, public BaseListeners
 {
 public:
-    VistaAjedrez(ModeloVista* modeloV, Ogre::RenderWindow* mWindow);
+    VistaAjedrez(RocketListener* vistaOgre);
     ~VistaAjedrez(void);
 
+	     Ogre::RaySceneQuery *mRaySceneQuery;
+// ModeloVista* modeloVista;
+	  //  Ogre::RenderWindow* mWindow;
 
-	
-		
+		    std::string encuentraCasillaSobrevolada(int posx, int posy);
+
+					void ProcessEvent(Rocket::Core::Event& event);
 
 			/// Called from Ogre before a queue group is rendered.
 	//virtual void renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& skipThisInvocation);
 	/// Called from Ogre after a queue group is rendered.
    // virtual void renderQueueEnded(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& repeatThisInvocation);
-	void actualizaNodo(ObjetoOgre* nodo);
+	void actualizaNodo();
 
 		// MouseListener interface.
 		virtual bool mouseMoved(const OIS::MouseEvent& e);
@@ -33,6 +37,7 @@ public:
    // virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 		void createScene();
 
+		void createOverlay();
 
 protected:
    

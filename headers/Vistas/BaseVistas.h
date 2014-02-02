@@ -43,50 +43,50 @@
 #include "SystemInterfaceOgre3D.h"
 
 
-class BaseVistas : public Ogre::RenderQueueListener, public Ogre::FrameListener, public OIS::MouseListener, public OIS::KeyListener
+class BaseVistas : public Ogre::RenderQueueListener, public Ogre::FrameListener
 {
 public:
-	   BaseVistas(ModeloVista* modeloV, Ogre::RenderWindow* mWindow);
+	   BaseVistas(ModeloVista* modeloV);
 
     ~BaseVistas(void);
 
+	void createCamera(void);
+    void createViewports(Ogre::RenderWindow* window);
+     Ogre::SceneNode* mTarget;
+    Ogre::Camera* mCamera;
+	//Ogre::Ray getCameraToViewportRay();
+	 ModeloVista* modeloVista;
 
-    
+	void DistanciaCamara(int distanciaRelativa);
+    void rotacionCamara(Ogre::Degree angulo);
+
 		// FrameListener interface.
 		virtual bool frameStarted(const Ogre::FrameEvent& evt);
 
-		// MouseListener interface.
-		virtual bool mouseMoved(const OIS::MouseEvent& e);
-		virtual bool mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-		virtual bool mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-
-		// KeyListener interface.
-		virtual bool keyPressed(const OIS::KeyEvent& e);
-		virtual bool keyReleased(const OIS::KeyEvent& e);
 
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
-		   virtual void createScene();
 
 
 			/// Called from Ogre before a queue group is rendered.
 	virtual void renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& skipThisInvocation);
 	/// Called from Ogre after a queue group is rendered.
     virtual void renderQueueEnded(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& repeatThisInvocation);
-
+			Rocket::Core::Context* context;
+		    Ogre::RenderWindow* mWindow;
+				 OIS::Mouse*    mMouse;
+    OIS::Keyboard* mKeyboard;
+		 
+	    Ogre::Root *mRoot;
 protected:
    
 //    CEGUI::System* sys;
 
-	    ModeloVista* modeloVista;
+	 //   ModeloVista* modeloVista;
 
-		    Ogre::RenderWindow* mWindow;
 			
 
 				    OIS::InputManager* mInputManager;
 
-		 OIS::Mouse*    mMouse;
-    OIS::Keyboard* mKeyboard;
-		 
 	// Configures Ogre's rendering system for rendering Rocket.
 		void configureRenderSystem();
 
@@ -94,15 +94,22 @@ protected:
 		// Builds an OpenGL-style orthographic projection matrix.
 		void buildProjectionMatrix(Ogre::Matrix4& matrix);
 		
+						      Ogre::SceneManager* mSceneMgr;
 
 		//void createFrameListener();
+							  
+	
 
 private:
   //  int getFPS();
   //  CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
+			    bool configuraGraficos(const char *desiredRenderer);
 
+
+			SystemInterfaceOgre3D* ogre_system;
+		RenderInterfaceOgre3D* ogre_renderer;
+	
    // CEGUI::OgreRenderer* renderer;
-		Rocket::Core::Context* context;
 		bool running;
 			void BuildKeyMaps();
 		int GetKeyModifierState();
@@ -115,7 +122,6 @@ private:
 	
 			      void windowResized();
 
-				      Ogre::SceneManager* mSceneMgr;
 
 };
 

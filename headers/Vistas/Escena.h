@@ -14,13 +14,14 @@
 */
 //#include "Tablero.h"
 #include "ObjetoOgre.h"
+#include "RocketListener.h"
 
 #include "../ModeloVista/EscenaAjedrez.h"
 
 class  Escena
 {
 public:
-    Escena();
+    Escena(RocketListener* vistaOgre);
     ~Escena(void);
    // Tablero* getTablero();
     void setModoCamara(bool modo);
@@ -31,41 +32,41 @@ public:
     void setCamaraIzquierda();
     void setCamaraDerecha();
 
-    std::string encuentraCasillaSobrevolada(int posx, int posy);
 
-    void DistanciaCamara(int distanciaRelativa);
-    void rotacionCamara(Ogre::Degree angulo);
+      //  Ogre::Camera* camera;
+
     void createScene();
-    void createCamera(void);
-    void createViewports(Ogre::RenderWindow* window);
+    
 
     void apagaVentanaEmergente();
     void muestraVentanaEmergente(std::string nombreLayout);
 
-    Ogre::SceneManager* mSceneMgr;
+    Ogre::SceneManager* sceneMgr;
     bool modoVS;
 		 std::string nombreActivo;
 
 		 
-    void creaTableroYCasillas(Ogre::SceneManager* sceneMgr);
+  //  void creaTableroYCasillas();
 	//void creaPiezas();
-	void generaEscena(ObjetoEscena* nodoEscena, ObjetoOgre* nodoOgre);
+	void generaEscena();
 		
-
+	RocketListener* rocketL;
 protected:
-	EscenaAjedrez* escenaMV;
-	    ObjetoOgre* tablero;
+	//EscenaAjedrez* escenaMV;
+	    ObjetoOgre* objetoInicio;
+		
+		std::vector<ObjetoOgre*> listaNodos;
+		//[36] ;
+
 
 private:
   //  CEGUI::Window *ventanaEmergente;
-    Ogre::RenderWindow* mWindow;
+  //  Ogre::RenderWindow* mWindow;
     bool camaraIzquierda;
     bool camaraDerecha;
     bool modoCamara;
-    Ogre::SceneNode* mTarget;
-    Ogre::Camera* mCamera;
-     Ogre::RaySceneQuery *mRaySceneQuery;
-	 	ObjetoEscena* objEscena;
+   
+	 //	ObjetoEscena* objEscena;
 
 };
 

@@ -5,14 +5,14 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
-//#include "ObjetoEscena.h"
-#include "Casilla.h"
-#include "FichaAlfil.h"
-#include "FichaCaballo.h"
-#include "FichaTorre.h"
-#include "FichaReina.h"
-#include "FichaRey.h"
-#include "FichaPeon.h"
+#include "ObjetoEscena.h"
+//#include "Casilla.h"
+//#include "FichaAlfil.h"
+//#include "FichaCaballo.h"
+//#include "FichaTorre.h"
+//#include "FichaReina.h"
+//#include "FichaRey.h"
+//#include "FichaPeon.h"
 #include "../Modelo/Modelo.h"
 
 #define NEGRAS 1 << 1  // Mascara para objetos de tipo 1
@@ -45,32 +45,36 @@ enum enColummas{
 };
 
 
-class TableroMV : public ObjetoEscena
+class TableroMV //: public ObjetoEscena
 {
 public:
 
     ~TableroMV(void);
-    //constructor de copia
-    TableroMV(const TableroMV& TableroMVOriginal, std::string nombre, int tipo);
-    //void creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask);
-    int tipo_TableroMV;
-    bool esNegra;
+
+//    int tipo_TableroMV;
+ //   bool esNegra;
 	bool seleccionada;
-    void apaga();
-    void ilumina();
+  
 
 	  int getAlPaso();
     void setAlPaso(int casilla);
-    Casilla* getCasillaSeleccionada();
-    Casilla* getCasillaSobrevolada();
-    void setCasillaSeleccionada(Casilla* nodo);
-    void setCasillaSobrevolada(Casilla* nodo);
+    ObjetoEscena* getCasillaSeleccionada();
+    ObjetoEscena* getCasillaSobrevolada();
+    void setCasillaSeleccionada(ObjetoEscena* nodo);
+    void setCasillaSobrevolada(ObjetoEscena* nodo);
     void setCasillaSeleccionada(int posicion);
     void setCasillaSobrevolada(int posicion);
-	    TableroMV(std::string nombre, int tipo);
+	    TableroMV();
 			void creaPiezas();
 			Modelo* modelo;
 			    void creaCasillas();
+				 void actualizaTablero();
+
+				 		std::vector<ObjetoEscena*> listaNodos;
+						
+						
+						ObjetoEscena* objetoPadre;
+				//	std::vector<ObjetoEscena*> listaNodos;
 
 protected:
 private: 
@@ -87,8 +91,8 @@ private:
    // bool muerta;
     //int casilla[2];
 	int alPaso;
-    Casilla* casillaSeleccionada;
-    Casilla* casillaSobrevolada;
+    ObjetoEscena* casillaSeleccionada;
+    ObjetoEscena* casillaSobrevolada;
 
 	    bool fichaSeleccionada;
 		int peonesPromocionados;

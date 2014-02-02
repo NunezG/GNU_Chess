@@ -2,7 +2,7 @@
 #define __ObjetoEscena_
 #include <iostream>
 #include <vector>
-
+#include <string>
 //#include "ObjetoOgre.h"
 
 /*
@@ -19,6 +19,13 @@ struct ListaPosiciones{
     int posicion[2];
 };
 */
+
+
+struct posicion{
+    int Fila;
+    int Columna;
+
+};
 
 #define CASILLA 1 << 0  // Mascara para el escenario
 #define NEGRAS 1 << 1  // Mascara para objetos de tipo 1
@@ -40,22 +47,31 @@ public:
 	//bool seleccionada;
     //void apaga();
     ///void ilumina();
-	  std::string getNombre();
-	ObjetoEscena* getHijo(int numero);
-    ObjetoEscena* getHijo(std::string posicion);
+	 virtual std::string getNombre();
+	virtual ObjetoEscena* getHijo(int numero);
+  virtual  ObjetoEscena* getHijo(std::string posicion);
 	 std::string nombreMalla;
 		std::vector<ObjetoEscena*> vectorHijos;
 			int mask;
 			int xRel;
 			int yRel;
+		virtual	void setPosicion(int posFila, int posCol);
+    virtual posicion getPosicion();
+			posicion posInView;
+			int posInModel;
 
-				std::string materialName;
+				std::string materialNames[2];
 
-	void eliminaHijo(int hijo);
-    void agregaHijo(ObjetoEscena* objetoHijo);
-    bool sinHijos();
+			virtual void creaHijo(std::string name, int mask, std::string mesh, std::string materials[2]) = 0;
+
+				//void creaHijo(std::string nombre);
+	virtual void eliminaHijo(int hijo);
+    virtual void agregaHijo(ObjetoEscena* objetoHijo);
+   virtual bool sinHijos();
 		 int rotate;
-	ObjetoEscena( std::string nombre, int mascara, std::string meshName, std::string material);
+	ObjetoEscena( std::string nombre, int mascara, std::string meshName, std::string materials[2]);
+		std::string nombreObjeto;
+		   virtual void cambiaMaterial(int material) = 0;
 
 
 protected:
@@ -73,7 +89,6 @@ private:
    //  Stack<byte> ValidMoves; // lista de movimientos válidos
    // bool muerta;
     //int casilla[2];
-	std::string nombreObjeto;
 
 
     //ObjetoOgre* objetoOgreAsociado;

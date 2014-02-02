@@ -1,17 +1,22 @@
 #ifndef __MenuRocket_
 #define __MenuRocket_
 
-#include "BaseVistas.h"
+#include "BaseListeners.h"
 
-class MenuRocket : public BaseVistas
+class MenuRocket : public BaseListeners
 {
 public:
-    MenuRocket(ModeloVista* modeloV, Ogre::RenderWindow* mWindow);//Ventana* mFrameListener);
+    MenuRocket(RocketListener* vistaOgre);//Ventana* mFrameListener);
     ~MenuRocket(void);
 
    // CEGUI::FrameWindow* createGUI(void);
     //bool salir();
     bool pantallaInicio();
+
+
+				void createOverlay();
+
+	void ProcessEvent(Rocket::Core::Event& event);
 
 
 	

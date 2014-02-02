@@ -1,19 +1,13 @@
 #include "../../headers/ModeloVista/Casilla.h"
 
-Casilla::Casilla(std::string nombre, std::string material) : ObjetoEscena(nombre, CASILLA, "Casilla", material)
-   , esNegra(0)
+Casilla::Casilla(std::string nombre, std::string material) :// ObjetoEscena(nombre, CASILLA, "Casilla", material, )
+    esNegra(0)
   //, seleccionada(0)
 {
 }
 
 Casilla::~Casilla()
 {   
-}
-
-
-std::string Casilla::getNombre()
-{
-    return nombreObjeto;
 }
 
 
@@ -32,22 +26,22 @@ void Casilla::setPosicion(int posFila, int posCol)
 void Casilla::apagaCasilla()
 {
   //  getNodoOgre()->showBoundingBox(false);
-   /* if (!esNegra)
+    if (!esNegra)
     {
-        cambiaMaterial("MaterialCasillaBlanca");
+      //  materialName = ("MaterialCasillaBlanca");
     }
-    else cambiaMaterial("MaterialCasillaNegra");
-	*/
+	else {}//materialName = ("MaterialCasillaNegra");
+	
 }
 
 void Casilla::iluminaCasilla()
 { 
  //   getNodoOgre()->showBoundingBox(true);
-  /*
+  
     if (esNegra)
     {
-        cambiaMaterial("MaterialCasillaNegraIlum");
+        //materialName = ("MaterialCasillaNegraIlum");
     }
-    else cambiaMaterial("MaterialCasillaBlancaIlum");
-	*/
+	else{}// materialName = ("MaterialCasillaBlancaIlum");
+	
 }
