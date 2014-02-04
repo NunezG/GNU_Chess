@@ -347,11 +347,13 @@ bool MenuRocket::pantallaConfig()
 
 			Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/options.rml");
 			Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+			
+										std::cout << "document->GetId();: "<< document->GetId().CString() <<std::endl;
+
+
 			document->Show();
 		document->RemoveReference();
-			// Load the window, and if successful close the old window.
-			//if (LoadWindow(values[1]))
-				event.GetTargetElement()->GetOwnerDocument()->Close();
+			
 		}
 		else 
 		if (element->GetId().CString() == std::string("twoPlayer"))
@@ -363,6 +365,9 @@ bool MenuRocket::pantallaConfig()
 							//mWindow->setVisible(false);
 			//Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/game.rml");
 			//Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+							// Load the window, and if successful close the old window.
+			//if (LoadWindow(values[1]))
+			//	event.GetTargetElement()->GetOwnerDocument()->Close();
 
 		}else if (element->GetId().CString() == std::string("onePlayer"))
 		{
@@ -371,7 +376,7 @@ bool MenuRocket::pantallaConfig()
 							vistaOgre->modeloVista->reiniciar = true;
 
 							//mWindow->setVisible(false);
-
+ 
 			//Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/start_game.rml");
 			//Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
 
@@ -387,10 +392,31 @@ bool MenuRocket::pantallaConfig()
 			//LoadWindow(values[1]);
 		}
 		
-		else
+		else 
+		if (element->GetId().CString() == std::string("accept"))
 		{
-			//if (event_handler != NULL)
-				//event_handler->ProcessEvent(event, commands[i]);
+				std::cout << "acceptacceptacceptacceptaccept:  "<<std::endl;
+				 Rocket::Controls::ElementFormControlSelect* select = static_cast<Rocket::Controls::ElementFormControlSelect*>(context->GetDocument("options")->GetElementById("resolution"));
+				 				std::cout << "acceptacceptac222222ceptacceptaccept:  "<<   select->GetSelection()   <<std::endl;
+												 				std::cout << "acceptacceptaccweeeeeeeeeeeaccept:  "<<   select->GetValue().CString()   <<std::endl;
+	//std::cout << "444444444cweeeeeeeeeeeaccept:  "<<   		select->GetElementById(""+select->GetSelection())->GetId().CString()<<std::endl;
+context->GetDocument("options")->Close();
+								
+		//	vista->c
+
+			// Load the window.
+			//LoadWindow(values[1]);
+		}else 
+		if (element->GetId().CString() == std::string("cancel"))
+		{
+				std::cout << "cancelcancelcancelcancelcancelcancel:  "<<std::endl;
+				context->GetDocument("options")->Close();
+
+
+		//	vista->c
+
+			// Load the window.
+			//LoadWindow(values[1]);
 		}
 	//}
 }

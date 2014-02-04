@@ -18,6 +18,8 @@ bool Movimientos::generaMovimientos(ModeloTablero* miTablero)
             //  int casilla = (i*12)+y;
             char valorCasilla = miTablero->casillasInt[i];
             
+			if (miTablero->turnoN) valorCasilla = -valorCasilla;
+
            if (valorCasilla > 0)
            { 
                 miTablero->jugada[0] = i;
@@ -26,7 +28,7 @@ bool Movimientos::generaMovimientos(ModeloTablero* miTablero)
 				bool resultado = false;
 				switch (tipoFicha(valorCasilla))
 				{
-				case Rey:
+				case (Rey):
 
 					//ENCUENTRA REY
 				resultado = mueveRey(miTablero);
@@ -254,16 +256,14 @@ bool Movimientos::recorreCasillas(ModeloTablero* miTablero, unsigned char salto)
     
     if (miTablero->casillasInt[nuevaCasilla] != 99)
     {
-        if(miTablero->casillasInt[nuevaCasilla] < 0)
+        if((!miTablero->turnoN && miTablero->casillasInt[nuevaCasilla] < 0) || (miTablero->turnoN && miTablero->casillasInt[nuevaCasilla] > 0))
         {     //encuentra ficha  enemiga
             miTablero->jugada[1] = nuevaCasilla;
             nuevoMovimiento(miTablero);
             mueveFicha = true;
         }
-        else if(miTablero->casillasInt[nuevaCasilla] > 0)
+        else if((!miTablero->turnoN && miTablero->casillasInt[nuevaCasilla] > 0) || (miTablero->turnoN && miTablero->casillasInt[nuevaCasilla] < 0))
         {
-
-            //NO PONER NEGATIVO?? HACER EN LISTA O VECTOR PARA QUE HAYA TAMAÑO??
             //encuentra ficha  amiga
             miTablero->jugada[1] = nuevaCasilla;
 
@@ -385,15 +385,18 @@ void  Movimientos::nuevoMovimiento(ModeloTablero *miTablero)
 
     int valorAtaque = miTablero->casillasInt[miTablero->jugada[0]] + miTablero->casillasInt[miTablero->jugada[1]];
 
+	if (miTablero->turnoN) valorAtaque = -valorAtaque;
     //cuanto menor sea el valor, mejor
     if (miTablero->casillasInt[jugada[1]] != 0 && valorAtaque != 0)
     {       
-        if (valorAtaque < 0){
+        if (valorAtaque < 0)
+		{
 
             miTablero->vectorJugadas.push_back(jugada);
         }
 
-        else if (valorAtaque > 0) {
+        else if (valorAtaque > 0) 
+		{
             miTablero->vectorJugadasPeores.push_back(jugada);
         }
     }else miTablero->vectorJugadasNormales.push_back(jugada);

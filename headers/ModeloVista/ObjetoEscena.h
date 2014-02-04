@@ -51,32 +51,40 @@ public:
 	virtual ObjetoEscena* getHijo(int numero);
   virtual  ObjetoEscena* getHijo(std::string posicion);
 	 std::string nombreMalla;
-		std::vector<ObjetoEscena*> vectorHijos;
 			int mask;
 			int xRel;
 			int yRel;
+			int idGrupo;
 		virtual	void setPosicion(int posFila, int posCol);
     virtual posicion getPosicion();
-			posicion posInView;
 			int posInModel;
+			   virtual void trasladar(int x, int z) = 0;
 
-				std::string materialNames[2];
 
 			virtual void creaHijo(std::string name, int mask, std::string mesh, std::string materials[2]) = 0;
 
 				//void creaHijo(std::string nombre);
 	virtual void eliminaHijo(int hijo);
     virtual void agregaHijo(ObjetoEscena* objetoHijo);
-   virtual bool sinHijos();
-		 int rotate;
+   virtual int numHijos();
 	ObjetoEscena( std::string nombre, int mascara, std::string meshName, std::string materials[2]);
 		std::string nombreObjeto;
 		   virtual void cambiaMaterial(int material) = 0;
+		   virtual void rota(int grados) = 0;
 
 
 protected:
+			   						 int rotate;
+
+				posicion posInView;
+
+				std::vector<ObjetoEscena*> vectorHijos;
+						 				std::string materialNames[2];
+
+
 
 private: 
+
    // virtual bool setCasilla(int fila, int col);
    // bool salto;
   //  bool Selected;

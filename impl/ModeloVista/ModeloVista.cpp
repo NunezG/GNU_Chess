@@ -195,15 +195,17 @@ bool ModeloVista::getTurnoNegras()
 }
 void ModeloVista::aplicaCambio()
 {
+	escenaMV->getTablero()->setCasillaSeleccionada(-1);
 
 										   	std::cout << "aplicaCambio"<<std::endl;
-
     //MUEVE FICHA Y A LA VEZ COMPRUEBA EL FIN DE PARTIDA O SI EL JUGADOR CONTRARIO ESTA EN JAQUE JUSTO DESPUES DE MOVER FICHA
     bool resultado = JugadorActivo->aplicaSeleccion();
+											   	//std::cout << "resultado: "<<resultado<<std::endl;
 
     if (resultado == true)
     {//FICHA MOVIDA
-        if (getNumPantalla() == 1){
+        if (getNumPantalla() == 1)
+		{
             escenaMV->rotaCamara = 180;
 													   	std::cout << "rotacamara"<<std::endl;
 

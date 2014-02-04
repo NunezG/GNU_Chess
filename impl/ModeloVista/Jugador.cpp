@@ -44,11 +44,12 @@ bool Jugador::casillaSobrevolada(const std::string nombreCasilla)
 
            std::cout << "CAMBIA LA CASILLA SOBREVOLADA: " << std::endl;
          escenaMV->getTablero()->setCasillaSobrevolada(casillaSobre);
+		            std::cout << "CAMBIA Lfin" << std::endl;
 
         return true;
     }
 
-			  						std::cout << "algo val mal en casillasobrevolada"<<std::endl;
+			  						std::cout << "no cambia de casilla"<<std::endl;
 
     return false;
 }
@@ -113,6 +114,8 @@ bool Jugador::iniciaTurno()
 
 bool Jugador::aplicaSeleccion()
 {
+
+
     //ATUALIZA EL TABLERO DE LA VISTA
      escenaMV->apagaVentanaEmergente();
      modelo->mueveTablero();

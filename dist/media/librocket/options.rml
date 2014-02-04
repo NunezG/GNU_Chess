@@ -26,7 +26,7 @@
 			}
 		</style>
 	</head>
-	<body template="window" onload="restore">
+	<body template="window" onload="restore" id="options">
 		<form onsubmit="store; goto main_menu">
 			<div>
 				<p>
@@ -38,25 +38,20 @@
 				<p>
 					Resolution:<br />
 					
-					<select name="algorithm">
-						<option fields="algorithms">Algorithms:</option>
-						<option value="640x480">640x480</option>
-						<option value="1024x768">1024x768</option>
-						<option value="1080x1024">1080x1024</option>
-						<option value="1920x1080">1920x1080</option>
+					<select name="resolution" id="resolution">
+						<option id=1 value="640x480">640x480</option>
+						<option id=2 value="1024x768" selected="true">1024x768</option>
+						<option id=3 value="1080x1024">1080x1024</option>
+						<option id=4 value="1920x1080">1920x1080</option>
 					</select>
-					
-					<input id="1024x768" type="radio" name="resolution" value="1024x768" /> 1024x768<br />
-					<input id="1080x1024" type="radio" name="resolution" value="1080x1024" checked="true" /> 1080x1024<br />
-					<input id="1920x1080" type="radio" name="resolution" value="1920x1080" onchange="bad_graphics" /> 1920x1080<br />
 					<input id="fullscreen" type="checkbox" name="fullscreen" value="false" /> Full Screen
 				</p>
 				<p>
 				
 </p>
 			</div>
-			<input type="submit" value="accept">Accept</input>
-			<input type="submit" value="cancel">Cancel</input>
+			<input type="submit" id="accept">Accept</input>
+			<input type="submit" id="cancel">Cancel</input>
 		</form>
 	</body>
 </rml>

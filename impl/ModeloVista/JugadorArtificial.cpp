@@ -47,7 +47,7 @@ bool JugadorArtificial::aplicaSeleccion()
     inicial.Columna = (modelo->jugadaElegida[0]%12)-2;
     final.Fila = (modelo->jugadaElegida[1]/12)-2;
     final.Columna = (modelo->jugadaElegida[1]%12)-2;
-
+	/*
     if (modelo->tableroModelo->turnoN)
     {//INVIERTE
           inicial.Fila = 7-inicial.Fila;
@@ -55,9 +55,9 @@ bool JugadorArtificial::aplicaSeleccion()
           final.Fila = 7-final.Fila;
           final.Columna =  7-final.Columna;  
       }
-
-    escenaMV->getTablero()->setCasillaSeleccionada((inicial.Fila * 8) + inicial.Columna);
-    escenaMV->getTablero()->setCasillaSobrevolada((final.Fila* 8) + final.Columna);
+	  */
+   // escenaMV->getTablero()->setCasillaSeleccionada((inicial.Fila * 8) + inicial.Columna);
+   // escenaMV->getTablero()->setCasillaSobrevolada((final.Fila* 8) + final.Columna);
 
     return Jugador::aplicaSeleccion();
 }

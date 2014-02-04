@@ -18,7 +18,7 @@ ModeloTablero::ModeloTablero(std::string posicion) :
 
 
 int i = 0;
-
+int fichaInt;
 
     //AÑADE LOS BORDES
     for (int i = 0; i<12; i++)
@@ -36,9 +36,73 @@ int i = 0;
 
             }else
             {
+             		
+	switch (posicion[((i-2)*8)+y-2])
+	{	
+	case 'a':
+						fichaInt = tipoFicha::Peon;
 
+	break;
+	case 'b':
+						fichaInt = tipoFicha:: Torre;
 
-			casillasInt[(i*12)+y] =	posicion[((i-2)*8)+y-2];
+       	break;
+	case 'c':
+						fichaInt = tipoFicha::Caballo;
+
+		
+	break;
+	case 'd':
+						fichaInt = tipoFicha::Alfil;
+
+		
+	break;
+	case 'e':
+						fichaInt = tipoFicha::Reina;
+
+		
+	break;
+	case 'f':
+						fichaInt = tipoFicha::Rey;
+
+	break;
+	case 'z':
+						fichaInt = -tipoFicha::Peon;
+
+	
+	break;
+	case 'y':
+						fichaInt = -tipoFicha::Torre;
+
+		
+	break;
+	case 'x':
+						fichaInt = -tipoFicha::Caballo;
+
+		
+	break;
+	case 'w':
+						fichaInt = -tipoFicha::Alfil;
+
+		
+	break;
+	case 'v':
+						fichaInt = -tipoFicha::Reina;
+
+		
+	break;
+	case 'u':
+							fichaInt = 	-tipoFicha::Rey;
+		
+	break;
+	default:
+		fichaInt = tipoFicha::Vacio;
+		break;
+	}
+				
+				
+
+			casillasInt[(i*12)+y] =	fichaInt;
 
 
 			}
@@ -51,44 +115,6 @@ int i = 0;
 			 nombreObjeto = "";
 
 			
-	switch (*it)
-	{	
-	case 'a':
-
-	break;
-	case 'b':
-       	break;
-	case 'c':
-		
-	break;
-	case 'd':
-		
-	break;
-	case 'e':
-		
-	break;
-	case 'f':
-	
-	break;
-	case 'z':
-	
-	break;
-	case 'y':
-		
-	break;
-	case 'x':
-		
-	break;
-	case 'w':
-		
-	break;
-	case 'v':
-		
-	break;
-	case 'u':
-		
-	break;
-	}
 
 }
 */
@@ -139,7 +165,7 @@ ModeloTablero::ModeloTablero( const ModeloTablero& original, int casInicial, int
 		//	std::cout << "DIF "<<dif<<std::endl;
 
             //SOLO SI LA PROTEGIDA ES MAYOR QUE LA PRIMERA
-            if (dif > 0)
+            if ((!turnoN && dif > 0) || (turnoN && dif < 0))
             {
                 valorDefensivo = valorDefensivo + dif;
             }         
@@ -260,28 +286,35 @@ void ModeloTablero::cambiaTurno()
 
         turnoN = !turnoN;
 
+        jugada[0] = 0;
+        jugada[1] = 0;
+    }
+}
+
+char* ModeloTablero::invierteTablero(char casillas[144])
+{
         char casillasTemp[144];
         //NORMALIZA EL TABLERO PARA EL CAMBIO DE TURNO
-        for(int y=0; y<12;y++)
+       for(int y=0; y<12;y++)
         {
             for(int i=0; i<12;i = i++)
             {
                 //INVIERTE EL SIGNO DE LAS FICHAS Y LA POSICION DE LA FILA
-                if (casillasInt[(i*12)+y] != 99)
+                if (casillas[(i*12)+y] != 99)
                 {
-                    casillasTemp[((11-i)*12)+11-y] = -casillasInt[(i*12)+y];
+                    casillasTemp[((11-i)*12)+11-y] = -casillas[(i*12)+y];
                 }
                 else casillasTemp[(i*12)+y] = 99;
             }
         }
 
-        for(int i=0; i<144;i++) 
-            casillasInt[i] = casillasTemp[i];
+       // for(int i=0; i<144;i++) 
+       //     casillas[i] = casillasTemp[i];
+		
+		return casillasTemp;
       
-        jugada[0] = 0;
-        jugada[1] = 0;
-    }
 }
+
 
 bool ModeloTablero::evaluaJaque()
 {

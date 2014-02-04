@@ -49,98 +49,7 @@ VistaAjedrez::~VistaAjedrez(void)
 
 void VistaAjedrez::actualizaNodo()
 {
-//	std::cout << "actualizaNodo: "<< nodo->getNombre()<<std::endl;
-/*
-	ObjetoEscena* objEsc;
 
-						ObjetoOgre* objToRemove;
-														std::cout << "actualizaNodo"<<std::endl;
-												std::cout << "actualizaNodo2: " <<vistaOgre->modeloVista->escenaMV->getTablero()->vectorHijos.size() <<std::endl;
-														
-												std::cout << "listaNodos.size()"<<    listaNodos.size()<<std::endl;
-
-														//recorre casillas
-	for (int i = 0; i < vistaOgre->modeloVista->escenaMV->getTablero()->vectorHijos.size(); i++)
-	{
-				//misma casilla de la escena de modelovista, la buena
-		objEsc = vistaOgre->modeloVista->escenaMV->getTablero()->getHijo(i);
-
-		//misma casilla de la escena de la vista, puede estar desactualizada
-				objToRemove = objetoInicio->getHijo(objEsc->getNombre());
-
-																std::cout << "nodo casilla: "<<    objEsc->getNombre()<<std::endl;
-																std::cout << "nodo casilla objEsc->sinHijos() : "<<    objEsc->sinHijos() <<std::endl;
-
-																	std::cout << "nodo casilla 2: "<<    objToRemove->getNombre()<<std::endl;
-																		std::cout << "nodo casilla 2 objToRemove->sinHijos() : "<<    objToRemove->sinHijos() <<std::endl;
-
-
-														std::cout << "bukibuko"<<std::endl;
-		if( (!objEsc->sinHijos() && objToRemove->sinHijos()) || (objEsc->sinHijos() && !objToRemove->sinHijos()) || (!objEsc->sinHijos() && !objToRemove->sinHijos() && objToRemove->getHijo(0)->getNombre() != objEsc->getHijo(0)->getNombre()))
-		{
-																	std::cout << "fffuuuuuu"<<std::endl;
-
-			if (!objEsc->sinHijos())
-			{
-
-				
-						
-						std::cout << "forr "<<  listaNodos.size() <<std::endl;
-				ObjetoOgre* nodo;
-			 for (std::vector<ObjetoOgre*>::iterator it = listaNodos.begin(); it!=listaNodos.end(); it++)
-				 {
-
-					 //casilla anterior de la vista donde se encuentra el nodo a mover
-				nodo = *it;
-				std::cout << "objEsc->getHijo(0)->getNombre()    "<<    objEsc->getHijo(0)->getNombre() <<std::endl;
-						std::cout << "nodo->->getNombre()    "<<   nodo->getNombre()  <<std::endl;
-
-				if (nodo->getNombre() == objEsc->getHijo(0)->getNombre())
-				{
-					ObjetoOgre* nodoFicha = nodo;
-							std::cout << "seeeeeeeeeeeeeep"<<std::endl;        
-					if (!objToRemove->sinHijos()) objToRemove->eliminaHijo(0);
-					//nodo->eliminaHijo(0);
-					objToRemove->agregaHijo(nodoFicha);
-
-				} else if (!nodo->sinHijos() && nodo->getHijo(0)->getNombre() == objEsc->getHijo(0)->getNombre())
-					nodo->eliminaHijo(0);
-				}
-
-			}else 
-			{
-																									std::cout << "erp drp vistaaaajj"<<std::endl;
-
-						objToRemove->eliminaHijo(0);
-
-			}
-		}
-
-								std::cout << "cambiamateriaenvistaa "<<std::endl;
-
-		objetoInicio->getHijo(i)->cambiaMaterial(objEsc->materialName);
-		
-
-		if (!objetoInicio->getHijo(i)->sinHijos())
-			objetoInicio->getHijo(i)->getHijo(0)->cambiaMaterial(objEsc->getHijo(0)->materialName);
-
-						std::cout << "fin bucle"<<std::endl;
-										
-}
-	std::cout << "fin actualizaNodo"<<std::endl;
-	//ObjetoEscena* objEsc = escenaMV->getTablero()->getHijo(nodo->getNombre());
-
-		//std::cout << "actualizaNodo222: "<< objEsc->getNombre()<<std::endl;
-
-				//std::cout << "actualizaNodo333: "<< nodo->getHijo(0)->getNombre()<<std::endl;
-								//std::cout << "actualizaNodomat: "<< nodo->getHijo(0)->materia<<std::endl;
-
-		//std::cout << "actualizaNodo444: "<< objEsc->getHijo(0)->getNombre()<<std::endl;
-			//	std::cout << "actualizaNodoMAT: "<< objEsc->getHijo(0)->materialName<<std::endl;
-
-
-		
-*/
 
 
 }
@@ -283,6 +192,18 @@ bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
 
     return true;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 //void VistaAjedrez::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& ROCKET_UNUSED(skipThisInvocation))
 //{

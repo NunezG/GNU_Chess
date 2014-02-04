@@ -83,26 +83,38 @@ void TableroMV::setCasillaSobrevolada(ObjetoEscena* nodo)
 
 void TableroMV::setCasillaSeleccionada(int posicion)
 {
-				   	std::cout << "setCasillaSeleccionada por posicion"<<std::endl;
+				   	std::cout << "setCasillaSeleccionada por posicion: "<<   posicion<<std::endl;
 
     if (posicion < 0)
     {
+											   	std::cout << "setcasisis"<<std::endl;
+
         fichaSeleccionada = false;
-        ObjetoEscena* ficha = casillaSeleccionada->getHijo(0);
+      if(casillaSeleccionada != 0 && casillaSeleccionada->numHijos() > 0) 
+	  {
+		  ObjetoEscena* ficha = casillaSeleccionada->getHijo(0);
         ficha->cambiaMaterial(0);
-        // casillaSeleccionada->apagaCasilla();
+        casillaSeleccionada->cambiaMaterial(0);
         casillaSeleccionada = 0;
+		casillaSobrevolada->cambiaMaterial(0);
+	  }
 									   	std::cout << "fin setcasisis"<<std::endl;
 
     }
     else 
 		
 		{
+												   	std::cout << " setca22222sisis"<<std::endl;
+
 			casillaSeleccionada =objetoPadre->getHijo(posicion);
-    
+    										   	std::cout << "casillaSeleccionada"<<   casillaSeleccionada->getNombre()<<std::endl;
+
     fichaSeleccionada = true;
     ObjetoEscena* ficha = casillaSeleccionada->getHijo(0);
+	    										   	std::cout << "ficha"<<   ficha->getNombre()<<std::endl;
+
     ficha->cambiaMaterial(1);
+										   	std::cout << "fin setcasis33333is"<<std::endl;
 
 	}
 
@@ -148,7 +160,7 @@ void TableroMV::creaCasillas()
         {
 
 			materials[0] = "MaterialCasillaNegra";
-			materials[1] = "MaterialCasillaNegraIluminada";
+			materials[1] = "MaterialCasillaNegraIlum";
 
           //  objeto->esNegra = true;
 
@@ -156,7 +168,7 @@ void TableroMV::creaCasillas()
            // objeto->cambiaMaterial("MaterialCasillaNegra");
         }else {
 			materials[0] = "MaterialCasillaBlanca";
-			materials[1] = "MaterialCasillaBlancaIluminada";
+			materials[1] = "MaterialCasillaBlancaIlum";
 
 		}
 
@@ -168,10 +180,10 @@ void TableroMV::creaCasillas()
         objeto->setPosicion(contFila, contColumna);
 		objeto->yRel = -10*contFila;
 		objeto->xRel = -10*contColumna;
-       // objeto->trasladar(-10*contFila,-10*contColumna);
+       objeto->trasladar(-10*contFila,-10*contColumna);
 	//	listaNodos.push_back(objeto);
 		listaNodos.push_back(objeto);
-        objetoPadre->agregaHijo(objeto);
+       // objetoPadre->agregaHijo(objeto);
 
         if (contColumna == COL_H)
         {
@@ -296,9 +308,11 @@ void TableroMV::creaPiezas()
 	{
 	    materials[0] = "MaterialFichaBlanca";
 	    materials[1] = "MaterialFichaBlancaIluminada";
+
 	}else{
 	    materials[0] = "MaterialFichaNegra";
 	    materials[1] = "MaterialFichaNegraIluminada";
+		tipoFicha = -tipoFicha;
 	}
 
 														    std::cout << "crea nuevaFicha"<<std::endl;
@@ -307,16 +321,24 @@ void TableroMV::creaPiezas()
 
 		// Ficha* nuevaFicha = new Ficha(nombreObjeto.str(), mask, meshName, materialName);
 													   
-			std::cout << "agregaHijo3"<<std::endl;
+			std::cout << "agregaHijo: "<< i<<std::endl;
+
+						std::cout << "listaNodos.at(i)->getNombre()"<< listaNodos.at(i)->getNombre()  <<std::endl;
+
+
+									std::cout << " objetoPadre->getHijo(i) getnombr"<<  objetoPadre->getHijo(i)->getNombre() <<std::endl;
 
 	 objetoPadre->getHijo(i)->creaHijo(nombreObjeto.str(), mask, meshName, materials);
 	 ObjetoEscena* nuevaFicha = objetoPadre->getHijo(i)->getHijo(nombreObjeto.str());
+	 	nuevaFicha->idGrupo = tipoFicha;
 
 
 	//  nuevaFicha->tipo_Ficha= tipoFicha;
-		 nuevaFicha->rotate = rotation;
+		nuevaFicha->rota(rotation);
 		 nuevaFicha->xRel = move;	
-		 	nuevaFicha->yRel = move;		 			
+		 	nuevaFicha->yRel = move;	
+			nuevaFicha->trasladar(move, move);
+
 
 
 	//do_things_with(*it);
@@ -334,7 +356,7 @@ void TableroMV::actualizaTablero()
 {  
 																   	std::cout << "actualizaTablero" <<std::endl;
 	
-																		setCasillaSeleccionada(-1);
+																	//	setCasillaSeleccionada(-1);
 
 																	ObjetoEscena* objEsc;
 
@@ -350,7 +372,7 @@ void TableroMV::actualizaTablero()
 	 std::cout << "modelo->jugadaElegida[0]"<< (int)modelo->jugadaElegida[0] <<std::endl;
 	 	 std::cout << "modelo->jugadaElegida[1]"<< (int)modelo->jugadaElegida[1] <<std::endl;
 
-
+/*
 	  posicion inicial;
     posicion final;
 
@@ -358,7 +380,7 @@ void TableroMV::actualizaTablero()
     inicial.Columna = (modelo->jugadaElegida[0]%12)-2;
     final.Fila = (modelo->jugadaElegida[1]/12)-2;
     final.Columna = (modelo->jugadaElegida[1]%12)-2;
-
+*/
 	//POSICION INICIAL EN EL TABLERO NUEVO (inicial.Fila * 8) + inicial.Columna
 
 
@@ -369,14 +391,14 @@ void TableroMV::actualizaTablero()
 
 					 //casilla anterior de la vista donde se encuentra el nodo a mover
 			//	ObjetoEscena* nodo = *it;
-											ObjetoEscena* nodo = objetoPadre->getHijo((inicial.Fila * 8) + inicial.Columna);
-										objEsc = objetoPadre->getHijo((final.Fila * 8) + final.Columna);
+										//	ObjetoEscena* nodo = objetoPadre->getHijo((inicial.Fila * 8) + inicial.Columna);
+									//	objEsc = objetoPadre->getHijo((final.Fila * 8) + final.Columna);
 
 			//	if (!nodo->sinHijos() && static_cast<Ficha*>(nodo->getHijo(0))->tipo_Ficha ==  modelo->tableroModelo->casillasInt[(i*12)+y])
 			//	{
 
 										 					  	std::cout << "parece que va a cambiar algo pachi" <<std::endl;
-
+/*
 					ObjetoEscena* nodoFicha = nodo->getHijo(0);
 															 					  	std::cout << "1" <<std::endl;
 
@@ -390,7 +412,7 @@ void TableroMV::actualizaTablero()
 					objEsc->agregaHijo(nodoFicha);
 																				 					  	std::cout << "4" <<std::endl;
 
-
+*/
 			//	}
 
 
@@ -398,57 +420,106 @@ void TableroMV::actualizaTablero()
 
 
 
-
+// se puede hacer manipulando la posicion de la ficha en objetoescena y actualizandola en cada movimiento,
+// asi se puede tener una lista de nodos desactualizados comparandolos ese valor con el valor que hay en esa posicion del tablero 
+// (que nunca sera reemplazado por otro igual). Luego habria que buscar la nueva posicion en el tablero, siempre que no haya dos fichas del mismo tipo
+// cambiadas a la vez
 
 	for (int i = 2; i < 10; i++)
 	{
-		for (int y = 2; i < 10; i++)
+		for (int y = 2; y < 10; y++)
 		{
-																		   	std::cout << "fofito" <<std::endl;
-																	   	std::cout << ((i-2)*8)+y-2<<std::endl;
-																					   	std::cout << "frente a" <<std::endl;
-														   	std::cout << (i*12)+y<<std::endl;
-
-
-
+																		   
+//					casilla a mirar
 				objEsc = objetoPadre->getHijo(((i-2)*8)+y-2);
+
+
+					std::cout << "fofito" <<std::endl;
+																	   	//std::cout <<  objetoPadre->getHijo(((i-2)*8)+y-2)->getPosicion().Fila<<std::endl;
+																		//   	std::cout <<  objetoPadre->getHijo(((i-2)*8)+y-2)->getPosicion().Columna<<std::endl;
+
+																		
+															//			std::cout << "frente a" <<std::endl;
+														 //  	std::cout << (i-2)<<std::endl;
+															//	   	std::cout << y-2<<std::endl;
+
 
 				// (!objEsc->sinHijos() && objToRemove->sinHijos()) || (objEsc->sinHijos() && !objToRemove->sinHijos()) || (!objEsc->sinHijos() && !objToRemove->sinHijos() && objToRemove->getHijo(0)->getNombre() != objEsc->getHijo(0)->getNombre()))
 		
-			if ((objEsc->sinHijos() && modelo->tableroModelo->casillasInt[(i*12)+y] != 0) ||   (i*12)+y == objEsc->getHijo(0)->posInModel)
+		
+			if (objEsc->numHijos() > 0 &&  modelo->tableroModelo->casillasInt[(i*12)+y] != objEsc->getHijo(0)->idGrupo)
 			{
+					std::cout << "ficha a mover " <<  objEsc->getHijo(0)->idGrupo<<  "/" <<  (int)modelo->tableroModelo->casillasInt[(i*12)+y]  <<std::endl;
+										std::cout << "en " <<   (i*12)+y   <<std::endl;
 
-																									   	std::cout << "ffffuuuuu" <<std::endl;
 
+
+				//// AQUI BUSCA OTRA CASILLA EN LA QUE FALTE O SE AÑADA EL MISMO TIPO DE FICHA	
+			
+				//aqui va la ficha encontrada
+  //  posicion final;
+
+   // final.Fila = (modelo->jugadaElegida[1]/12)-2;
+   // final.Columna = (modelo->jugadaElegida[1]%12)-2;
+			
+				ObjetoEscena* objSrch ;
 				
-			if (modelo->tableroModelo->casillasInt[(i*12)+y] == 0)
-			{
+	for (int x = 2; x < 10; x++)
+	{
+		for (int z = 2; z < 10; z++)
+		{
+																			   	std::cout << "for: " <<std::endl;
+
+							objSrch  = objetoPadre->getHijo(((x-2)*8)+z-2);
+
+							int tipoFicha = modelo->tableroModelo->casillasInt[(x*12)+z];
+																   	std::cout << "ffiiichchaa: "<<objSrch->numHijos()  <<std::endl;
+															    	std::cout << "ffiiichchaa22: "<<tipoFicha  <<std::endl;
+													std::cout << "ffiiichchaa33: "<<tipoFicha  <<  "/"  <<   objSrch->numHijos() <<std::endl;
+
+
+
+				if ((x != i || z != y) && objEsc->numHijos() > 0 && tipoFicha == objEsc->getHijo(0)->idGrupo && ((objSrch->numHijos() >0 &&  tipoFicha != objSrch->getHijo(0)->idGrupo) ||(objSrch->numHijos() == 0 &&  tipoFicha != 0)))
+		    {
+						std::cout << "cucu cantaba la rana" <<std::endl;
+
+								ObjetoEscena* nodoFicha = objEsc->getHijo(0);
+															 					  	std::cout << "1" <<std::endl;
+
+																				 					  	std::cout << "2" <<std::endl;
+
+				if (objSrch->numHijos() > 0 )	objSrch->eliminaHijo(0);
+										objEsc->eliminaHijo(0);
+
+																				 					  	std::cout << "3" <<std::endl;
+					objSrch->agregaHijo(nodoFicha);
+
+					//nodo->eliminaHijo(0);
+					
+			}	
+																			   	std::cout << "sigue " <<std::endl;
+		}
+	}
+
+
+			//if (modelo->tableroModelo->casillasInt[(i*12)+y] == 0)
+			//{
 																					std::cout << "erp drp tatataababa"<<std::endl;
 
-				objEsc->eliminaHijo(0);
+			//	objEsc->eliminaHijo(0);
 
-			}
-
+//			}
 
 		}
-
-
 																									   	std::cout << "nanaiii" <<std::endl;
 
 
 //HAY QUE HACER PARA CAMBIO DE FORMA Y ESOOOO !!!!!!!!!!!!!!
 			
-
-
 }
 }
-
-
 
 	}
-
-
-
 
 
 /*

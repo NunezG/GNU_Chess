@@ -19,7 +19,7 @@ public:
 
     void creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask);
 	void eliminaHijo(int hijo);
-    void agregaHijo(ObjetoOgre* objetoHijo);
+    void agregaHijo(ObjetoEscena* objetoHijo);
     void creaHijo(std::string name, int mask, std::string mesh, std::string materials[2]);
 
     void cambiaMaterial(int material);

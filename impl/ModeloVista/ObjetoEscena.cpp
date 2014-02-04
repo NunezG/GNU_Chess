@@ -47,12 +47,14 @@ void ObjetoEscena::eliminaHijo(int hijo)
 {
     //getNodoOgre()->removeChild(hijo);
     vectorHijos.erase(vectorHijos.begin()+hijo);
+
 }
 
 
-bool ObjetoEscena::sinHijos()
+int ObjetoEscena::numHijos()
 {
-    return  vectorHijos.empty();
+    if (vectorHijos.empty()) return 0;
+	else return vectorHijos.size();
 }
 
 void ObjetoEscena::agregaHijo(ObjetoEscena* objetoHijo)

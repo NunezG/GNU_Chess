@@ -240,20 +240,35 @@ bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
 
 			//std::cout << "frameRenderingQueued"<<std::endl;
 		 mKeyboard->capture();
-    mMouse->capture();
+         mMouse->capture();
 
-			 	//std::cout << "cacacacaca"<<std::endl;
 
-	//	if (Ogre::Root::getSingleton().getRenderSystem()->_getViewport()->getOverlaysEnabled())
-//	{
-//		 	std::cout << "Updaterr"<<std::endl;
-	//	context->Update();
-	//		std::cout << "capt22"<<std::endl;
-//		configureRenderSystem();
-	//		std::cout << "capt3333"<<std::endl;
-	//	context->Render();
-//	} else 	std::cout << "sera que no"<<std::endl;
+//poner esto en otro sitio
 
+        if( modeloVista->escenaMV->getCamaraIzquierda())
+            modeloVista->escenaMV->rotaCamara = (18 * evt.timeSinceLastFrame);
+
+        else if ( modeloVista->escenaMV->getCamaraDerecha())
+            modeloVista->escenaMV->rotaCamara = (18 * -evt.timeSinceLastFrame);
+
+        if(modeloVista->escenaMV->rotaCamara != 0)
+        {
+			float fRot = Ogre::Real(80.0f) * evt.timeSinceLastFrame;
+            Ogre::Degree rot = Ogre::Degree(fRot);
+			
+			 Ogre::Degree rotRestante = Ogre::Degree(modeloVista->escenaMV->rotaCamara);
+            //Rota la camara
+            if (rot > rotRestante)
+            {
+                rotacionCamara( rotRestante);
+               modeloVista->escenaMV->rotaCamara = Ogre::Real(0.0f);
+            }
+            else
+            {
+                rotacionCamara(rot);
+                modeloVista->escenaMV->rotaCamara = modeloVista->escenaMV->rotaCamara - fRot;
+            }
+      }
 
 return true;
 	}
@@ -267,10 +282,8 @@ void BaseVistas::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String
 
 		context->Update();
 		configureRenderSystem();
-																	std::cout << "Render"<<std::endl;
 
 		context->Render();
-																			std::cout << "finrender"<<std::endl;
 
 	}
 }
@@ -282,12 +295,7 @@ void BaseVistas::renderQueueEnded(Ogre::uint8 ROCKET_UNUSED(queueGroupId), const
 
 // Builds an OpenGL-style orthographic projection matrix.
 void BaseVistas::buildProjectionMatrix(Ogre::Matrix4& projection_matrix)
-{
-						std::cout << "dentro de buildProjectionMatrix"<<std::endl;
-							std::cout << mWindow->getWidth()<<std::endl;
-								std::cout << mWindow->getHeight()<<std::endl;
-
-
+{					
 	float z_near = -1;
 	float z_far = 1;
 
@@ -307,11 +315,7 @@ void BaseVistas::buildProjectionMatrix(Ogre::Matrix4& projection_matrix)
 // Configures Ogre's rendering system for rendering Rocket.
 void BaseVistas::configureRenderSystem()
 {
-
-
-
 	Ogre::RenderSystem* render_system = Ogre::Root::getSingleton().getRenderSystem();
-															std::cout << "configureRenderSystem22"<<std::endl;
 
 	// Set up the projection and view matrices.
 	Ogre::Matrix4 projection_matrix;
@@ -364,8 +368,6 @@ void BaseVistas::configureRenderSystem()
 
 	// Disable depth bias.
 	render_system->_setDepthBias(0, 0);
-																std::cout << "finconfigureRenderSystem22"<<std::endl;
-
 }
 
 

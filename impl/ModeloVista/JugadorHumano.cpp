@@ -24,7 +24,7 @@ bool JugadorHumano::botonIzquierdo(ObjetoEscena* obj)
     }
 	
 	*/
-    if (obj != NULL && !obj->sinHijos())
+    if (obj != NULL && !obj->numHijos() == 0)
     {
 
         ObjetoEscena* ficha = obj->getHijo(0);
@@ -43,24 +43,30 @@ bool JugadorHumano::botonIzquierdo(ObjetoEscena* obj)
 }
 
 
+
+
+
 bool JugadorHumano::casillaSobrevolada(const std::string nombreCasilla)
 {
 						std::cout << "casillaSobrevolada "<< nombreCasilla <<std::endl;
 												//std::cout << escena->getTablero()->getCasillaSeleccionada()<<std::endl;
 					//	std::cout << "casillaSobrevolada"<<std::endl;
+				 ObjetoEscena* nodoSeleccionado = escenaMV->getTablero()->getCasillaSeleccionada();
 
-    if (escenaMV->getTablero()->getCasillaSeleccionada() != NULL && Jugador::casillaSobrevolada(nombreCasilla))
+
+	if (nodoSeleccionado != NULL && Jugador::casillaSobrevolada(nombreCasilla))
+	{
+    if   (escenaMV->getTablero()->getCasillaSobrevolada()->numHijos() == 0 || escenaMV->getTablero()->getCasillaSobrevolada()->getHijo(0)->mask != nodoSeleccionado->getHijo(0)->mask)
     {
 		std::cout << "casillaSobrevolada innnnnnnnn111"<<escenaMV->getTablero()->getCasillaSeleccionada()->getNombre()   <<std::endl;
 
-        ObjetoEscena* nodoSeleccionado = escenaMV->getTablero()->getCasillaSeleccionada();
 
         // if(diferencia.Fila != 0)   diferencia= diferencia;
         // else diferencia= diferenciaZ;
 				  						std::cout << "cnodoSeleccionado: "<<   nodoSeleccionado->getNombre()  <<std::endl;
 
-        ObjetoEscena *mFicha = nodoSeleccionado->getHijo(0);
-		std::cout << "mFicha: "<<   mFicha->getNombre()  <<std::endl;
+       // ObjetoEscena *mFicha = nodoSeleccionado->getHijo(0);
+		//std::cout << "mFicha: "<<   mFicha->getNombre()  <<std::endl;
 
       //  tipoFicha tipo = tipoFicha(mFicha->tipo_Ficha);
 
@@ -68,17 +74,17 @@ bool JugadorHumano::casillaSobrevolada(const std::string nombreCasilla)
 		  					//	std::cout << "tipo111: "<< mFicha->tipo_Ficha<<std::endl;
 
   						//std::cout << "tipo: "<< tipo<<std::endl;
+	
+		
+
+						  						std::cout << "filasel: "<< nodoSeleccionado->getPosicion().Fila <<std::endl;
+											     std::cout << "colasel: "<< nodoSeleccionado->getPosicion().Columna <<std::endl;
+												 std::cout << "filasobre: "<< escenaMV->getTablero()->getCasillaSobrevolada()->getPosicion().Fila<<std::endl;
+											     std::cout << "colasobre: "<< escenaMV->getTablero()->getCasillaSobrevolada()->getPosicion().Columna <<std::endl;
 
 
-
-						  						std::cout << "filasel: "<< nodoSeleccionado->posInView.Fila <<std::endl;
-											     std::cout << "colasel: "<< nodoSeleccionado->posInView.Columna <<std::endl;
-												 std::cout << "filasobre: "<< escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Fila<<std::endl;
-											     std::cout << "colasobre: "<< escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Columna <<std::endl;
-
-
-        modelo->tableroModelo->jugada[0] = 24 + (nodoSeleccionado->posInView.Fila * 12) + nodoSeleccionado->posInView.Columna + 2;
-        modelo->tableroModelo->jugada[1] = 24 + (escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Fila * 12) + escenaMV->getTablero()->getCasillaSobrevolada()->posInView.Columna + 2;
+        modelo->tableroModelo->jugada[0] = 24 + (nodoSeleccionado->getPosicion().Fila * 12) + nodoSeleccionado->getPosicion().Columna + 2;
+        modelo->tableroModelo->jugada[1] = 24 + (escenaMV->getTablero()->getCasillaSobrevolada()->getPosicion().Fila * 12) + escenaMV->getTablero()->getCasillaSobrevolada()->getPosicion().Columna + 2;
 
         //AUTORIZA
         int resultado = Autorizaciones::autorizaCasilla();
@@ -96,6 +102,8 @@ bool JugadorHumano::casillaSobrevolada(const std::string nombreCasilla)
         }
         else
         {
+						  						std::cout << "ASILLA PROHIBIDA"<<std::endl;
+
             // CASILLA PROHIBIDA
             modelo->tableroModelo->jugada[0] = -1;
             modelo->tableroModelo->jugada[1] = -1;
@@ -110,8 +118,19 @@ bool JugadorHumano::casillaSobrevolada(const std::string nombreCasilla)
             }
             return false;
         }
-    }
-    else return false;
+		
+    }else
+	{
+            // CASILLA DEL MISMO TIPO
+            modelo->tableroModelo->jugada[0] = -1;
+            modelo->tableroModelo->jugada[1] = -1;
+            modelo->jugadaElegida[0] = -1;
+            modelo->jugadaElegida[1] = -1;
+		return false;
+	}
+
+	}
+   
 }
 
 bool JugadorHumano::esHumano()

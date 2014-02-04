@@ -138,11 +138,13 @@ int ArbolBusqueda::evaluaTablero(ModeloTablero* tablero)
                 //   BlackCheck = false;
                 //   }
 
-                suma =  suma - valorFicha(tipoFicha(-tablero->casillasInt[(i*12)+y]));
+               if (tablero->turnoN) suma =  suma + valorFicha(tipoFicha(-tablero->casillasInt[(i*12)+y]));
+				   else suma =  suma - valorFicha(tipoFicha(-tablero->casillasInt[(i*12)+y]));
 
             }else if (tablero->casillasInt[(i*12)+y] > 0)
             {
-                suma =  suma + valorFicha(tipoFicha(tablero->casillasInt[(i*12)+y]));
+                if (tablero->turnoN) suma =  suma - valorFicha(tipoFicha(tablero->casillasInt[(i*12)+y]));
+					else suma =  suma + valorFicha(tipoFicha(tablero->casillasInt[(i*12)+y]));
             }
             //MVV (Most valuable victim)/LVA (Least valuable attacker)
 

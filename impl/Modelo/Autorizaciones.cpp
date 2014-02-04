@@ -11,22 +11,20 @@ int Autorizaciones::autorizaCasilla()
     {
 						  						std::cout << "TURNOONNNNNN"<<std::endl;
 
-        tableroModelo->jugada[0] = 143-tableroModelo->jugada[0];
-        tableroModelo->jugada[1] = 143-tableroModelo->jugada[1];
+      //  tableroModelo->jugada[0] = 143-tableroModelo->jugada[0];
+       // tableroModelo->jugada[1] = 143-tableroModelo->jugada[1];
     }
 					  						std::cout << "MIRA SI ES COMESTIBLE"<<std::endl;
-											std::cout << tableroModelo->casillasInt[tableroModelo->jugada[1]]<<std::endl;
+											std::cout << (int)tableroModelo->casillasInt[tableroModelo->jugada[1]]<<std::endl;
 
 
 											//el tipo es la ficha de casillasint
 		int tipoo =  tableroModelo->casillasInt[tableroModelo->jugada[0]];
 
 							  						std::cout << "TIPO: "<< tipoo<<std::endl;
+if (tipoo<0)tipoo = -tipoo;
 
-
-    //MIRA SI ES COMESTIBLE O VACIO
-    if(tableroModelo->casillasInt[tableroModelo->jugada[1]] == '0')
-    {
+ 
 				  						std::cout << "PUEDE MOVER"<<std::endl;
 
         switch (tipoo)
@@ -72,24 +70,35 @@ int Autorizaciones::autorizaCasilla()
             return 0;
             break;
         }
-    }
-    else return 0;
+    
+   
 }
 
 int Autorizaciones::autorizaPeon (ModeloTablero* miTablero)
 {
     int Dif = miTablero->jugada[1] - miTablero->jugada[0] ;
 
-    //if (Dif < 0)
-   // {
+	int filaPeones = 3;
+
+	if (miTablero->turnoN)
+		filaPeones = 8;
+
+    if (Dif < 0)
+    {
          //Invierte el signo  de la diferencia de los peones negros
-   //     Dif = -Dif;
-   // }
+        Dif = -Dif;
+    }
     // int filaSobreTraducida = 24 + (filaNueva * 12);
 					std::cout << "autorizaPeon : " <<Dif <<std::endl;
+										std::cout << "miTablero->turnoN : " <<miTablero->turnoN <<std::endl;
+
+										std::cout << "miTablero->jugada[0]  22: " <<miTablero->jugada[0]  <<std::endl;
+
+															std::cout << "miTablero->jugada[1]  : " <<miTablero->jugada[1]  <<std::endl;
+
 
     if (Dif == 12 ||
-		( Dif== 24 && miTablero->jugada[0]/12 == 3))
+		( Dif== 24 && miTablero->jugada[0]/12 == filaPeones))
     {
 
 		//std::cout << "miTablero->jugada[0]] : "  <<  (int)miTablero->jugada[0] <<std::endl;
@@ -101,12 +110,18 @@ int Autorizaciones::autorizaPeon (ModeloTablero* miTablero)
 					//	std::cout << "(miTablero->casil22222 : "  <<  miTablero->casillasInt[miTablero->jugada[1]] <<std::endl;
 
         //SALTA 2 CASILLAS (ESCAQUES) o PASA UNA CASILLA
-        if (miTablero->casillasInt[miTablero->jugada[1]] != '0')
+        if (miTablero->casillasInt[miTablero->jugada[1]] != 0)
             return 0;
         else
         {
 								std::cout << "pruebaCamino esteee : "  <<std::endl;
 
+
+			if (miTablero->turnoN) 
+			 return pruebaCamino(miTablero, -12);
+
+
+			else
             return pruebaCamino(miTablero, 12);
         }
     }
@@ -268,7 +283,7 @@ int Autorizaciones::pruebaCamino(ModeloTablero* miTablero, int salto)
         nuevaCasilla = nuevaCasilla+salto;
 				std::cout << "nuevaCasilla2"  << nuevaCasilla <<std::endl;
 				std::cout << "miTablero->casillasInt[nuevaCasilla] "  << miTablero->casillasInt[nuevaCasilla]  <<std::endl;
-        pasa = miTablero->casillasInt[nuevaCasilla] == '0';
+        pasa = miTablero->casillasInt[nuevaCasilla] == 0;
 
         if (nuevaCasilla == miTablero->jugada[1])
         {
@@ -276,7 +291,7 @@ int Autorizaciones::pruebaCamino(ModeloTablero* miTablero, int salto)
             int fichaNueva = miTablero->casillasInt[nuevaCasilla];
 
             miTablero->casillasInt[nuevaCasilla] = fichavieja;
-            miTablero->casillasInt[miTablero->jugada[0]] = '0';
+            miTablero->casillasInt[miTablero->jugada[0]] = 0;
 
             if (miTablero->evaluaJaque())
             {

@@ -147,7 +147,7 @@ bool BaseListeners::keyReleased( const OIS::KeyEvent &e )
 
 bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
 {
-					std::cout << "mouseMoved"<<std::endl;
+					//std::cout << "mouseMoved"<<std::endl;
 
 	//int key_modifier_state = GetKeyModifierState();
 
@@ -158,7 +158,7 @@ bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
 		context->ProcessMouseWheel(e.state.Z.rel / -120, 0);
 
 
-						std::cout << "fin mouseMoved base"<<std::endl;
+					//	std::cout << "fin mouseMoved base"<<std::endl;
 
 	//VistaAjedrez::mouseMoved(e);
    // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();

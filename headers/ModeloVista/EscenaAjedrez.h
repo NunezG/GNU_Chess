@@ -37,7 +37,7 @@ public:
 
     bool modoVS;
 		 std::string nombreActivo;
-		 		   int rotaCamara;
+		 		   float rotaCamara;
 
 		  
 

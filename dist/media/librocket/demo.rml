@@ -18,7 +18,7 @@
 			}
 		</style>
 	</head>
-	<body template="window" onload="load logo">
+	<body template="window">
 		<button id="onePlayer" onclick="goto start_game; close logo">Solo mode</button><br />
 		<button id="twoPlayer" onclick="goto high_score; close logo">Versus mode</button><br />
 		<button id="options" onclick="goto options; close logo">Options</button><br />

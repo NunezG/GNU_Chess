@@ -86,6 +86,7 @@ void ObjetoOgre::rota(int grados)
 void ObjetoOgre::eliminaHijo(int hijo)
 {
     getNodoOgre()->removeChild(hijo);
+   // getNodoOgre()->chil
     
 	ObjetoEscena::eliminaHijo(hijo);
 	//vectorHijos.erase(vectorHijos.begin()+hijo);
@@ -102,14 +103,14 @@ void ObjetoOgre::cambiaPadre(int hijo)
 */
 
 
-void ObjetoOgre::agregaHijo(ObjetoOgre* objetoHijo)
+void ObjetoOgre::agregaHijo(ObjetoEscena* objetoHijo)
 {
 
 	//mejor crearlo aqui?
 
   //  vectorHijos.push_back(objetoHijo);
 	ObjetoEscena::agregaHijo(objetoHijo);
-    if (nodoEscena != NULL) nodoEscena->addChild(objetoHijo->getNodoOgre());
+    if (nodoEscena != NULL) nodoEscena->addChild(static_cast<ObjetoOgre*>(objetoHijo)->getNodoOgre());
 
 }
 

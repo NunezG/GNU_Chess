@@ -81,6 +81,9 @@ struct ModeloTablero
     short valorAmenaza; //por si amenaza a una pieza enemiga
     short valorDefensivo; //por si defiende una pieza amiga
 
+	char* invierteTablero(char casillas[144]);
+
+
 private:
 
 };
