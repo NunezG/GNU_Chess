@@ -125,6 +125,13 @@ set(OGRE_PREFIX_PATH
   ${OGRE_PREFIX_GUESSES}
 )
 
+set(ZZIP_HOME ${ENV_OGRE_SDK})
+set(FREEIMAGE_HOME ${ENV_OGRE_SDK})
+set(FREETYPE_HOME ${ENV_OGRE_SDK})
+set(ZZIP_HOME ${ENV_OGRE_SDK})
+
+
+
 create_search_paths(OGRE)
 # If both OGRE_BUILD and OGRE_SOURCE are set, prepare to find Ogre in a build dir
 set(OGRE_PREFIX_SOURCE ${OGRE_SOURCE} ${ENV_OGRE_SOURCE})
@@ -346,7 +353,7 @@ if (OGRE_STATIC)
 endif ()
 
 if (NOT OGRE_FOUND)
-  return()
+ # return()
 endif ()
 
 
@@ -440,7 +447,10 @@ macro(ogre_find_plugin PLUGIN HEADER)
   set(OGRE_${PLUGIN}_LIBRARY_NAMES "${PLUGIN}${OGRE_LIB_SUFFIX}")
   get_debug_names(OGRE_${PLUGIN}_LIBRARY_NAMES)
   set(OGRE_${PLUGIN}_LIBRARY_FWK ${OGRE_LIBRARY_FWK})
+  message("namememes")
+  message(${OGRE_${PLUGIN}_LIBRARY_NAMES})
   find_library(OGRE_${PLUGIN}_LIBRARY_REL NAMES ${OGRE_${PLUGIN}_LIBRARY_NAMES}
+   message(${OGRE_${PLUGIN}_LIBRARY_REL})
     HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} PATH_SUFFIXES "" OGRE opt Release Release/opt RelWithDebInfo RelWithDebInfo/opt MinSizeRel MinSizeRel/opt)
   find_library(OGRE_${PLUGIN}_LIBRARY_DBG NAMES ${OGRE_${PLUGIN}_LIBRARY_NAMES_DBG}
     HINTS "${OGRE_BUILD}/lib" ${OGRE_LIBRARY_DIRS} PATH_SUFFIXES "" OGRE opt Debug Debug/opt)
@@ -450,8 +460,11 @@ macro(ogre_find_plugin PLUGIN HEADER)
     set(OGRE_${PLUGIN}_FOUND TRUE)
     if (OGRE_${PLUGIN}_INCLUDE_DIR)
       set(OGRE_${PLUGIN}_INCLUDE_DIRS ${OGRE_${PLUGIN}_INCLUDE_DIR})
+	  	include_directories(${OGRE_${PLUGIN}_INCLUDE_DIRS})
     endif()
     set(OGRE_${PLUGIN}_LIBRARIES ${OGRE_${PLUGIN}_LIBRARY})
+	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${OGRE_${PLUGIN}_LIBRARIES})
+
   endif ()
 
   mark_as_advanced(OGRE_${PLUGIN}_INCLUDE_DIR OGRE_${PLUGIN}_LIBRARY_REL OGRE_${PLUGIN}_LIBRARY_DBG OGRE_${PLUGIN}_LIBRARY_FWK)
@@ -502,9 +515,9 @@ endmacro(ogre_find_plugin)
 #ogre_find_plugin(Plugin_OctreeZone OgreOctreeZone.h PCZ PlugIns/OctreeZone/include)
 #ogre_find_plugin(Plugin_BSPSceneManager OgreBspSceneManager.h PlugIns/BSPSceneManager/include)
 #ogre_find_plugin(Plugin_CgProgramManager OgreCgProgram.h PlugIns/CgProgramManager/include)
-ogre_find_plugin(Plugin_OctreeSceneManager OgreOctreeSceneManager.h PlugIns/OctreeSceneManager/include)
+ogre_find_plugin(Plugin_OctreeSceneManager OgreOctreeSceneManager.h Plugins/OctreeSceneManager)
 #ogre_find_plugin(Plugin_ParticleFX OgreParticleFXPrerequisites.h PlugIns/ParticleFX/include)
-ogre_find_plugin(RenderSystem_GL OgreGLRenderSystem.h RenderSystems/GL/include)
+ogre_find_plugin(RenderSystem_GL OgreGLRenderSystem.h RenderSystems/GL)
 #ogre_find_plugin(RenderSystem_GL3Plus OgreGL3PlusRenderSystem.h RenderSystems/GL3Plus/include)
 #ogre_find_plugin(RenderSystem_GLES OgreGLESRenderSystem.h RenderSystems/GLES/include)
 #ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2/include)
@@ -520,6 +533,7 @@ if (OGRE_STATIC)
     set(OGRE_RenderSystem_Direct3D11_FOUND FALSE)
   endif ()
   if (NOT OPENGL_FOUND)
+  message("OGL NOT FOUND")
     set(OGRE_RenderSystem_GL_FOUND FALSE)
   endif ()
   if (NOT OPENGL_FOUND)

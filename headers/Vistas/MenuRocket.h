@@ -12,6 +12,7 @@ public:
    // CEGUI::FrameWindow* createGUI(void);
     //bool salir();
     bool pantallaInicio();
+			virtual bool keyReleased(const OIS::KeyEvent& e);
 
 
 				void createOverlay();

@@ -1,10 +1,12 @@
 #ifndef __BaseVistas_
 #define __BaseVistas_
-
+#define OGRE_STATIC_GL
+#define OGRE_STATIC_OctreeSceneManager
 #include <OISEvents.h>
 #include <OISInputManager.h>
 #include <OISKeyboard.h>
 #include <OISMouse.h>
+#include <OIS.h>
 
 //#include <CEGUI-CEGUIUI/CEGUISystem.h>
 //#include <CEGUI-CEGUIUI/CEGUIWindow.h>
@@ -21,7 +23,8 @@
 
 #include <OgreRoot.h>
 #include <OgreConfigFile.h>
-
+//#include <Ogre.h>
+#include <OgreStaticPluginLoader.h>
 
 //#include "MenuRocket.h"
 //#include "VistaAjedrez.h"
@@ -41,6 +44,69 @@
 
 #include "RenderInterfaceOgre3D.h"
 #include "SystemInterfaceOgre3D.h"
+
+/*=============================================================================
+	| Utility structure for passing OIS devices. Does not own them.
+	=============================================================================*/
+	struct InputContext
+	{
+		InputContext()
+		{
+			mKeyboard = 0;
+			mMouse = 0;
+			mMultiTouch = 0;
+			mAccelerometer = 0;
+		}
+
+		void capture() const
+		{
+			if(mKeyboard)
+				mKeyboard->capture();
+			if(mMouse)
+				mMouse->capture();
+			if(mMultiTouch)
+				mMultiTouch->capture();
+			if(mAccelerometer)
+	            mAccelerometer->capture();
+		}
+
+		bool isKeyDown(OIS::KeyCode key) const
+		{
+			return mKeyboard && mKeyboard->isKeyDown(key);
+		}
+
+		bool getCursorPosition(Ogre::Real& x, Ogre::Real& y) const
+		{
+			// prefer mouse
+			if(mMouse)
+			{
+				x = (Ogre::Real)mMouse->getMouseState().X.abs;
+				y = (Ogre::Real)mMouse->getMouseState().Y.abs;
+				return true;
+			}
+			
+			// than touch device
+			if(mMultiTouch)
+			{
+	            std::vector<OIS::MultiTouchState> states = mMultiTouch->getMultiTouchStates();
+		        if(states.size() > 0)
+		        {
+		        	x = (Ogre::Real)states[0].X.abs;
+		        	y = (Ogre::Real)states[0].Y.abs;
+		        	return true;
+			    }
+			}
+
+			// fallback
+			x = y = 0.0;
+			return false;
+		}
+
+		OIS::Keyboard* mKeyboard;         // context keyboard device
+		OIS::Mouse* mMouse;               // context mouse device
+		OIS::MultiTouch* mMultiTouch;     // context multitouch device
+		OIS::JoyStick* mAccelerometer;    // context accelerometer device
+	};
 
 
 class BaseVistas : public Ogre::RenderQueueListener, public Ogre::FrameListener
@@ -73,10 +139,12 @@ public:
     virtual void renderQueueEnded(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& repeatThisInvocation);
 			Rocket::Core::Context* context;
 		    Ogre::RenderWindow* mWindow;
-				 OIS::Mouse*    mMouse;
-    OIS::Keyboard* mKeyboard;
+			//	 OIS::Mouse*    mMouse;
+ //   OIS::Keyboard* mKeyboard;
 		 
 	    Ogre::Root *mRoot;
+							InputContext mInputContext;		// all OIS devices are here
+
 protected:
    
 //    CEGUI::System* sys;
@@ -97,10 +165,14 @@ protected:
 						      Ogre::SceneManager* mSceneMgr;
 
 		//void createFrameListener();
-							  
+				  
 	
 
 private:
+
+
+	Ogre::StaticPluginLoader*  mStaticPluginLoader;
+
   //  int getFPS();
   //  CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
 			    bool configuraGraficos(const char *desiredRenderer);

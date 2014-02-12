@@ -28,7 +28,7 @@ public:
     Modelo* modelo;
     std::string resolucion;
 	bool pantallaCompleta;
-    int dificultad;
+   // int dificultad;
     int modoJuego;
 
     void aplicaCambio();
@@ -37,7 +37,7 @@ public:
 
 		    bool getTurnoNegras();
 
-
+			void cambiaOpciones(std::string difficulty, std::string resolution, bool fullsreen);
 
 	  	void procesaNodoPulsado(std::string nombreNodo);
 		    bool reiniciar;

@@ -116,7 +116,7 @@ private:
 		
 		//void destroyScene();
 	
-			      void windowResized();
+			     
 
 
 };

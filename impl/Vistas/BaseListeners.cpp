@@ -47,8 +47,8 @@ BaseListeners::~BaseListeners()
 				std::cout << "del BaseListeners222"<<std::endl;
 				context->UnloadAllDocuments();
 
-	  vistaOgre->mMouse->setEventCallback(0);
-      vistaOgre->mKeyboard->setEventCallback(0);
+	  vistaOgre->mInputContext.mMouse->setEventCallback(0);
+      vistaOgre->mInputContext.mKeyboard->setEventCallback(0);
 				std::cout << "findel BaseListeners"<<std::endl;
 
 
@@ -101,22 +101,9 @@ bool BaseListeners::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID
 
 bool BaseListeners::keyPressed( const OIS::KeyEvent &evt )
 {
-   // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
+  
 
-   // context.injectKeyDown(CEGUI::Key::Scan(evt.key));
-   // context.injectChar(evt.text);
-
-    if (evt.key == OIS::KC_ESCAPE)// Pulsa Esc
-    {
-        vistaOgre->mWindow->setHidden(true);
-      //  modeloVista->setApagar(true);
-    }
-    else if (evt.key == OIS::KC_SYSRQ)   // take a screenshot
-    {
-        // mWindow->writeContentsToTimestampedFile("screenshot", ".jpg");
-    }
-
-
+   
 		Rocket::Core::Input::KeyIdentifier key_identifier = key_identifiers[evt.key];
 
 	
@@ -136,12 +123,12 @@ bool BaseListeners::keyReleased( const OIS::KeyEvent &e )
 	if (key_identifier != Rocket::Core::Input::KI_UNKNOWN)
 		context->ProcessKeyUp(key_identifier, 0);
 
-	if (e.key == OIS::KC_ESCAPE)
-		running = false;
+   
 
-   // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
+	//if (e.key == OIS::KC_ESCAPE)
+	//	running = false;
 
-      //  context.injectKeyUp(CEGUI::Key::Scan(arg.key));
+  
         return true;
 }
 
@@ -152,7 +139,7 @@ bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
 	//int key_modifier_state = GetKeyModifierState();
 
 						                 // std::cout << key_modifier_state<<std::endl;
-												
+							//mInputContext.					
 	context->ProcessMouseMove(e.state.X.abs, e.state.Y.abs, 0);
 	if (e.state.Z.rel != 0)
 		context->ProcessMouseWheel(e.state.Z.rel / -120, 0);
@@ -170,19 +157,6 @@ bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
 
 
 
-
-//Adjust mouse clipping area
-void BaseListeners::windowResized()
-{
-    unsigned int width, height, depth;
-    int left, top;
-    vistaOgre->mWindow->getMetrics(width, height, depth, left, top);
-    
-    const OIS::MouseState &ms = vistaOgre->mMouse->getMouseState();
-    
-    ms.width = width;
-    ms.height = height;
-}
 /*
 Ogre::Ray BaseListeners ::getCameraToViewportRay()
 {

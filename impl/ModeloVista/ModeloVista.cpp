@@ -7,7 +7,7 @@ ModeloVista::ModeloVista():
   ,  numJugadores(0)
  // , modelo(0)
   , JugadorActivo(0)
-  , dificultad(1)
+ // , dificultad(1)
   , modoJuego(0)
   ,resolucion("1024 x 768")
   , pantallaCompleta(false)
@@ -82,7 +82,7 @@ void ModeloVista::generaJugadores()
     else
     {
         jugadores.push_back(new JugadorArtificial(escenaMV, modelo, nombres[1]));
-		modelo->dificultad = (2 * dificultad) + 1;
+		//modelo->dificultad = (2 * dificultad) + 1;
     }
 
     if (JugadorActivo == NULL)
@@ -187,6 +187,21 @@ void ModeloVista::traduceTablero()
 }
 
 
+		void ModeloVista::cambiaOpciones(std::string difficulty, std::string resolution, bool fullsreen)
+			{
+
+				resolucion = resolution;
+				pantallaCompleta = fullsreen;
+				if (difficulty == "easy")
+				modelo->dificultad = 3;
+				else
+				modelo->dificultad = 5;
+
+				//modelo-> resolu
+				//escenaMV->
+
+
+			}
 
 
 bool ModeloVista::getTurnoNegras()

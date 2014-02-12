@@ -106,8 +106,8 @@ RocketListener::~RocketListener()
 	
    // CEGUI::OgreRenderer::destroySystem();
     OIS::InputManager::destroyInputSystem(mInputManager);
-        mMouse = 0;
-        mKeyboard = 0;
+        mInputContext.mMouse = 0;
+        mInputContext.mKeyboard = 0;
         mInputManager = 0;
 
 

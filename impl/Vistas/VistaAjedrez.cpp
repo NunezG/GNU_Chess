@@ -109,7 +109,7 @@ std::string VistaAjedrez::encuentraCasillaSobrevolada(int posx, int posy)
 bool VistaAjedrez::keyPressed(const OIS::KeyEvent &arg)
 {    
     
-   // BaseListeners::keyPressed(arg);
+    BaseListeners::keyPressed(arg);
     
     if (arg.key == OIS::KC_A || arg.key == OIS::KC_LEFT)
     {
@@ -142,7 +142,17 @@ bool VistaAjedrez::keyPressed(const OIS::KeyEvent &arg)
 
 bool VistaAjedrez::keyReleased( const OIS::KeyEvent &arg )
 { 
-    //BaseListeners::keyReleased(arg);
+
+	  if (arg.key == OIS::KC_ESCAPE)// Pulsa Esc
+    {
+		
+        vistaOgre->modeloVista->setNumPantalla(0);
+	    vistaOgre->modeloVista->reiniciar = true;
+
+      //  modeloVista->setApagar(true);
+    }
+
+    BaseListeners::keyReleased(arg);
     noMueveCamara();
     return true;
 }

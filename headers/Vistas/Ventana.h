@@ -10,6 +10,7 @@ class Ventana :  public Ogre::WindowEventListener
 {
 public:
     Ventana();
+	void init();
     void go();
 
 private:

@@ -105,6 +105,15 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
     int casillaCome = casilla+11;
     int casillaComeSec = casilla+13;
     int salto = casilla+24;
+
+	if (miTablero->turnoN)
+	{
+		nuevaCasilla = casilla-12;
+     casillaCome = casilla-11;
+     casillaComeSec = casilla-13;
+     salto = casilla-24;
+
+	}
     // int filaPeon = 3;
     //int filaPromocion = 9;
     
@@ -118,7 +127,7 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
     }
     
     //DOBLE SALTO
-    if(casilla/12 == 3 && miTablero->casillasInt[nuevaCasilla] == 0 && miTablero->casillasInt[salto] == 0)
+    if(((!miTablero->turnoN && casilla/12 == 3) || (miTablero->turnoN && casilla/12 == 8)) && miTablero->casillasInt[nuevaCasilla] == 0 && miTablero->casillasInt[salto] == 0)
     {
         // miTablero->jugada[0] = casilla;
         miTablero->jugada[1] = salto;
@@ -130,7 +139,7 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
     int numProtegidas = 0;
     
     //COME ENEMIGA
-    if (miTablero->casillasInt[casillaCome] < 0)
+    if ((!miTablero->turnoN && miTablero->casillasInt[casillaCome] < 0) || (miTablero->turnoN && miTablero->casillasInt[casillaCome] > 0))
     {
         // miTablero->jugada[0] = casilla;
         miTablero->jugada[1] = casillaCome;
@@ -139,7 +148,7 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
 
         //miTablero->casillasInt[casilla] = 1;
     }
-    else if (miTablero->casillasInt[casillaCome] > 0 && miTablero->casillasInt[casillaCome] != 99)
+    else if (((!miTablero->turnoN && miTablero->casillasInt[casillaCome] > 0)  ||(miTablero->turnoN && miTablero->casillasInt[casillaCome] < 0)) && miTablero->casillasInt[casillaCome] != 99)
     {
         unsigned char* protege = new unsigned char[2];
         protege[0] = miTablero->jugada[0];
@@ -151,7 +160,7 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
     }
     
     //COME ENEMIGA 2
-    if (miTablero->casillasInt[casillaComeSec] < 0)
+    if ((!miTablero->turnoN && miTablero->casillasInt[casillaComeSec] < 0) || (miTablero->turnoN && miTablero->casillasInt[casillaComeSec] > 0))
     {
         // miTablero->jugada[0] = casilla;
         miTablero->jugada[1] = casillaComeSec;
@@ -159,7 +168,7 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
         muevePeon = true;
         // miTablero->casillasInt[casilla] = 1;
         
-    }else if (miTablero->casillasInt[casillaComeSec] > 0 && miTablero->casillasInt[casillaComeSec] != 99)
+    }else if (((!miTablero->turnoN && miTablero->casillasInt[casillaComeSec] > 0)  ||(miTablero->turnoN && miTablero->casillasInt[casillaComeSec] < 0)) && miTablero->casillasInt[casillaComeSec] != 99)
     {
         unsigned char* protege = new unsigned char[2];
         protege[0] = miTablero->jugada[0];

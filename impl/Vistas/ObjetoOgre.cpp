@@ -8,20 +8,20 @@ ObjetoOgre::ObjetoOgre(std::string name, int mask, std::string mesh, std::string
   , activo(true)
 {
 
-										    std::cout << "crea objetoogree"<<std::endl;
+										  //  std::cout << "crea objetoogree"<<std::endl;
 
 	mSceneMgr = sceneMgr;
 
 	//materials
 	creaModelo3D(mSceneMgr, mesh, mask);
-		 										    std::cout << "pe y ja"<<std::endl;
+		 										   // std::cout << "pe y ja"<<std::endl;
 
 	 cambiaMaterial(0);
-	 										    std::cout << "medio"<<std::endl;
+	 										 //   std::cout << "medio"<<std::endl;
 
 
     nombreObjeto = name;
-								    std::cout << "objetoogre"<<std::endl;
+								   // std::cout << "objetoogre"<<std::endl;
 
 }
 
@@ -48,17 +48,17 @@ ObjetoOgre::~ObjetoOgre()
 
 void ObjetoOgre::cambiaMaterial(int material)
 {
-						std::cout << "obj: "<<getNombre()<<std::endl;
+						//std::cout << "obj: "<<getNombre()<<std::endl;
 
-					std::cout << "cambiaMaterial aaaa: "<<material<<std::endl;
-										std::cout << "que es: "<<materialNames[material]<<std::endl;
+				//	std::cout << "cambiaMaterial aaaa: "<<material<<std::endl;
+										//std::cout << "que es: "<<materialNames[material]<<std::endl;
 
     entidad->setMaterialName(materialNames[material]);
 }
 
 void ObjetoOgre::creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask)
 {
-         std::cout << "crea modelito"<<std::endl;
+        // std::cout << "crea modelito"<<std::endl;
 
     //  entidad = mSceneMgr->createEntity("test12", "Tablero.mesh");
     mSceneMgr = sceneMgr;

@@ -27,14 +27,13 @@
 		</style>
 	</head>
 	<body template="window" onload="restore" id="options">
-		<form onsubmit="store; goto main_menu">
+		<form onsubmit="store">
 			<div>
 				<p>
 					Difficulty:<br />
 					<input id="easy" type="radio" name="difficulty" value="easy" checked="true" /> Easy<br />
 					<input id="hard" type="radio" name="difficulty" value="hard" onchange="bad_warning"/> Hard <br />
 				</p>
-				<p id="bad_warning" style="display: none;">Are you sure about this? Bad graphics are just plain <em>bad.</em></p>
 				<p>
 					Resolution:<br />
 					
@@ -50,8 +49,8 @@
 				
 </p>
 			</div>
-			<input type="submit" id="accept">Accept</input>
-			<input type="submit" id="cancel">Cancel</input>
+			<input type="submit" value="accept" id="accept">Accept</input>
+			<input type="submit" value="cancel" id="cancel">Cancel</input>
 		</form>
 	</body>
 </rml>

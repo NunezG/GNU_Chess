@@ -1,25 +1,22 @@
-#/*
-#-----------------------------------------------------------------------------
-#Filename:    CMakeLists.txt
-#-----------------------------------------------------------------------------
-#
-#This source file is part of the
-#   ___                 __    __ _ _    _ 
-#  /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
-# //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
-#/ \_// (_| | | |  __/  \  /\  /| |   <| |
-#\___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
-#      |___/                              
-#      Tutorial Framework
-#      http://www.ogre3d.org/tikiwiki/
-#-----------------------------------------------------------------------------
-#*/
+
+  #set(CMAKE_TOOLCHAIN_FILE "D:/ogreHG/CMake/toolchain/android.toolchain.cmake")
  
+ # message("CMAKE_TOOLCHAIN_FILE")
+  # message(${CMAKE_TOOLCHAIN_FILE})
+  		set(OGRE_STATIC 1)
+		  		set(OGRE_STATIC_LIB 1)
+
+	  #	 set(OGRE_STATIC_GL 1)
 
 cmake_minimum_required(VERSION 2.6)
  
+
+
 project(OgreApp)
  
+
+ set (FREETYPE_LIBRARY "F:/ogreHG/buildWindows/sdk/lib/freetype.lib")
+
 
 if(WIN32) # EN WINDOWS COGE LOS FIND*** DEL DIRECTORIO DONDE ESTA OGRESDK
 	#set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
@@ -61,7 +58,10 @@ endif ()
  
 set(CMAKE_DEBUG_POSTFIX "_d")
   
- 
+
+set(ZZIP_HOME ${OGRE_HOME})
+
+
 message("INICIA FINDOGRE.")
  find_package(OGRE REQUIRED)
 message("ACABA FINDOGRE.") 
@@ -82,7 +82,7 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/dist")
  if(WIN32)
  
 # #Find Boost
-if (NOT OGRE_BUILD_PLATFORM_IPHONE)
+if (OGRE_BUILD_PLATFORM_IPHONE)
 
 set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 
@@ -139,6 +139,8 @@ set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 endif()
 
 endif()
+
+#set(OGRE_LIBRARIES ${OGRE_PLUGIN_DIR_REL})
 
 
 
@@ -212,11 +214,11 @@ set(HDRS
 		#./headers/Vistas/RocketApplication.h
 		./headers/Vistas/SystemInterfaceOgre3D.h
 		./headers/Vistas/Escena.h
-		        ./headers/Vistas/ObjetoOgre.h
-			#	       ./headers/Vistas/Tablero.h
-			./headers/Vistas/BaseListeners.h
-
-
+		./headers/Vistas/ObjetoOgre.h
+	#	./headers/Vistas/Tablero.h
+		./headers/Vistas/BaseListeners.h
+		./headers/Vistas/OgreStaticPluginLoader.h
+		./headers/Vistas/AndroidListener.h
 
         # headers de modelo
       #  ./headers/Modelo/InputMan.h
@@ -395,9 +397,9 @@ if(WIN32)
 		#$ENV{CEGUI_DIR}/dependencies/bin/freetype.dll
 		#$ENV{CEGUI_DIR}/dependencies/bin/tinyxml.dll
 		#${CEGUI_LIBRARY_DIRS}/CEGUICoreWindowRendererSet.dll
-		${ENV_LIBROCKET}/RocketControls.dll
-		${ENV_LIBROCKET}/RocketCore.dll
-		${ENV_LIBROCKET}/RocketDebugger.dll
+		${ENV_LIBROCKET}/bin/RocketControls.dll
+		${ENV_LIBROCKET}/bin/RocketCore.dll
+		${ENV_LIBROCKET}/bin/RocketDebugger.dll
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo
 	)

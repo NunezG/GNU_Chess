@@ -3,53 +3,56 @@
 Ventana::Ventana() :
     //modeloVista(modeloVista),
     vista(0)
-
 {
-    
+	//Rocket Listener
+	modeloVista = new ModeloVista();
 }
 
 
+void Ventana::init(void)
+{ 
 
+	listener = new RocketListener(modeloVista);
 
+	//std::cout << "addWindowEventListener "<<std::endl;
+	Ogre::WindowEventUtilities::addWindowEventListener(listener->mWindow, this);
+	//	std::cout << "fin addWindowEventListener "<<std::endl;
 
+}
 
 
 void Ventana::go(void)
 {   
+	
 
-
-	//Rocket Listener
-	modeloVista = new ModeloVista();
-
-	listener = new RocketListener(modeloVista);
-
-
-	std::cout << "addWindowEventListener "<<std::endl;
-	Ogre::WindowEventUtilities::addWindowEventListener(listener->mWindow, this);
-		std::cout << "fin addWindowEventListener "<<std::endl;
+	
 
     //CREA VISTA
     while(!listener->modeloVista->getApagar())
     {
 		modeloVista->reiniciar = false;
-	    std::cout << "ANTES DE creaVista "<<std::endl;
-
+		
 		creaVista();
 
-		std::cout << "empieza"<<std::endl;
+	//	std::cout << "empieza"<<std::endl;
 
 		//   creaVista??z
 		  //EMPIEZA RENDERIZADO
         listener->empieza();
-   std::cout << "acaba"<<std::endl;
+ //  std::cout << "acaba"<<std::endl;
     }		
 	   std::cout << "finito"<<std::endl;
-
-
+	   		  
+	   
+	   delete vista;
+   
         //DESTRUYE VISTA
         Ogre::WindowEventUtilities::removeWindowEventListener(listener->mWindow, this);
-        delete listener;
+     
+		delete listener;
         listener = NULL;
+
+		delete modeloVista;
 }
 
 void Ventana::creaVista()
@@ -80,7 +83,10 @@ void Ventana::creaVista()
 
 	}else
     {
-            if (modeloVista->getNumPantalla() == 1){
+						std::cout << "elsseee "<<std::endl;
+
+            if (modeloVista->getNumPantalla() == 1)
+			{
 							   			    std::cout << "vista ajedrez a dos "<<std::endl;
 
                vista =  new VistaAjedrez(listener);
@@ -103,7 +109,7 @@ void Ventana::creaVista()
 			vista->createOverlay();
 
 	  //LISTENERS
-		listener->mMouse->setEventCallback(vista);
-		listener->mKeyboard->setEventCallback(vista);
+		listener->mInputContext.mMouse->setEventCallback(vista);
+		listener->mInputContext.mKeyboard->setEventCallback(vista);
         listener->mRoot->addFrameListener(listener);
 }

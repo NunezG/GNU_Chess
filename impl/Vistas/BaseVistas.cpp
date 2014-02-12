@@ -16,10 +16,6 @@ BaseVistas::BaseVistas(ModeloVista* modeloV) :
 		modeloVista = modeloV;
 										std::cout << "BaseVistas OGRE"<<std::endl;
 
-	
-
-
-
 			ogre_system = NULL;
 		ogre_renderer = NULL;
 
@@ -27,17 +23,34 @@ BaseVistas::BaseVistas(ModeloVista* modeloV) :
 									std::cout << "NICIA OGRE"<<std::endl;
 
 		
-    //INICIA OGRE
-    mRoot =new Ogre::Root("plugins.cfg");
+    //INICIA OGRE, PLUGINS ESTATICOS
+    mRoot =new Ogre::Root(/*"plugins.cfg"*/);
 										std::cout << "NICIA OGRE 2222"<<std::endl;
 
+#ifdef OGRE_STATIC_LIB
+	std::cout << "ESTATICO"<<std::endl;
+    mStaticPluginLoader = new Ogre::StaticPluginLoader();
+	//mStaticPluginLoader->
+    mStaticPluginLoader->load();
+		std::cout << "ESTATICO222: "<< 	mRoot->getAvailableRenderers().size()<<std::endl;
+
+
+#endif
+	        mRoot->setRenderSystem(mRoot->getAvailableRenderers().at(0));
+            mRoot->initialise(false);
+					std::cout << "fiinnn "<<std::endl;
+
+	                      //  AConfiguration* config = AConfiguration_new();
+
+                            Ogre::NameValuePairList opt;
 
 	  configuraGraficos("OpenGL Rendering Subsystem");
 	  									std::cout << "NItalize"<<std::endl;
+                           // Ogre::Root::getSingleton().createRenderWindow("OgreWindow", 0, 0, false, &opt);
 
     mWindow = mRoot->initialise(true,"3D CHESS");
 
-
+	//OIS::InputContext mInputContext;
 
 	
 	//INICIA ROCKET??
@@ -106,8 +119,8 @@ BaseVistas::BaseVistas(ModeloVista* modeloV) :
     windowHndStr << windowHnd;
     pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
     mInputManager = OIS::InputManager::createInputSystem( pl );
-	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
-    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
+	mInputContext.mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
+    mInputContext.mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
 					    std::cout << "finois "<<std::endl;
 
         //mMouse->setEventCallback(vista);
@@ -132,8 +145,8 @@ BaseVistas::BaseVistas(ModeloVista* modeloV) :
 		std::cout << "context->GetDimensions) y"<< context->GetDimensions().y<<std::endl;
 
 		//Set initial mouse clipping size
-    mMouse->getMouseState().width = mWindow->getWidth();
-    mMouse->getMouseState().height = mWindow->getHeight();
+    mInputContext.mMouse->getMouseState().width = mWindow->getWidth();
+    mInputContext.mMouse->getMouseState().height = mWindow->getHeight();
 
     createCamera();
     createViewports(mWindow);
@@ -177,11 +190,11 @@ BaseVistas::~BaseVistas()
 	//Unattach OIS before window shutdown (very important under Linux)
     if( mInputManager )
     {
-        mInputManager->destroyInputObject( mKeyboard );
-        mInputManager->destroyInputObject( mMouse );
+        mInputManager->destroyInputObject( mInputContext.mKeyboard );
+        mInputManager->destroyInputObject( mInputContext.mMouse );
         OIS::InputManager::destroyInputSystem(mInputManager);
-        mMouse = 0;
-        mKeyboard = 0;
+        mInputContext.mMouse = 0;
+        mInputContext.mKeyboard = 0;
         mInputManager = 0;
     }
 				std::cout << "findel BaseVistas"<<std::endl;
@@ -227,7 +240,7 @@ bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
 	{
 
 
-	 if(modeloVista->reiniciar || mWindow->isClosed() || !mWindow->isVisible() || mWindow->isHidden()){
+	 if(modeloVista->getApagar() || modeloVista->reiniciar || mWindow->isClosed() || !mWindow->isVisible() || mWindow->isHidden()){
       	   					 	std::cout << "frameRenderingQueued"<< modeloVista->reiniciar <<mWindow->isClosed() << !mWindow->isVisible()<< mWindow->isHidden() <<std::endl;
 
 		 return false;
@@ -239,9 +252,8 @@ bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
 	 					 //	std::cout << "frameRenderingQueued PPPPPASAASASA"<<std::endl;
 
 			//std::cout << "frameRenderingQueued"<<std::endl;
-		 mKeyboard->capture();
-         mMouse->capture();
-
+		 
+	 mInputContext.capture();
 
 //poner esto en otro sitio
 
@@ -525,11 +537,11 @@ int BaseVistas::GetKeyModifierState()
 {
 	int modifier_state = 0;
 
-	if (mKeyboard->isModifierDown(OIS::Keyboard::Ctrl))
+	if (mInputContext.mKeyboard->isModifierDown(OIS::Keyboard::Ctrl))
 		modifier_state |= Rocket::Core::Input::KM_CTRL;
-	if (mKeyboard->isModifierDown(OIS::Keyboard::Shift))
+	if (mInputContext.mKeyboard->isModifierDown(OIS::Keyboard::Shift))
 		modifier_state |= Rocket::Core::Input::KM_SHIFT;
-	if (mKeyboard->isModifierDown(OIS::Keyboard::Alt))
+	if (mInputContext.mKeyboard->isModifierDown(OIS::Keyboard::Alt))
 		modifier_state |= Rocket::Core::Input::KM_ALT;
 
 /*#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -575,7 +587,7 @@ void BaseVistas::windowResized()
     int left, top;
     mWindow->getMetrics(width, height, depth, left, top);
     
-    const OIS::MouseState &ms = mMouse->getMouseState();
+    const OIS::MouseState &ms = mInputContext.mMouse->getMouseState();
     
     ms.width = width;
     ms.height = height;
