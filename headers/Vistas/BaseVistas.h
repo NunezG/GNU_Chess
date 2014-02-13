@@ -2,6 +2,7 @@
 #define __BaseVistas_
 #define OGRE_STATIC_GL
 #define OGRE_STATIC_OctreeSceneManager
+#define STATIC_LIB
 #include <OISEvents.h>
 #include <OISInputManager.h>
 #include <OISKeyboard.h>

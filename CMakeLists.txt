@@ -5,7 +5,7 @@
   # message(${CMAKE_TOOLCHAIN_FILE})
   		set(OGRE_STATIC 1)
 		  		set(OGRE_STATIC_LIB 1)
-
+		set(STATIC_LIB 1)		 
 	  #	 set(OGRE_STATIC_GL 1)
 
 cmake_minimum_required(VERSION 2.6)
@@ -14,8 +14,25 @@ cmake_minimum_required(VERSION 2.6)
 
 project(OgreApp)
  
+ 
+ #Reemplaza los flags dinamicos por estaticos
+ set(CompilerFlags
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+        )
+foreach(CompilerFlag ${CompilerFlags})
+  string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+endforeach()
 
- set (FREETYPE_LIBRARY "F:/ogreHG/buildWindows/sdk/lib/freetype.lib")
+
+ 
+
+
+#set (FREETYPE_LIBRARY "F:/ogreHG/buildWindows/sdk/lib/freetype.lib")
 
 
 if(WIN32) # EN WINDOWS COGE LOS FIND*** DEL DIRECTORIO DONDE ESTA OGRESDK
@@ -50,11 +67,11 @@ if(UNIX) # EN LINUX HAY QUE BUSCAR LOS FIND*** SI SE HACE INSTALACION MANUAL
 #    endif()
 endif(UNIX)
  
-if (CMAKE_BUILD_TYPE STREQUAL "")
+#if (CMAKE_BUILD_TYPE STREQUAL "")
   # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
   # differentiation between debug and release builds.
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
-endif ()
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
+#endif ()
  
 set(CMAKE_DEBUG_POSTFIX "_d")
   
@@ -140,7 +157,8 @@ endif()
 
 endif()
 
-#set(OGRE_LIBRARIES ${OGRE_PLUGIN_DIR_REL})
+
+set(OGRE_LIBRARIES ${OGRE_LIBRARIES} "opengl32.lib" "glu32.lib" "dinput8.lib" "dxguid.lib")
 
 
 
@@ -312,6 +330,9 @@ set(SRCS
      #  ./impl/Modelo/ModeloMenu.cpp
 )
   
+ # set(OGRE_INCLUDE_DIR ${OGRE_INCLUDE_DIR} $ENV{DXSDK_DIR}include)
+ # set(OGRE_LIBRARY_DIRS ${OGRE_LIBRARY_DIRS} $ENV{DXSDK_DIR}Lib\\x86)
+ 
 include_directories( 
     ${OIS_INCLUDE_DIR}
 	${OGRE_INCLUDE_DIR}
@@ -329,7 +350,7 @@ add_executable(OgreApp WIN32 ${HDRS} ${SRCS})
 set_target_properties(OgreApp PROPERTIES DEBUG_POSTFIX _d)
  
 # CAMBIA target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
- target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES}  ${LIBROCKET_CORE_LIBRARY} ${LIBROCKET_CONTROLS_LIBRARY} ${LIBROCKET_DEBUGGER_LIBRARY} ) # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
+ target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES}) # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
   
   link_directories( 
   ${Boost_LIBRARY_DIRS} 

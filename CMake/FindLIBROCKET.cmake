@@ -20,12 +20,32 @@ find_path(LIBROCKET_INCLUDE_DIR Rocket/Core.h
 
 #find_library(LIBROCKET_LIBRARY RocketCore "${ENV_LIBROCKET}/lib")
 
-find_library(LIBROCKET_CORE_LIBRARY RocketCore "${ENV_LIBROCKET}/lib")
-  find_library(LIBROCKET_CONTROLS_LIBRARY RocketControls "${ENV_LIBROCKET}/lib")
-  find_library(LIBROCKET_DEBUGGER_LIBRARY RocketDebugger "${ENV_LIBROCKET}/lib")
+
+#if (${CMAKE_BUILD_TYPE} = "Release")
+#find_library(LIBROCKET_CORE_LIBRARY RocketCore "${ENV_LIBROCKET}/lib")
+#  find_library(LIBROCKET_CONTROLS_LIBRARY RocketControls "${ENV_LIBROCKET}/lib")
+#  find_library(LIBROCKET_DEBUGGER_LIBRARY RocketDebugger "${ENV_LIBROCKET}/lib")
+#else ()
+#find_library(LIBROCKET_CORE_LIBRARY RocketCore_d "${ENV_LIBROCKET}/lib")
+#  find_library(LIBROCKET_CONTROLS_LIBRARY RocketControls_d "${ENV_LIBROCKET}/lib")
+#  find_library(LIBROCKET_DEBUGGER_LIBRARY RocketDebugger_d "${ENV_LIBROCKET}/lib")
+
+#endif ()
 
 
-set(LIBROCKET_LIBRARIES ${LIBROCKET_LIBRARY} ${LIBROCKET_CORE_LIBRARY} ${LIBROCKET_CONTROLS_LIBRARY} ${LIBROCKET_DEBUGGER_LIBRARY})
+find_library(LIBROCKET_CORE_LIBRARY_DBG RocketCore_d "${ENV_LIBROCKET}/lib")
+find_library(LIBROCKET_CORE_LIBRARY_REL RocketCore "${ENV_LIBROCKET}/lib")
+  make_library_set(LIBROCKET_CORE_LIBRARY)
+
+find_library(LIBROCKET_CONTROLS_LIBRARY_DBG RocketControls_d "${ENV_LIBROCKET}/lib")
+find_library(LIBROCKET_CONTROLS_LIBRARY_REL RocketControls "${ENV_LIBROCKET}/lib")
+  make_library_set(LIBROCKET_CONTROLS_LIBRARY)
+
+find_library(LIBROCKET_DEBUGGER_LIBRARY_DBG RocketDebugger_d "${ENV_LIBROCKET}/lib")
+find_library(LIBROCKET_DEBUGGER_LIBRARY_REL RocketDebugger "${ENV_LIBROCKET}/lib")
+  make_library_set(LIBROCKET_DEBUGGER_LIBRARY)
+
+set(LIBROCKET_LIBRARIES ${LIBROCKET_LIBRARY} ${LIBROCKET_LIBRARY} ${LIBROCKET_CORE_LIBRARY} ${LIBROCKET_CONTROLS_LIBRARY} ${LIBROCKET_DEBUGGER_LIBRARY})
 set(LIBROCKET_INCLUDE_DIRS ${LIBROCKET_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)
