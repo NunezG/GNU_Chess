@@ -41,6 +41,9 @@ findpkg_framework(ZZip)
 
 find_path(ZZip_INCLUDE_DIR NAMES zzip/zzip.h HINTS ${ZZip_INC_SEARCH_PATH} ${ZZip_PKGC_INCLUDE_DIRS})
 
+  set(ZZip_LIB_SEARCH_PATH ${ZZip_LIB_SEARCH_PATH} ./AndroidDependencies/lib/${ANDROID_ABI})
+
+
 find_library(ZZip_LIBRARY_REL NAMES ${ZZip_LIBRARY_NAMES} HINTS ${ZZip_LIB_SEARCH_PATH} ${ZZip_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" Release RelWithDebInfo MinSizeRel)
 find_library(ZZip_LIBRARY_DBG NAMES ${ZZip_LIBRARY_NAMES_DBG} HINTS ${ZZip_LIB_SEARCH_PATH} ${ZZip_PKGC_LIBRARY_DIRS} PATH_SUFFIXES "" Debug)
 

@@ -263,6 +263,7 @@
 #     [+] support non-release NDK layouts (from Linaro git and Android git)
 #     [~] automatically detect if explicit link to crtbegin_*.o is needed
 # ------------------------------------------------------------------------------
+message("ENTRA EN ANDROID TOOLCHAIN DE PROYECTOGIT")
 
 cmake_minimum_required( VERSION 2.6.3 )
 
@@ -1529,6 +1530,8 @@ endif()
 set( ANDROID True )
 set( BUILD_ANDROID True )
 
+
+
 # where is the target environment
 set( CMAKE_FIND_ROOT_PATH "${CMAKE_SOURCE_DIR}" "${OGRE_DEPENDENCIES_DIR}" "${ANDROID_TOOLCHAIN_ROOT}/bin" "${ANDROID_TOOLCHAIN_ROOT}/${ANDROID_TOOLCHAIN_MACHINE_NAME}" "${ANDROID_SYSROOT}" "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_PREFIX}/share")
 
@@ -1641,6 +1644,9 @@ if( ANDROID_SET_OBSOLETE_VARIABLES )
  set( ARM_TARGET "${ANDROID_ABI}" )
  set( ARMEABI_NDK_NAME "${ANDROID_NDK_ABI_NAME}" )
 endif()
+
+
+message("ACABA ANDROID TOOLCHAIN DE PROYECTOGIT")
 
 
 # Variables controlling behavior or set by cmake toolchain:

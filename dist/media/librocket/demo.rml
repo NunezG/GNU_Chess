@@ -19,9 +19,9 @@
 		</style>
 	</head>
 	<body template="window">
-		<button id="onePlayer" onclick="goto start_game; close logo">Solo mode</button><br />
-		<button id="twoPlayer" onclick="goto high_score; close logo">Versus mode</button><br />
-		<button id="options" onclick="goto options; close logo">Options</button><br />
-		<button id="exit" onclick="exit">Exit</button>
+		<button id="onePlayer">Solo mode</button><br />
+		<button id="twoPlayer">Versus mode</button><br />
+		<button id="options">Options</button><br />
+		<button id="exit">Exit</button>
 	</body>
 </rml>

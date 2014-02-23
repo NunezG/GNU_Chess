@@ -3,18 +3,25 @@
  
  # message("CMAKE_TOOLCHAIN_FILE")
   # message(${CMAKE_TOOLCHAIN_FILE})
-  		set(OGRE_STATIC 1)
-		  		set(OGRE_STATIC_LIB 1)
-		set(STATIC_LIB 1)		 
+  			 
 	  #	 set(OGRE_STATIC_GL 1)
 
 cmake_minimum_required(VERSION 2.6)
  
 
-
+if(WIN32)
 project(OgreApp)
+endif()
+ #set(BUILD_STATIC_LIBRARY 1)
  
+ 	set(OGRE_STATIC 1)
+		  		set(OGRE_STATIC_LIB 1)
+		set(STATIC_LIB 1)
  
+set (ANDROID_NDK "C:/Android/ndk")
+
+
+
  #Reemplaza los flags dinamicos por estaticos
  set(CompilerFlags
         CMAKE_CXX_FLAGS
@@ -29,8 +36,6 @@ foreach(CompilerFlag ${CompilerFlags})
 endforeach()
 
 
- 
-
 
 #set (FREETYPE_LIBRARY "F:/ogreHG/buildWindows/sdk/lib/freetype.lib")
 
@@ -44,33 +49,44 @@ if(WIN32) # EN WINDOWS COGE LOS FIND*** DEL DIRECTORIO DONDE ESTA OGRESDK
 endif(WIN32)
  
 if(UNIX) # EN LINUX HAY QUE BUSCAR LOS FIND*** SI SE HACE INSTALACION MANUAL
-	message("TEST.")
+	message("TESTUNIX.")
+		 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake/")
+
+	if(ANDROID)
+	
+	
+	
+	
+	#set(ANDROID_FORCE_ARM_BUILD TRUE)
+
+	
+	message("ENTRA EN ANDROIDIDDII")
+	else()
+
 #	if(EXISTS "/usr/local/lib/OGRE/cmake")
 #message("PRIMER IFF.")
 #	  set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 #	  set(OGRE_SAMPLES_INCLUDEPATH "/usr/local/share/OGRE/samples/Common/include/") # We could just *assume* that developers uses this basepath : /usr/local
-
 #	elseif(EXISTS "/usr/share/OGRE/cmake/modules")
 #message("SEGUNDO IFF.")
 #	  set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules/;${CMAKE_MODULE_PATH}")
  #         set(OGRE_SAMPLES_INCLUDEPATH "/usr/local/include/OGRE/") # Otherwise, this one
-
 #	else ()
 #	  message("Failed to find module path. SETTING source dir CMake")
-
 	#message(${CMAKE_CURRENT_SOURCE_DIR})
-
 	#message(${CMAKE_MODULE_PATH})
-	  set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake/")
 	#  message("path")
 	#message(${CMAKE_MODULE_PATH})
 #    endif()
+	
+
+	endif(ANDROID)
 endif(UNIX)
  
 #if (CMAKE_BUILD_TYPE STREQUAL "")
   # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
   # differentiation between debug and release builds.
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 #endif ()
  
 set(CMAKE_DEBUG_POSTFIX "_d")
@@ -157,9 +173,9 @@ endif()
 
 endif()
 
-
+if(WIN32)
 set(OGRE_LIBRARIES ${OGRE_LIBRARIES} "opengl32.lib" "glu32.lib" "dinput8.lib" "dxguid.lib")
-
+endif()
 
 
 #APPLE
@@ -213,147 +229,316 @@ endif()
 # FIN NUEVA SECCIÓN
 
 
-set(HDRS
-        #./headers/BaseOgre.h
-        #./headers/CreacionJuego.h
-       # ./headers/MenuInicial.h
-       # ./headers/Control/Inicio.h
-        #./headers/Inicio.h
-      #  ./headers/Control/ControlJuego.h
+set(HDRMODEL
 
-        ./headers/Vistas/Ventana.h
-        ./headers/Vistas/VistaAjedrez.h
-        ./headers/Vistas/VistaAjedrezSolo.h
-      #  ./headers/Vistas/MenuInicio.h
-		./headers/Vistas/MenuRocket.h	
-        ./headers/Vistas/BaseVistas.h
-		 ./headers/Vistas/RocketListener.h
-		 ./headers/Vistas/RenderInterfaceOgre3D.h
-		#./headers/Vistas/RocketApplication.h
-		./headers/Vistas/SystemInterfaceOgre3D.h
-		./headers/Vistas/Escena.h
-		./headers/Vistas/ObjetoOgre.h
-	#	./headers/Vistas/Tablero.h
-		./headers/Vistas/BaseListeners.h
-		./headers/Vistas/OgreStaticPluginLoader.h
-		./headers/Vistas/AndroidListener.h
 
-        # headers de modelo
-      #  ./headers/Modelo/InputMan.h
-   #    ./headers/Modelo/Calculos.h
 
-       ./headers/Modelo/Autorizaciones.h
-        ./headers/Modelo/Movimientos.h
-        ./headers/Modelo/Modelo.h
-        ./headers/Modelo/ModeloTablero.h
-        ./headers/Modelo/ArbolBusqueda.h
+       ./include/Modelo/Autorizaciones.h
+        ./include/Modelo/Movimientos.h
+        ./include/Modelo/Modelo.h
+        ./include/Modelo/ModeloTablero.h
+        ./include/Modelo/ArbolBusqueda.h
 
-       # ./headers/Modelo/ModeloMenu.h
-      #  ./headers/Modelo/ModuloIA.h
 
-        #./headers/ModeloVista/FichaRey.h
-        #./headers/ModeloVista/FichaReina.h
-        #./headers/ModeloVista/FichaPeon.h
-        #./headers/ModeloVista/FichaAlfil.h
-        #./headers/ModeloVista/FichaCaballo.h
-        #./headers/ModeloVista/FichaTorre.h
-        #./headers/ModeloVista/Ficha.h
-        # ./headers/ModeloVista/Casilla.h
-        ./headers/ModeloVista/EscenaAjedrez.h
-        ./headers/ModeloVista/ModeloVista.h
-        ./headers/ModeloVista/Jugador.h
-        ./headers/ModeloVista/JugadorHumano.h
-        ./headers/ModeloVista/JugadorArtificial.h
-		./headers/ModeloVista/TableroMV.h
-		./headers/ModeloVista/ObjetoEscena.h
+)
+
+
+set(HDRVIEWMODEL
+        ./include/ModeloVista/EscenaAjedrez.h
+        ./include/ModeloVista/ModeloVista.h
+        ./include/ModeloVista/Jugador.h
+        ./include/ModeloVista/JugadorHumano.h
+        ./include/ModeloVista/JugadorArtificial.h
+                ./include/ModeloVista/TableroMV.h
+                ./include/ModeloVista/ObjetoEscena.h
+
+
+
+)
+
+set(HDRVIEW
+
+        ./include/Vistas/Ventana.h
+        ./include/Vistas/VistaAjedrez.h
+        ./include/Vistas/VistaAjedrezSolo.h
+      #  ./include/Vistas/MenuInicio.h
+                ./include/Vistas/MenuRocket.h
+        ./include/Vistas/BaseVistas.h
+                 ./include/Vistas/RocketListener.h
+                 ./include/Vistas/RenderInterfaceOgre3D.h
+                #./include/Vistas/RocketApplication.h
+                ./include/Vistas/SystemInterfaceOgre3D.h
+                ./include/Vistas/Escena.h
+                ./include/Vistas/ObjetoOgre.h
+        #	./include/Vistas/Tablero.h
+                ./include/Vistas/BaseListeners.h
+        #	./include/Vistas/OgreStaticPluginLoader.h
+
+
+
+
+)
+
+
+
+
+set(SRCMODEL
+       ./src/Modelo/Autorizaciones.cpp
+       ./src/Modelo/Movimientos.cpp
+        ./src/Modelo/Modelo.cpp
+        ./src/Modelo/ModeloTablero.cpp
+       ./src/Modelo/ArbolBusqueda.cpp
+)
+
+set(SRCMODELVIEW
+        ./src/ModeloVista/EscenaAjedrez.cpp
+        ./src/ModeloVista/ModeloVista.cpp
+       ./src/ModeloVista/Jugador.cpp
+      ./src/ModeloVista/JugadorHumano.cpp
+       ./src/ModeloVista/JugadorArtificial.cpp
+           ./src/ModeloVista/TableroMV.cpp
+         ./src/ModeloVista/ObjetoEscena.cpp
+
 )
  
-set(SRCS
+set(SRCVIEW
+        ./src/Vistas/VistaAjedrez.cpp
+        ./src/Vistas/VistaAjedrezSolo.cpp
+        ./src/Vistas/Ventana.cpp
+                ./src/Vistas/MenuRocket.cpp
+        ./src/Vistas/BaseVistas.cpp
+                ./src/Vistas/RocketListener.cpp
+                ./src/Vistas/RenderInterfaceOgre3D.cpp
+                ./src/Vistas/SystemInterfaceOgre3D.cpp
+                        ./src/Vistas/Escena.cpp
+                         ./src/Vistas/ObjetoOgre.cpp
 
-        #CONTROL
-       # ./impl/Control/Inicio.cpp
+                        ./src/Vistas/BaseListeners.cpp
 
-        ./impl/Inicio.cpp
-      #  ./impl/Control/ControlJuego.cpp
+)
+
+
+set(SRCSAPP
+
+./src/Inicio.cpp
+./include/AndroidListener.h
+./include/AndroidFileInterface.h
+   #CONTROL
+       # ./src/Control/Inicio.cpp
+
+
+      #  ./src/Control/ControlJuego.cpp
 
         # VISTA
-       # ./impl/BaseOgre.cpp
-        ./impl/Vistas/VistaAjedrez.cpp
-        ./impl/Vistas/VistaAjedrezSolo.cpp
-        ./impl/Vistas/Ventana.cpp
-       # ./impl/Vistas/MenuInicio.cpp
-		./impl/Vistas/MenuRocket.cpp	
-        ./impl/Vistas/BaseVistas.cpp
-	 	./impl/Vistas/RocketListener.cpp
-		./impl/Vistas/RenderInterfaceOgre3D.cpp
-		#./impl/Vistas/RocketApplication.cpp
-		./impl/Vistas/SystemInterfaceOgre3D.cpp
-	 		./impl/Vistas/Escena.cpp
-			 ./impl/Vistas/ObjetoOgre.cpp
-			 #   ./impl/Vistas/Tablero.cpp
-		
-			./impl/Vistas/BaseListeners.cpp
+       # ./src/BaseOgre.cpp
 
 
-       # ./impl/CreacionJuego.cpp
-       # ./impl/MenuInicial.cpp
+
+       # ./src/CreacionJuego.cpp
+       # ./src/MenuInicial.cpp
 
         # implementaciones de modelo
 
          #  MODELO
-  #     ./impl/Modelo/Calculos.cpp
-       ./impl/Modelo/Autorizaciones.cpp
-       ./impl/Modelo/Movimientos.cpp
-        ./impl/Modelo/Modelo.cpp
-        ./impl/Modelo/ModeloTablero.cpp
-       ./impl/Modelo/ArbolBusqueda.cpp
+  #     ./src/Modelo/Calculos.cpp
 
-      #    ./impl/Modelo/ModuloIA.cpp
+
+      #    ./src/Modelo/ModuloIA.cpp
 
         # MODELOVISTA
-        #./impl/ModeloVista/FichaRey.cpp
-        #./impl/ModeloVista/FichaReina.cpp
-    #    ./impl/ModeloVista/FichaPeon.cpp
-      #  ./impl/ModeloVista/FichaAlfil.cpp
-    #    ./impl/ModeloVista/FichaCaballo.cpp
-     #   ./impl/ModeloVista/FichaTorre.cpp
-     #   ./impl/ModeloVista/Ficha.cpp
-      #  ./impl/ModeloVista/Casilla.cpp
-        ./impl/ModeloVista/EscenaAjedrez.cpp
-        ./impl/ModeloVista/ModeloVista.cpp
-       ./impl/ModeloVista/Jugador.cpp
-      ./impl/ModeloVista/JugadorHumano.cpp
-       ./impl/ModeloVista/JugadorArtificial.cpp
-	   ./impl/ModeloVista/TableroMV.cpp
-		./impl/ModeloVista/ObjetoEscena.cpp
+        #./src/ModeloVista/FichaRey.cpp
+        #./src/ModeloVista/FichaReina.cpp
+    #    ./src/ModeloVista/FichaPeon.cpp
+      #  ./src/ModeloVista/FichaAlfil.cpp
+    #    ./src/ModeloVista/FichaCaballo.cpp
+     #   ./src/ModeloVista/FichaTorre.cpp
+     #   ./src/ModeloVista/Ficha.cpp
+      #  ./src/ModeloVista/Casilla.cpp
 
-     #  ./impl/Modelo/ModeloMenu.cpp
+
+     #  ./src/Modelo/ModeloMenu.cpp
 )
   
  # set(OGRE_INCLUDE_DIR ${OGRE_INCLUDE_DIR} $ENV{DXSDK_DIR}include)
  # set(OGRE_LIBRARY_DIRS ${OGRE_LIBRARY_DIRS} $ENV{DXSDK_DIR}Lib\\x86)
  
+ 
+ if(ANDROID)
+ set(ANDROID_NATIVE_APP_GLUE_DIR "$ENV{ANDROID_NDK}/sources/android/native_app_glue")
+        message("ANDROID_NATIVE_APP_GLUE_DIR")
+        message(${ANDROID_NATIVE_APP_GLUE_DIR})
+endif()
+        message("CMAKE_CURRENT_SOURCE_DIR")
+
+
+        message(${CMAKE_CURRENT_SOURCE_DIR})
+
+
+
+
 include_directories( 
+            
+    ${ANDROID_NATIVE_APP_GLUE_DIR}
     ${OIS_INCLUDE_DIR}
 	${OGRE_INCLUDE_DIR}
 	#${OGRE_SAMPLES_INCLUDEPATH}
 	#NUEVA SECCIÓN
     #${CEGUI_INCLUDE_DIR}
 	#${CEGUIOGRE_INCLUDE_DIR}
-    ${BOOST_INCLUDE_DIR} 
+#${BOOST_INCLUDE_DIR} 
 	${LIBROCKET_INCLUDE_DIR}
 	# FIN NUEVA SECCIÓN
 )
  
-add_executable(OgreApp WIN32 ${HDRS} ${SRCS})
  
-set_target_properties(OgreApp PROPERTIES DEBUG_POSTFIX _d)
- 
-# CAMBIA target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
- target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES}) # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
-  
   link_directories( 
-  ${Boost_LIBRARY_DIRS} 
+     "F:/PFC/proyectoGITWINDOWSBuild/Release"
+  ${CMAKE_CURRENT_SOURCE_DIR}/libs/armeabi-v7a
+  ${ANDROID_NATIVE_APP_GLUE_DIR} 
+  ${OGRE_LIBRARY_DIRS} 
+  ${OIS_LIBRARY_DIRS} 
+ # ${CEGUI_LIBRARY_DIRS} 
+ #${CEGUIOGRE_LIBRARY_DIRS} 
+ ${LIBROCKET_LIBRARY_DIRS} 
+  )
+ 
+
+
+  
+   
+   add_library(ChessModel STATIC ${HDRMODEL} ${SRCMODEL})
+ 
+    message("testFIND")
+	 message(ChessModel)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Modelo)
+
+
+	# searching for include directory
+find_path(CHESSMODEL_INCLUDE_DIR Modelo.h)
+
+# searching for library file
+find_library(CHESSMODEL_LIBRARY ChessModel)
+
+
+
+if (CHESSMODEL_LIBRARY)
+
+ message("SOLO LIBRERIA ENCONTRADA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+endif()
+
+
+
+if (CHESSMODEL_INCLUDE_DIR)
+
+ message("SOLO INCLUDE ENCONTRADO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+endif()
+
+if (CHESSMODEL_INCLUDE_DIR AND CHESSMODEL_LIBRARY)
+ message("LIBRERIA ENCONTRADA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+  message(${CHESSMODEL_INCLUDE_DIR})
+  message(${CHESSMODEL_LIBRARY})
+    # you may need that if further action in your CMakeLists.txt depends
+    # on detecting your library
+    set(CHESSMODEL_FOUND TRUE)
+
+    # you may need that if you want to conditionally compile some parts
+    # of your code depending on library availability
+   # add_definitions(-DHAVE_LIBCHESSMODEL=1)
+
+    # those two, you really need
+    include_directories(${CHESSMODEL_INCLUDE_DIR})
+    set(YOUR_LIBRARIES ${YOUR_LIBRARIES} ${CHESSMODEL_LIBRARY})
+endif ()
+
+
+#target_link_libraries(ChessViewModel ${YOUR_LIBRARIES})
+
+
+
+
+
+
+
+
+
+
+	  
+   add_library(ChessViewModel STATIC ${HDRVIEWMODEL} ${SRCMODELVIEW}) 
+  
+
+    #    add_dependencies(ChessViewModel ChessModel)
+  # target_link_libraries(ChessViewModel ChessModel)
+
+   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/ModeloVista)
+
+
+
+  add_library(ChessView STATIC ${HDRVIEW} ${SRCVIEW})
+ #	add_dependencies(ChessView ChessViewModel)
+
+ #target_link_libraries(ChessView ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+ 
+   # target_link_libraries(ChessView ChessViewModel)
+
+	   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Vistas)
+
+
+    # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
+
+       # add_dependencies(ChessView ChessViewModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+      #  add_dependencies(ChessView Plugin_OctreeSceneManager)
+       # add_dependencies(ChessView Plugin_OctreeSceneManager)
+
+       # add_dependencies(ChessView android c m dl log EGL GLESv2)
+
+
+
+        #add_dependencies(ChessDummy OgreApp)
+
+
+ #	add_dependencies(ChessView OGRE OIS LIBROCKET)
+
+
+
+ if(ANDROID)
+ 
+    add_library(OgreApp STATIC ${SRCSAPP} )
+
+
+
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+  #  target_link_libraries(OgreApp ChessView)
+#	add_dependencies(OgreApp ChessView)
+    set_target_properties(OgreApp PROPERTIES DEBUG_POSTFIX _d)
+
+
+ else()
+    add_executable(OgreApp WIN32  ${SRCSAPP})
+
+    target_link_libraries(OgreApp ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+
+
+    add_dependencies(OgreApp ChessView)
+
+    set_target_properties(OgreApp PROPERTIES DEBUG_POSTFIX _d)
+
+
+  endif()
+
+# CAMBIA target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
+ #target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES}) # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
+
+
+
+
+
+  link_directories( 
+     "F:/PFC/proyectoGITWINDOWSBuild/Release"
+  ${CMAKE_CURRENT_SOURCE_DIR}/libs/armeabi-v7a
+  ${ANDROID_NATIVE_APP_GLUE_DIR} 
   ${OGRE_LIBRARY_DIRS} 
   ${OIS_LIBRARY_DIRS} 
  # ${CEGUI_LIBRARY_DIRS} 
@@ -361,6 +546,20 @@ set_target_properties(OgreApp PROPERTIES DEBUG_POSTFIX _d)
  ${LIBROCKET_LIBRARY_DIRS} 
   )
 
+
+
+
+
+
+
+
+
+ 
+  #Add android JNI binding
+if(ANDROID)
+  include(toolchain/AndroidJNI)
+endif()
+  
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/bin)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/media)
@@ -373,16 +572,38 @@ if(WIN32 AND NOT MINGW)
 		COMMAND copy \"$(TargetPath)\" .\\dist\\bin )
 endif(WIN32 AND NOT MINGW)
 
-if(MINGW OR UNIX)
-	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/dist/bin)
-endif(MINGW OR UNIX)
+
+
+if(ANDROID)
  
+	install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/media
+		DESTINATION ./
+		CONFIGURATIONS Release RelWithDebInfo Debug
+	)
+ 
+	install(FILES 
+		${CMAKE_SOURCE_DIR}/dist/bin/resources.cfg
+		DESTINATION bin
+		CONFIGURATIONS Release RelWithDebInfo
+	)
+	
+	
+		
+		
+elseif(MINGW OR UNIX)
+	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/dist/bin)
+  
+
 #set_target_properties(OgreApp PROPERTIES MACOSX_BUNDLE TRUE)
  
 # set_property(TARGET OgreApp PROPERTY MACOSX_BUNDLE TRUE)
  #set_property(TARGET OgreApp PROPERTY MACOSX_BUNDLE_INFO_PLIST Info.plist)
  
-if(WIN32)
+ 
+ 
+ 
+ 
+elseif(WIN32)
  
         install(TARGETS OgreApp
 		RUNTIME DESTINATION bin
@@ -403,11 +624,12 @@ if(WIN32)
 		${CMAKE_SOURCE_DIR}/dist/bin/resources_d.cfg
 		DESTINATION bin
 		CONFIGURATIONS Debug
-	)
+	) 
  
         # NOTE: for the 1.7.1 sdk the OIS dll is called OIS.dll instead of libOIS.dll
         # so you'll have to change that to make it work with 1.7.1
-	install(FILES ${OGRE_PLUGIN_DIR_REL}/OgreMain.dll
+	install(FILES 
+	    ${OGRE_PLUGIN_DIR_REL}/OgreMain.dll
 		${OGRE_PLUGIN_DIR_REL}/Plugin_OctreeSceneManager.dll
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
 		${OGRE_PLUGIN_DIR_REL}/OIS.dll
@@ -452,7 +674,7 @@ if(WIN32)
    #   DESTINATION bin
    #   CONFIGURATIONS Debug
    #)
-endif(WIN32)
+endif()
 
 if(UNIX)
  
@@ -502,7 +724,7 @@ if(UNIX)
 		RUNTIME DESTINATION bin
 		CONFIGURATIONS All)
  
-	else()
+	elseif(NOT ANDROID)
 		
         install(TARGETS OgreApp
 		RUNTIME DESTINATION bin
@@ -524,4 +746,4 @@ if(UNIX)
 	message("finunix.")
  
 endif(UNIX)
- 
+ message("FIN DE CMAKELISTIS")

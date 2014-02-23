@@ -15,7 +15,7 @@
 #  OIS_LIBRARIES - link these to use OIS
 #  OIS_BINARY_REL / OIS_BINARY_DBG - DLL names (windows only)
 
-message("ENTRA EN FINDOIIIISSS")
+message("ENTRA EN FINDOIIIISSS DE MIPRORORORO")
 
 
 include(FindPkgMacros)
@@ -33,6 +33,7 @@ set(OIS_PREFIX_PATH ${OIS_HOME} ${ENV_OIS_HOME}
   ${OGRE_DEPENDENCIES_DIR} ${ENV_OGRE_DEPENDENCIES_DIR}
   ${OGRE_SOURCE}/iOSDependencies ${ENV_OGRE_SOURCE}/iOSDependencies
   ${OGRE_SOURCE}/Dependencies ${ENV_OGRE_SOURCE}/Dependencies
+  ${CMAKE_CURRENT_BINARY_DIR}/AndroidDependencies
   ${OGRE_SDK} ${ENV_OGRE_SDK} ./Dependencies /Users/guiosx/ogre1.9src/Dependencies
   ${OGRE_HOME} ${ENV_OGRE_HOME})
 create_search_paths(OIS)
@@ -43,6 +44,10 @@ clear_if_changed(OIS_PREFIX_PATH
   OIS_LIBRARY_DBG
   OIS_INCLUDE_DIR
 )
+
+  set(OIS_LIB_SEARCH_PATH ${OIS_LIB_SEARCH_PATH} ${CMAKE_CURRENT_BINARY_DIR}/AndroidDependencies/lib/${ANDROID_ABI})
+  set(OIS_INC_SEARCH_PATH ${OIS_INC_SEARCH_PATH} ${CMAKE_CURRENT_BINARY_DIR}/AndroidDependencies/include/OIS)
+
 
 set(OIS_LIBRARY_NAMES OIS)
 get_debug_names(OIS_LIBRARY_NAMES)

@@ -6,18 +6,49 @@
 # The contents of this file are placed in the public domain. Feel
 # free to make use of it in any way you like.
 #-------------------------------------------------------------------
-
+message("ENTRA EN ANDROID JNI DE PROYECTOGIT")
 if(ANDROID)
-    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/dummyJNI.cpp "int x = 23;")
-    ADD_LIBRARY(OgreJNIDummy MODULE ${CMAKE_CURRENT_BINARY_DIR}/dummyJNI.cpp)
 	
-	if(OGRE_BUILD_RENDERSYSTEM_GLES2)
-		add_dependencies(OgreJNIDummy OgreMain RenderSystem_GLES2)
-	else()		
-		add_dependencies(OgreJNIDummy OgreMain RenderSystem_GLES)
-	endif()
+set (HEADER_FILES
+        ./include/AndroidListener.h
+        ./include/AndroidFileInterface.h
+)
 	
-	add_dependencies(OgreJNIDummy OgreTerrain OgreRTShaderSystem OgreOverlay OgrePaging OgreVolume Plugin_ParticleFX Plugin_OctreeSceneManager)	
+	#set(ANDROID_FORCE_ARM_BUILD TRUE)
+set(SOURCE_FILES ./src/Inicio.cpp)
+
+
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/dummyChess.cpp "int x = 24;")
+    ADD_LIBRARY(ChessDummy MODULE ${CMAKE_CURRENT_BINARY_DIR}/dummyChess.cpp)
+
+  #add_library(OgreApp STATIC ${SRCSAPP} )
+
+
+    target_link_libraries(ChessDummy OgreApp ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+
+
+    add_dependencies(ChessDummy gnustl_static android/cpufeatures android/native_app_glue ChessView OgreApp)
+
+
+
+#target_link_libraries(ChessDummy gnustl_static android/cpufeatures android/native_app_glue ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES} ChessView ChessViewModel ChessModel)
+
+
+ # @   add_dependencies(ChessDummy gnustl_static ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES} ChessView ChessModel ChessViewModel)
+
+   # target_link_libraries(ChessDummy OgreApp ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+        # add_dependencies(ChessDummy ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+        #add_dependencies(ChessDummy OgreApp)
+    #     add_dependencies(ChessDummy ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+
+
+
+
+        #if(OGRE_BUILD_RENDERSYSTEM_GLES2)
+	#else()		
+	#	add_dependencies(OgreApp OgreMain RenderSystem_GLES)
+	#endif()
+
 
     if(APPLE OR WIN32)
       SET(ANDROID_EXECUTABLE "android")
@@ -27,16 +58,16 @@ if(ANDROID)
       SET(NDK_BUILD_EXECUTABLE "$ENV{ANDROID_NDK}/ndk-build")
     endif()
 
-	SET(ANDROID_MOD_NAME "OgreJNI")
-	SET(JNI_SRC "LOCAL_PATH := @CMAKE_SOURCE_DIR@/OgreMain/src/Android/JNI\n")
-    SET(JNI_SRC "${JNI_SRC}\tLOCAL_SRC_FILES := OgreActivityJNI.cpp\n")
+	SET(ANDROID_MOD_NAME "AndroidChess")
+	SET(JNI_SRC "LOCAL_PATH := @CMAKE_SOURCE_DIR@/src\n")
+    SET(JNI_SRC "${JNI_SRC}\tLOCAL_SRC_FILES := Inicio.cpp")
     SET(ANT_EXECUTABLE "ant")
 	
 	if(${ANDROID_NATIVE_API_LEVEL} LESS 14)
 		MATH(EXPR ANDROID_SDK_API_LEVEL "${ANDROID_NATIVE_API_LEVEL}+1")
 	else()
 		SET(ANDROID_SDK_API_LEVEL "${ANDROID_NATIVE_API_LEVEL}")
-		SET(SCREEN_SIZE "|screenSize")
+		SET(SCREEN_SIZE "")
 	endif()
 	
 	if(OGRE_CONFIG_ENABLE_GLES2_GLSL_OPTIMISER)
@@ -45,30 +76,50 @@ if(ANDROID)
 
     SET(ANDROID_TARGET "android-${ANDROID_SDK_API_LEVEL}")
     
-    SET(NDKOUT "${CMAKE_BINARY_DIR}/OgreJNI")
+    SET(NDKOUT "${CMAKE_BINARY_DIR}/AndroidChessBuid")
     file(MAKE_DIRECTORY "${NDKOUT}")
     file(MAKE_DIRECTORY "${NDKOUT}/jni")
     file(MAKE_DIRECTORY "${NDKOUT}/assets")	
     file(MAKE_DIRECTORY "${NDKOUT}/res")	
-	file(MAKE_DIRECTORY "${NDKOUT}/src")
-    file(MAKE_DIRECTORY "${NDKOUT}/src/org")
-    file(MAKE_DIRECTORY "${NDKOUT}/src/org/ogre3d")
-	file(MAKE_DIRECTORY "${NDKOUT}/src/org/ogre3d/android")	
-	file(COPY "@CMAKE_SOURCE_DIR@/OgreMain/src/Android/JNI/OgreActivityJNI.java" DESTINATION "${NDKOUT}/src/org/ogre3d/android")
-	file(COPY "@CMAKE_SOURCE_DIR@/OgreMain/src/Android/JNI/MainActivity.java" DESTINATION "${NDKOUT}/src/org/ogre3d/android")
+	#file(MAKE_DIRECTORY "${NDKOUT}/src")
+   # file(MAKE_DIRECTORY "${NDKOUT}/src/org")
+   # file(MAKE_DIRECTORY "${NDKOUT}/org/gnusoft")
+	#file(MAKE_DIRECTORY "${NDKOUT}/org/gnusoft/chess")	
+	#file(COPY "@CMAKE_SOURCE_DIR@/OgreMain/src/Android/JNI/OgreActivityJNI.java" DESTINATION "${NDKOUT}/src/org/ogre3d/android")
+	#file(COPY "@CMAKE_SOURCE_DIR@/OgreMain/src/Android/JNI/MainActivity.java" DESTINATION "${NDKOUT}/src/org/ogre3d/android")
 		
     file(WRITE "${NDKOUT}/default.properties" "target=${ANDROID_TARGET}")
-    file(WRITE "${NDKOUT}/jni/Application.mk" "APP_ABI := ${ANDROID_ABI}\nAPP_STL := gnustl_static ")
-    configure_file("${OGRE_TEMPLATES_DIR}/AndroidManifest_JNI.xml.in" "${NDKOUT}/AndroidManifest.xml" @ONLY)
+    file(WRITE "${NDKOUT}/jni/Application.mk" "APP_ABI := ${ANDROID_ABI}\nAPP_STL := gnustl_static")
+    configure_file("CMake/Templates/AndroidManifest.xml.in" "${NDKOUT}/AndroidManifest.xml" @ONLY)
 
     if(NOT ANDROID_GLES_ONLY)
-	  configure_file("${OGRE_TEMPLATES_DIR}/Android.mk.in" "${NDKOUT}/jni/Android.mk" @ONLY)
+	  configure_file("CMake/Templates/Android.mk.in" "${NDKOUT}/jni/Android.mk" @ONLY)
     else()
-      configure_file("${OGRE_TEMPLATES_DIR}/AndroidGLES1.mk.in" "${NDKOUT}/jni/Android.mk" @ONLY)
+      configure_file("CMake/Templates/AndroidGLES1.mk.in" "${NDKOUT}/jni/Android.mk" @ONLY)
     endif()
     
+	
+	#configure_file("CMake/Templates/Android_resources.cfg.in" "${NDKOUT}/assets/resources.cfg" @ONLY)
+    
+	
+	
+	 
+   # file(COPY "${CMAKE_SOURCE_DIR}/Media/models" DESTINATION "${NDKOUT}/assets")
+    #file(COPY "${CMAKE_SOURCE_DIR}/Media/particle" DESTINATION "${NDKOUT}/assets")
+    #file(COPY "${CMAKE_SOURCE_DIR}/Media/RTShaderLib" DESTINATION "${NDKOUT}/assets")
+    #file(COPY "${CMAKE_SOURCE_DIR}/Samples/Media/thumbnails" DESTINATION "${NDKOUT}/assets")
+    #file(COPY "${CMAKE_SOURCE_DIR}/Samples/Media/packs" DESTINATION "${NDKOUT}/assets")
+    #file(COPY "${CMAKE_SOURCE_DIR}/Samples/Media/materials" DESTINATION "${NDKOUT}/assets")
+    
+	#file(COPY "${CMAKE_SOURCE_DIR}/SDK/Android/drawable-hdpi" DESTINATION "${NDKOUT}/res")
+	#file(COPY "${CMAKE_SOURCE_DIR}/SDK/Android/drawable-ldpi" DESTINATION "${NDKOUT}/res")
+	#file(COPY "${CMAKE_SOURCE_DIR}/SDK/Android/drawable-mdpi" DESTINATION "${NDKOUT}/res")
+	#file(COPY "${CMAKE_SOURCE_DIR}/SDK/Android/drawable-xhdpi" DESTINATION "${NDKOUT}/res")
+	
+	
+	
 	add_custom_command(
-	                    TARGET OgreJNIDummy
+	                    TARGET ChessDummy
                         POST_BUILD
 	                    COMMAND ${ANDROID_EXECUTABLE} update project --target ${ANDROID_TARGET} --path "${NDKOUT}"
 	                    WORKING_DIRECTORY ${NDKOUT}
@@ -76,14 +127,14 @@ if(ANDROID)
 	
 	if(DEBUG)	 
 	 	add_custom_command(
-							TARGET OgreJNIDummy
+							TARGET ChessDummy
 						    POST_BUILD
 					        COMMAND ${NDK_BUILD_EXECUTABLE} all -j2 V=1 NDK_DEBUG=1
 				            WORKING_DIRECTORY ${NDKOUT}
 			              )
 	else()
 		add_custom_command(
-							TARGET OgreJNIDummy
+							TARGET ChessDummy
 						    POST_BUILD
 					        COMMAND ${NDK_BUILD_EXECUTABLE} all -j2
 				            WORKING_DIRECTORY ${NDKOUT}
@@ -91,10 +142,11 @@ if(ANDROID)
 	endif()
 	                  
 	add_custom_command(
-	                    TARGET OgreJNIDummy
+	                    TARGET ChessDummy
                         POST_BUILD
 	                    COMMAND ${ANT_EXECUTABLE} debug
 	                    WORKING_DIRECTORY ${NDKOUT}
 	                  )
 
 endif()
+message("FIN DE ANDROIDJNI.")

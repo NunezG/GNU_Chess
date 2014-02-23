@@ -53,6 +53,9 @@
 
 message("ENTRA EN FINDOGRE CHUNGO")
 
+ 	set(OGRE_STATIC 1)
+		  		set(OGRE_STATIC_LIB 1)
+		set(STATIC_LIB 1)
 
 
 include(FindPkgMacros)
@@ -166,11 +169,29 @@ else()
 endif ()
 
 # redo search if any of the environmental hints changed
+if(WIN32)
+message("WINDOOWOWOWO")
 set(OGRE_COMPONENTS #Paging Terrain Volume Overlay 
   Plugin_OctreeSceneManager #Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
  # Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
  RenderSystem_GL # RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2
  )
+
+
+elseif(ANDROID)
+
+message("ANDORROORORRO")
+
+set(OGRE_COMPONENTS #Paging Terrain Volume Overlay 
+  Plugin_OctreeSceneManager #Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
+ # Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
+ RenderSystem_GLES2 # RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2
+ )
+
+endif()
+
+
+
 set(OGRE_RESET_VARS 
   OGRE_CONFIG_INCLUDE_DIR OGRE_INCLUDE_DIR 
   OGRE_LIBRARY_FWK OGRE_LIBRARY_REL OGRE_LIBRARY_DBG
@@ -517,7 +538,11 @@ endmacro(ogre_find_plugin)
 #ogre_find_plugin(Plugin_CgProgramManager OgreCgProgram.h PlugIns/CgProgramManager/include)
 ogre_find_plugin(Plugin_OctreeSceneManager OgreOctreeSceneManager.h Plugins/OctreeSceneManager)
 #ogre_find_plugin(Plugin_ParticleFX OgreParticleFXPrerequisites.h PlugIns/ParticleFX/include)
+if (WIN32)
 ogre_find_plugin(RenderSystem_GL OgreGLRenderSystem.h RenderSystems/GL)
+elseif(ANDROID)
+ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2)
+endif()
 #ogre_find_plugin(RenderSystem_GL3Plus OgreGL3PlusRenderSystem.h RenderSystems/GL3Plus/include)
 #ogre_find_plugin(RenderSystem_GLES OgreGLESRenderSystem.h RenderSystems/GLES/include)
 #ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2/include)
