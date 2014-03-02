@@ -16,7 +16,7 @@ EscenaAjedrez::EscenaAjedrez() :
   , modoVS(0)
  // , listaNodos(0)
 {
-		std::cout << "INCIA ESCNAAJEDREZ "<<std::endl;
+		std::cout << "CONSTRUCTOR ESCNAAJEDREZ "<<std::endl;
 
    			 tablero = new TableroMV();
 

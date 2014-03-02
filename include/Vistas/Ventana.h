@@ -11,7 +11,10 @@
 
 
 
-class Ventana :  public Ogre::WindowEventListener
+class Ventana 
+	#if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID
+	:  public Ogre::WindowEventListener
+#endif
 {
 public:
     Ventana();
@@ -19,11 +22,11 @@ public:
     void go();
 		  RocketListener* listener;
           BaseListeners* vista;
+	  	   ModeloVista* modeloVista;
 
 private:
   //  BaseVistas* vista;
      // ModeloVista* modeloVista;
-	  	   ModeloVista* modeloVista;
 
 	  	void creaVista();
 

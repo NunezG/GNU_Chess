@@ -29,7 +29,7 @@ public:
    // Opens a file.
    virtual Rocket::Core::FileHandle Open(const Rocket::Core::String& path)
    {
-       std::cout << "OPEN FILE "<<std::endl;
+       std::cout << "OPEN FILE "<< path.CString()<<std::endl;
 
       //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, (Rocket::Core::String("Rocket::Core::FileHandle Open: ") + path).CString());
       AAsset* asset = AAssetManager_open(mAssetMgr, path.CString(), AASSET_MODE_BUFFER);

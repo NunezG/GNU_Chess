@@ -15,24 +15,7 @@ VistaAjedrezSolo::~VistaAjedrezSolo(void)
 
 
 
-#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
-
-
-#else
-
-
-//NO SIRVE PARA NADA PERO SE PUEDE USAR PARA MOSTRAR OTROS MENUS
-
-//-------------------------------------------------------------------------------------
-bool VistaAjedrezSolo::keyPressed( const OIS::KeyEvent &arg )
-{
-    return VistaAjedrez::keyPressed( arg );
-}
-
-bool VistaAjedrezSolo::keyReleased( const OIS::KeyEvent &arg )
-{ 
-    return VistaAjedrez::keyReleased( arg );
-}
+#if (OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS) && (OGRE_PLATFORM != OGRE_PLATFORM_ANDROID)
 
 bool VistaAjedrezSolo::mouseMoved( const OIS::MouseEvent &arg )
 {
@@ -66,7 +49,24 @@ bool VistaAjedrezSolo::mouseReleased( const OIS::MouseEvent &arg,OIS::MouseButto
     //    }
 }
 
+
+
+//NO SIRVE PARA NADA PERO SE PUEDE USAR PARA MOSTRAR OTROS MENUS
+
+//-------------------------------------------------------------------------------------
+bool VistaAjedrezSolo::keyPressed( const OIS::KeyEvent &arg )
+{
+    return VistaAjedrez::keyPressed( arg );
+}
+
+bool VistaAjedrezSolo::keyReleased( const OIS::KeyEvent &arg )
+{ 
+    return VistaAjedrez::keyReleased( arg );
+}
+
+
 #endif
+
 
 //bool VistaAjedrezSolo::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //{

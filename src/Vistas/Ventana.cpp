@@ -11,13 +11,17 @@ Ventana::Ventana() :
 
 	//Rocket Listener
 	modeloVista = new ModeloVista();
+
+	listener = new RocketListener(modeloVista);
 }
 
 
 void Ventana::init(void)
 { 
+						std::cout << "RocketListener"<<std::endl;
 
-	listener = new RocketListener(modeloVista);
+	
+							std::cout << "fin RocketListener"<<std::endl;
 
 
 
@@ -26,8 +30,11 @@ void Ventana::init(void)
 
 void Ventana::go(void)
 {   
+	listener->init();
 	
-		listener->init();
+								std::cout << "listeer inint"<<std::endl;
+
+		
 
 					std::cout << "FININIT"<<std::endl;
 
@@ -35,10 +42,19 @@ void Ventana::go(void)
 	//std::cout << "addWindowEventListener "<<std::endl;
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
-                    creaVista();
+							modeloVista->reiniciar = false;
+					
+					creaVista();
 
+								   #ifdef USAROCKET
+
+					vista->initEventListener();
+#endif
+
+					 vista->createView(); //inicia vista
 #else
 
+					
 
                     Ogre::WindowEventUtilities::addWindowEventListener(listener->mWindow, this);
 
@@ -57,8 +73,13 @@ void Ventana::go(void)
 
         creaVista();
 
+
+					   #ifdef USAROCKET
+
+	   vista->initEventListener();
+#endif
 	//	std::cout << "empieza"<<std::endl;
-		vista->createOverlay();
+		vista->createView();
 
 		//   creaVista??z
 		  //EMPIEZA RENDERIZADO
@@ -97,18 +118,18 @@ void Ventana::creaVista()
 
 	//vista->context->dele
 
+		modeloVista->setNumPantalla(1);
 
 				std::cout << "creaVista "<<std::endl;
 
     if (modeloVista->getNumPantalla() == 0)
 	{
-			std::cout << "vistamenurocket "<<std::endl;
-        vista = new VistaAjedrez(listener);
+			std::cout << "vistamenurocket"<<std::endl;
+        vista = new MenuRocket(listener);
 
 
         std::cout << "escensa "<<std::endl;
 
-        static_cast<VistaAjedrez*>(vista)->createScene();
 
 			//static_cast<VistaAjedrez*>(vista)->createScene();
 
@@ -129,8 +150,9 @@ void Ventana::creaVista()
 
 				vista =  new VistaAjedrezSolo(listener);            
 			}
+									std::cout << "createScene "<<std::endl;
 
-			static_cast<VistaAjedrez*>(vista)->createScene();
+            //static_cast<VistaAjedrez*>(vista)->createScene();
 
 	}
 								 //  listener->createScene();

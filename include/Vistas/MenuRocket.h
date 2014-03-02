@@ -18,10 +18,13 @@ public:
 			virtual bool keyReleased(const OIS::KeyEvent& e);
 
 
-				void createOverlay();
+				void createView();
+
+
+							   #ifdef USAROCKET
 
 	void ProcessEvent(Rocket::Core::Event& event);
-
+#endif
 
 	
 

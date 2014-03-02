@@ -13,12 +13,14 @@ public:
 //bool iniciaTurno();
 private:  
     bool esHumano();
-   bool casillaSobrevolada(const std::string nombreCasilla);
+  // bool casillaSobrevolada(const std::string nombreCasilla);
 
   bool botonIzquierdo(ObjetoEscena* obj);
    int jaqueMate();
+   bool apagaCasillas();
 
-
+   bool fichaPulsada();
+   std::vector<int> jugadasResaltadas;
 };
 
 

@@ -1,3 +1,30 @@
+/*
+ * This source file is part of libRocket, the HTML/CSS Interface Middleware
+ *
+ * For the latest information, see http://www.librocket.com
+ *
+ * Copyright (c) 2008-2010 CodePoint Ltd, Shift Technology Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
 #include "RenderInterfaceOgre3D.h"
 #include <Ogre.h>
 
@@ -145,6 +172,7 @@ void RenderInterfaceOgre3D::RenderCompiledGeometry(Rocket::Core::CompiledGeometr
 		render_system->_disableTextureUnit(0);
 
 	render_system->_render(ogre3d_geometry->render_operation);
+	
 }
 
 // Called by Rocket when it wants to release application-compiled geometry.
@@ -207,9 +235,10 @@ bool RenderInterfaceOgre3D::GenerateTexture(Rocket::Core::TextureHandle& texture
 {
 	static int texture_id = 1;
 	Ogre::DataStreamPtr stream(OGRE_NEW Ogre::MemoryDataStream((void*) source, source_dimensions.x * source_dimensions.y * sizeof(unsigned int)));
+
 	Ogre::TexturePtr ogre_texture = Ogre::TextureManager::getSingleton().loadRawData(Rocket::Core::String(16, "%d", texture_id++).CString(),
 																					 "Rocket",
-                                                                                    stream,
+																					 stream,
 																					 source_dimensions.x,
 																					 source_dimensions.y,
 																					 Ogre::PF_A8B8G8R8,

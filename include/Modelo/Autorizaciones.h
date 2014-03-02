@@ -10,7 +10,8 @@ public:
 
 
 	  static int autorizaCasilla();
-
+	  static std::vector<int> casillasAutorizadas();
+/*
     static int autorizaRey(ModeloTablero* miTablero);
     static int autorizaReina(ModeloTablero* miTablero);
     static int autorizaPeon(ModeloTablero* miTablero);
@@ -18,7 +19,7 @@ public:
     static int autorizaTorre(ModeloTablero* miTablero);
     static int autorizaCaballo(ModeloTablero* miTablero);
 
-
+*/
 	//static bool pruebaJaqueMate(ModeloTablero* miTablero);
 
 

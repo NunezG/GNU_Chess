@@ -314,6 +314,7 @@ bool MenuRocket::pantallaConfig()
 }
 
 
+			   #ifdef USAROCKET
 
 
 	void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
@@ -519,41 +520,40 @@ bool MenuRocket::pantallaConfig()
 		}
 	//}
 }
+  #endif
 
 
-void MenuRocket::createOverlay()
+
+void MenuRocket::createView()
 {
-
+#ifdef USAROCKET
+Rocket::Core::ElementDocument* document;
 
 
     std::cout << "LOAD DOCUMENT "<<std::endl;
 
 #if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID
 
-    Rocket::Core::ElementDocument* document = context->LoadDocument("../media/librocket/demo.rml");
+     document = context->LoadDocument("../media/librocket/demo.rml");
+
 
 #else
-            std::cout << "LOADEA EL FONT FACE2 en seiirriiri"<<std::endl;
 
-	   Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Roman.otf");
-            std::cout << "LOADEA EL FONT FACE2 en serio"<<std::endl;
-
-            Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Bold.otf");
-            std::cout << "LOADEA EL font 2"<<std::endl;
-
-            Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Italic.otf");
-            Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-BoldItalic.otf");
             std::cout << "LOADEA EL DEMO"<<std::endl;
 
+    document= context->LoadDocument("librocket/demo.rml");
+   std::cout << "findemo"<<std::endl;
 
-   Rocket::Core::ElementDocument* document = context->LoadDocument("librocket/demo.rml");
-
+ //  Ogre::Root::getSingleton().getRenderSystem()->_initRenderTargets();
 
    // Rocket::Core::ElementDocument* document = context->LoadDocument("librocket/demo.rml");
 
 
 #endif
-    std::cout << "createOverlay22222 "<<std::endl;
+
+   std::cout << "se visible?? " <<  document->IsVisible()   <<std::endl;
+
+    std::cout << "createView22222 "<<std::endl;
 
 		//	document->AddEventListener("click", this);
 
@@ -563,13 +563,13 @@ void MenuRocket::createOverlay()
 				std::cout << "document "<<std::endl;
 
 		document->Show();
-		document->RemoveReference();
+		//document->RemoveReference();
         std::cout << "documfin "<<std::endl;
 
 	}
 
     std::cout << "NO DOC "<<std::endl;
-
+#endif
 }
 
 

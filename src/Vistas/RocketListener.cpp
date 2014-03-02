@@ -1,13 +1,12 @@
 #include "RocketListener.h"
 
-
-
-
 //#include "EventManager.h"
+#ifdef USAROCKET
 
 #include <Rocket/Core/Context.h>
 #include <Rocket/Core/ElementDocument.h>
 #include <Rocket/Core/ElementUtilities.h>
+#endif
 //#include <Shell.h>
 //#include "EventHandler.h"
 //#include "GameDetails.h"
@@ -125,7 +124,10 @@ RocketListener::~RocketListener()
         mRoot = NULL;
     }
 
+	#ifdef USAROCKET
+
 		Rocket::Core::Shutdown();
+#endif
 		    delete modeloVista;
 
 

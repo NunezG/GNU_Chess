@@ -73,6 +73,80 @@ bool Movimientos::generaMovimientos(ModeloTablero* miTablero)
 
     return fichamovida; 
 }
+
+
+bool Movimientos::movimientosUnaFicha(ModeloTablero* miTablero)
+{
+    // ModeloTablero nuevoTablero;   
+    //BUSCA EN EL TABLERO LAS FICHAS Y SEGUN SU TIPO VA GENERANDO LOS MOVIMIENTOS
+
+    bool fichamovida = false;
+    
+    //CADA VEZ QUE ENCUENTRA UNA FICHA APLICA SUS MOVIMIENTOS
+       //  for (int i = 26; i< 118;i++)
+      //  {
+
+		// }
+
+		
+            //  int casilla = (i*12)+y;
+
+	
+            char valorCasilla = miTablero->casillasInt[miTablero->jugada[0]];
+            
+			if (miTablero->turnoN) valorCasilla = -valorCasilla;
+
+        
+				// bool fichamovida = false;  
+				bool resultado = false;
+				switch (tipoFicha(valorCasilla))
+				{
+				case (Rey):
+
+					//ENCUENTRA REY
+				resultado = mueveRey(miTablero);
+				break;
+			case Reina:
+				//ENCUENTRA REINA
+				resultado = mueveReina(miTablero);
+				break;
+			case Torre:
+				//ENCUENTRA TORRE
+				resultado = mueveTorre(miTablero);
+				break;
+			case Alfil:
+				//ENCUENTRA ALFIL
+
+				resultado = mueveAlfil(miTablero);
+				break; 
+			case Caballo:
+				//ENCUENTRA CABALLO
+
+				resultado = mueveCaballo(miTablero);    
+				break;      
+			case Peon:
+				//ENCUENTRA PEON    
+
+				resultado = muevePeon(miTablero);      
+				break;      
+			default:
+				break;
+			}
+               // bool resultado = mueveFicha(miTablero, );
+               if (fichamovida == false) fichamovida = resultado;
+      
+
+    miTablero->vectorJugadas.reserve( miTablero->vectorJugadasNormales.size() + miTablero->vectorJugadasPeores.size() ); // preallocate memory
+    miTablero->vectorJugadas.insert( miTablero->vectorJugadas.end(), miTablero->vectorJugadasNormales.begin(), miTablero->vectorJugadasNormales.end() );
+    miTablero->vectorJugadas.insert( miTablero->vectorJugadas.end(), miTablero->vectorJugadasPeores.begin(), miTablero->vectorJugadasPeores.end() );
+
+    miTablero->vectorJugadasNormales.clear();
+    miTablero->vectorJugadasPeores.clear();
+
+    return fichamovida; 
+}
+
+
 /*
 bool Movimientos::myfunction (unsigned char* primeraJugada, unsigned char* segundaJugada)
 {

@@ -8,6 +8,8 @@
 
 #include <OgreFrameListener.h>
 
+#ifdef USAROCKET
+
 #include <Rocket/Core/Context.h>
 #include <Rocket/Controls.h>
 #include <Rocket/Core.h>
@@ -17,7 +19,7 @@
 #include <Rocket/Core/Core.h>
 #include <Rocket/Core/Event.h>
 #include <Rocket/Debugger.h>
-
+#endif
 //class RocketApplication;
 
 #include <OgreRoot.h>
@@ -29,7 +31,6 @@
 #include "BaseVistas.h"
 
 #include <OgreWindowEventUtilities.h>
-#include <Rocket/Core/Event.h>
 
 
 class RocketListener: public BaseVistas

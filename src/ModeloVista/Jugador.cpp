@@ -33,14 +33,14 @@ bool Jugador::casillaSobrevolada(const std::string nombreCasilla)
     {
 		      std::cout << "poozzzz: "<<    std::endl;
 
-        if (casillaSobreAnterior )
-        {
-                 std::cout << "CasillaSobrevolada ANTERIOR: "<<   casillaSobreAnterior->getNombre()  << std::endl;
-             escenaMV->apagaVentanaEmergente();
+     //   if (casillaSobreAnterior )
+     //   {
+      //           std::cout << "CasillaSobrevolada ANTERIOR: "<<   casillaSobreAnterior->getNombre()  << std::endl;
+      //       escenaMV->apagaVentanaEmergente();
 
-            casillaSobreAnterior->cambiaMaterial(0);
+     //       casillaSobreAnterior->cambiaMaterial(0);
             //tablero->setNodoCasillaSobrevolada(-1);
-        }
+    //    }
 
            std::cout << "CAMBIA LA CASILLA SOBREVOLADA: " << std::endl;
          escenaMV->getTablero()->setCasillaSobrevolada(casillaSobre);

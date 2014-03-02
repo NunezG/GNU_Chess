@@ -30,6 +30,7 @@
 
 #include <OgreWindowEventUtilities.h>
 
+#ifdef USAROCKET
 
 #include <Rocket/Core/Context.h>
 #include <Rocket/Controls.h>
@@ -42,15 +43,19 @@
 
 #include "RenderInterfaceOgre3D.h"
 #include "SystemInterfaceOgre3D.h"
-
+#endif
 #if (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
 
 #include "Android/OgreAPKFileSystemArchive.h"
 #include "Android/OgreAPKZipArchive.h"
 #endif
 
-class BaseListeners :  public Rocket::Core::EventListener,
-	
+
+
+class BaseListeners : 
+#ifdef USAROCKET
+	public Rocket::Core::EventListener,
+#endif
 #if (OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS) && (OGRE_PLATFORM != OGRE_PLATFORM_ANDROID)
 		public OIS::KeyListener,
 		public OIS::MouseListener
@@ -65,10 +70,18 @@ public:
     ~BaseListeners(void);
 
 	
-     Ogre::SceneNode* mTarget;
+    // Ogre::SceneNode* mTarget;
     //Ogre::Camera* mCamera;
 	//Ogre::Ray getCameraToViewportRay();
+
+ #ifdef USAROCKET
+
 		virtual void ProcessEvent(Rocket::Core::Event& event) = 0;
+
+		void initEventListener();
+		Rocket::Core::Context* context;
+
+#endif
 
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
 		virtual bool touchMoved(const OIS::MultiTouchEvent& evt);
@@ -82,7 +95,7 @@ public:
 		virtual bool mouseMoved(const OIS::MouseEvent& e);
 		virtual bool mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 		virtual bool mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-
+		
 
 #endif
      // KeyListener interface.
@@ -93,19 +106,18 @@ public:
     void rotacionCamara(Ogre::Degree angulo);
 
    
-   #if (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
+ //  #if (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
 
-	    Rocket::Core::ElementDocument* openFontRocket(const Ogre::String& fileName);
+	  //  Rocket::Core::ElementDocument* openFontRocket(const Ogre::String& fileName);
 
-	AAssetManager* mAssetMgr;       // Android asset manager to access files inside apk
-#endif
+//	AAssetManager* mAssetMgr;       // Android asset manager to access files inside apk
+//#endif
 
-			Rocket::Core::Context* context;
 
 			RocketListener* vistaOgre; 
 			bool reinicia;
 
-			virtual void createOverlay() = 0;
+			virtual void createView() = 0;
 
 protected:
    
@@ -121,8 +133,6 @@ protected:
    // OIS::Keyboard* mKeyboard;
 		 
 		
-		// Builds an OpenGL-style orthographic projection matrix.
-		void buildProjectionMatrix(Ogre::Matrix4& matrix);
 		
 						      Ogre::SceneManager* mSceneMgr;
 
@@ -134,15 +144,12 @@ private:
 
 	  //  Ogre::Root *mRoot;
 
-			SystemInterfaceOgre3D* ogre_system;
-		RenderInterfaceOgre3D* ogre_renderer;
 	
    // CEGUI::OgreRenderer* renderer;
 		bool running;
 	
-		typedef std::map< OIS::KeyCode, Rocket::Core::Input::KeyIdentifier > KeyIdentifierMap;
-		KeyIdentifierMap key_identifiers;
-
+		
+		
 		
 		//void destroyScene();
 	

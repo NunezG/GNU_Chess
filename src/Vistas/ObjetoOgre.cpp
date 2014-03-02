@@ -79,8 +79,27 @@ void ObjetoOgre::trasladar(int x, int z)
 
 void ObjetoOgre::rota(int grados)
 {
+	//Ogre::SceneNode* mTarget = mSceneMgr->getRootSceneNode();
+
+	// Ogre::Real dist = (nodoEscena->getPosition() - mTarget->_getDerivedPosition()).length();
+
+    //Mueve nodoEscena a la posicion central
+   // nodoEscena->setPosition(mTarget->_getDerivedPosition());
+    //Rota nodoEscena
+  //  nodoEscena->yaw(Ogre::Degree(grados));
+
+    //Devuelve la camara a su posicion original
+  //  nodoEscena->translate(Ogre::Vector3(0, 0, dist));
+
+
+
+
+
+
+
     nodoEscena->yaw(Ogre::Degree(grados));
 }
+
 
 
 void ObjetoOgre::eliminaHijo(int hijo)

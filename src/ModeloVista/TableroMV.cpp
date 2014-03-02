@@ -92,11 +92,22 @@ void TableroMV::setCasillaSeleccionada(int posicion)
         fichaSeleccionada = false;
       if(casillaSeleccionada != 0 && casillaSeleccionada->numHijos() > 0) 
 	  {
-		  ObjetoEscena* ficha = casillaSeleccionada->getHijo(0);
+
+		   	std::cout << "setcasisis1111111"<<std::endl;
+
+		ObjetoEscena* ficha = casillaSeleccionada->getHijo(0);
+					std::cout << "setcasisis2222222222"<<std::endl;
+
         ficha->cambiaMaterial(0);
+		 	std::cout << "setcasisi3333333333333333333333333333s"<<std::endl;
+
         casillaSeleccionada->cambiaMaterial(0);
+		   	std::cout << "44444444444444444444"<<std::endl;
+
         casillaSeleccionada = 0;
-		casillaSobrevolada->cambiaMaterial(0);
+			  	std::cout << "setcasisis5555555555555"<<std::endl;
+
+		//casillaSobrevolada->cambiaMaterial(0);
 	  }
 									   	std::cout << "fin setcasisis"<<std::endl;
 

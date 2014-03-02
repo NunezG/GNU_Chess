@@ -8,6 +8,7 @@ class Movimientos
 public:
     static ModeloTablero* aplicaMovimiento(ModeloTablero& miTablero);
 	static bool generaMovimientos(ModeloTablero* miTablero); 
+	static bool movimientosUnaFicha(ModeloTablero* miTablero);
 
 private:
    // bool myfunction (unsigned char* primeraJugada, unsigned char* segundaJugada);

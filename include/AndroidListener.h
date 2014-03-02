@@ -19,13 +19,16 @@
 #include "Android/OgreAPKFileSystemArchive.h"
 #include "Android/OgreAPKZipArchive.h"
 
+#ifdef USAROCKET
 #include <Rocket/Core/FileInterface.h>
-
+#endif
 #include "AndroidFileInterface.h"
 
-
 //#ifdef INCLUDE_RTSHADER_SYSTEM
-//#   include "OgreRTShaderSystem.h"
+//# include "ShaderSystem.h"
+
+//#include "RenderSystems/GLES2/"
+
 //#endif
 
 #ifdef OGRE_STATIC_LIB
@@ -40,6 +43,9 @@
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "Ogre", __VA_ARGS__))
 
 class OgreAndroidBridge;
+
+
+
 
 /*=============================================================================
      | Android input handling
@@ -201,15 +207,13 @@ public:
 /*=============================================================================
      | Ogre Android bridge
      =============================================================================*/
-class OgreAndroidBridge //: public Rocket::Core::FileInterface
+class OgreAndroidBridge
 {
 public:
     static void init(struct android_app* state)
     {
 
         std::cout << "INITITIT ANDRODI"<<std::endl;
-
-
 
         state->onAppCmd = &OgreAndroidBridge::handleCmd;
         state->onInputEvent = &OgreAndroidBridge::handleInput;
@@ -218,8 +222,7 @@ public:
             return;
 
 
-        mRoot = new Ogre::Root();
-
+/*
         std::cout << "ROOT"<<std::endl;
 #ifdef OGRE_STATIC_LIB
         std::cout << "STATIC ANDRODI"<<std::endl;
@@ -228,12 +231,50 @@ public:
 #endif
         std::cout << "RENERSS"<<std::endl;
         mRoot->setRenderSystem(mRoot->getAvailableRenderers().at(0));
+*/
+		 if(!mVentana)
+                    {
+                        mVentana= OGRE_NEW Ventana();
+                    //    mVentana->init();
 
-        mRoot->initialise(false);
+                        // mBrowser = OGRE_NEW SampleBrowser();
+                        //mBrowser->initAppForAndroid(mRenderWnd, app, mTouch, mKeyboard);
+                        // mBrowser->initApp();
+
+                        //  mWindow = createWindow();
+						
+						 mRoot = new Ogre::Root();
+                        mVentana->listener->mRoot = mRoot;
+
+
+						mVentana->listener->configuraOgre();
+						mRoot->initialise(false);
+
+
+                        std::cout << "GO DE LA VeNTANA PARA CREAR VISTA"<<std::endl;
+
+                        //  mVentana->vista->mAssetMgr = mAssetMgr;
+						 // = mAssetMgr;
+					//   mVentana->listener->configuraRocket();
+
+					  std::cout << "Sinniiittttt"<<std::endl;
+					  
+                    // mRenderWnd->
+                    
+					
+		}
+
+
+
+
+      
+
+
 
 
 
         mInit = true;
+
 
 
 
@@ -304,6 +345,8 @@ public:
         case APP_CMD_SAVE_STATE:
             break;
         case APP_CMD_INIT_WINDOW:
+			 std::cout << "APP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOW"<<std::endl;
+
             if (app->window && mRoot)
             {
                 AConfiguration* config = AConfiguration_new();
@@ -311,76 +354,63 @@ public:
 
                 if (!mRenderWnd)
                 {
+                       
+                       // locateResources();
+
+                       
+
+                    std::cout << "CREA VENTANA ANDROID"<<std::endl;
+					
                     Ogre::NameValuePairList opt;
                     opt["externalWindowHandle"] = Ogre::StringConverter::toString((int)app->window);
                     opt["androidConfig"] = Ogre::StringConverter::toString((int)config);
 
-                    mRenderWnd = Ogre::Root::getSingleton().createRenderWindow("OgreWindow", 0, 0, false, &opt);
+                    mRenderWnd = mRoot->createRenderWindow("OgreWindow", 0, 0, false, &opt);
 
-                    if(!mTouch)
+					   if(!mTouch)
                         mTouch = new AndroidMultiTouch();
 
                     if(!mKeyboard)
                         mKeyboard = new AndroidKeyboard();
 
-                    if(!mVentana)
-                    {
+
+                        std::cout << "FIN createoverloay"<<std::endl;
 
 
-                        if(app != NULL)
+			           mVentana->listener->mWindow = mRenderWnd;
+
+					
+						if(app != NULL)
                         {
                             mAssetMgr = app->activity->assetManager;
                             Ogre::ArchiveManager::getSingleton().addArchiveFactory( new Ogre::APKFileSystemArchiveFactory(app->activity->assetManager) );
                             Ogre::ArchiveManager::getSingleton().addArchiveFactory( new Ogre::APKZipArchiveFactory(app->activity->assetManager) );
-
-
-
                         }
 
+			//			 AndroidFileInterface*  mAndroidFileInterface = new AndroidFileInterface(mAssetMgr);
+            //            Rocket::Core::SetFileInterface(mAndroidFileInterface);
 
-                        mVentana= OGRE_NEW Ventana();
-                        mVentana->init();
-
-
-                        mVentana->listener->mWindow = mRenderWnd;
-                        mVentana->listener->mRoot = mRoot;
-                        mVentana->listener->mInputContext.mMultiTouch = mTouch;
-                        mVentana->listener->mInputContext.mKeyboard = mKeyboard;
-
-
-                        locateResources();
-
-                        // mBrowser = OGRE_NEW SampleBrowser();
-                        //mBrowser->initAppForAndroid(mRenderWnd, app, mTouch, mKeyboard);
-                        // mBrowser->initApp();
-
-                        //  mWindow = createWindow();
-
-
-                        mInputInjector = new AndroidInputInjector(mVentana, mTouch, mKeyboard);
-
-                        std::cout << "GO DE LA VeNTANA PARA CREAR VISTA"<<std::endl;
+						mVentana->listener->configuraGraficos();
 
 
 
-                        mVentana->go();
-						mVentana->vista->mAssetMgr = mAssetMgr;
+			
 
 
 
-                        AndroidFileInterface*  mAndroidFileInterface = new AndroidFileInterface(mAssetMgr);
-                       Rocket::Core::SetFileInterface(mAndroidFileInterface);
+
+                        mVentana->go(); //crea vista
 
 
-						mVentana->vista->createOverlay();
-
+						
                         Ogre::Root::getSingleton().getRenderSystem()->_initRenderTargets();
-
                         // Clear event times
-                       Ogre::Root::getSingleton().clearEventTimes();
+                        Ogre::Root::getSingleton().clearEventTimes();
+                       // mVentana->vista->initEventListener();
 
-                    }
+						mInputInjector = new AndroidInputInjector(mVentana, mTouch, mKeyboard);
 
+                
                 }
                 else
                 {
@@ -389,6 +419,8 @@ public:
 
                 AConfiguration_delete(config);
             }
+						 std::cout << "EEENDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD APP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOW"<<std::endl;
+
             break;
         case APP_CMD_TERM_WINDOW:
             if(mRoot && mRenderWnd)
@@ -406,7 +438,7 @@ public:
     static void go(struct android_app* state)
     {
 
-      //  std::cout << "GO"<<std::endl;
+        //  std::cout << "GO"<<std::endl;
 
 
         int ident, events;
@@ -436,19 +468,21 @@ public:
             }
             //	 std::cout << "SIGUEEEEEEEEEEEEEEEEEEEE EN ELE EOTOTOTOSRS"<<std::endl;
 
-            if(mRenderWnd != NULL && mRenderWnd->isActive())
+            if(mRenderWnd != NULL && mRenderWnd->isActive() && !mVentana->modeloVista->getApagar() && !mVentana->modeloVista->reiniciar && !mRenderWnd->isClosed() && mRenderWnd->isVisible() && !mRenderWnd->isHidden())
             {
-                //std::cout << "moveedorresized"<<std::endl;
+                //  std::cout << "moveedorresized mRenderWnd->isHidden(): "<< mRenderWnd->isHidden()  <<std::endl;
+
+
 
                 mRenderWnd->windowMovedOrResized();
 
-               // std::cout << "RENDERONEGRAME"<<std::endl;
+                // std::cout << "RENDERONEGRAME"<<std::endl;
 
                 mRoot->renderOneFrame();
-              //  std::cout << "finrender"<<std::endl;
+                //  std::cout << "finrender"<<std::endl;
 
             }
-           // std::cout << "SIGUE WHULEEEEEEE"<<std::endl;
+            // std::cout << "SIGUE WHULEEEEEEE"<<std::endl;
 
         }
         std::cout << "FIN DEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
@@ -469,25 +503,24 @@ public:
             -----------------------------------------------------------------------------*/
     static void locateResources()
     {
-        mFSLayer = OGRE_NEW_T(Ogre::FileSystemLayer, Ogre::MEMCATEGORY_GENERAL)(OGRE_VERSION_NAME);
+		
+//-------------------------------------------------------------------------------------
+    // setup resources
+    // Only add the minimally required resource locations to load up the Ogre head mesh
+  
 
+
+
+		/*
 
         // load resource paths from config file
         Ogre::ConfigFile cf;
 
-        cf.load(openAPKFile(mFSLayer->getConfigFilePath("resources.cfg")));
+        cf.load(openAPKFile(mVentana->listener->mFSLayer->getConfigFilePath("resources.cfg")));
 
 
 
-       // dataS.;
-
-        std::cout << " mFSLayer->getConfigFilePath(resources.cfg) "<<   mFSLayer->getConfigFilePath("resources.cfg")  <<std::endl;
-
-        std::cout << " mFSLayer->getConfigFilePath(resources.cfg) "<<   mFSLayer->getConfigFilePath("resources.cfg")  <<std::endl;
-
-        std::cout << " mFSLayer->getConfigFilePath(cursor.rml) "<<   mFSLayer->getConfigFilePath("cursor.rml")  <<std::endl;
-
-        std::cout << " mFSLayer->getConfigFilePath(librocket/cursor.rml) "<<   mFSLayer->getConfigFilePath("librocket/cursor.rml")  <<std::endl;
+        std::cout << " mFSLayer->getConfigFilePath(resources.cfg) "<<   mVentana->listener->mFSLayer->getConfigFilePath("resources.cfg")  <<std::endl;
 
 
         Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
@@ -522,80 +555,20 @@ public:
         const Ogre::ResourceGroupManager::LocationList genLocs = Ogre::ResourceGroupManager::getSingleton().getResourceLocationList("General");
         arch = genLocs.front()->archive->getName();
 
-        std::cout << "ARCH dEL LOCATION: "<<   arch <<std::endl;
 
-/*
-        openFontRocket(mFSLayer->getConfigFilePath("Delicious-Roman.otf"));
+		*/
+        //std::cout << "ARCH dEL LOCATION: "<<   arch <<std::endl;
 
-         openFontRocket(mFSLayer->getConfigFilePath("Delicious-Bold.otf"));
-
-          openFontRocket(mFSLayer->getConfigFilePath("Delicious-Italic.otf"));
-
-         openFontRocket(mFSLayer->getConfigFilePath("Delicious-BoldItalic.otf"));
-*/
-
-         std::cout << "INICIALIZARES " <<std::endl;
-
-
-
-
-
-
-
-        //CONFIGURE RENDER SYSTEM
-        Ogre::RenderSystem *renderSystem = Ogre::Root::getSingleton().getRenderSystem();
-        // Manually set some configuration options (optional)
-
-        for(Ogre::ConfigOptionMap::iterator it = renderSystem->getConfigOptions().begin();
-            it != renderSystem->getConfigOptions().end(); it++)
-        {
-            std::pair<const std::basic_string<char>,Ogre::ConfigOption> CO = *it;
-        }
-
-            renderSystem->setConfigOption("Full Screen", "Yes");
-
-
-
-        renderSystem->setConfigOption("Video Mode", "800x600");
-
-        for(Ogre::ConfigOptionMap::iterator it = renderSystem->getConfigOptions().begin();
-            it != renderSystem->getConfigOptions().end(); it++)
-        {
-            std::pair<const std::basic_string<char>,Ogre::ConfigOption> CO = *it;
-        }
-
-
-        Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-
-        // Load the fonts from the path to the sample directory.
-     //   Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-Bold.otf");
-      //  Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-Italic.otf");
-       // Rocket::Core::FontDatabase::LoadFontFace("../media/librocket/Delicious-BoldItalic.otf");
-
-
-
-
-
-
-
-
-
-
-
+     
 
     }
 
 
 
-
-
-
-
-
-
-
     static Ogre::DataStreamPtr openAPKFile(const Ogre::String& fileName)
     {
+		        std::cout << "openAPKFile"<<std::endl;
+
         Ogre::DataStreamPtr stream;
         AAsset* asset = AAssetManager_open(mAssetMgr, fileName.c_str(), AASSET_MODE_BUFFER);
         if(asset)
@@ -611,119 +584,6 @@ public:
     }
 
 
-/*
-    // Opens a file.
-     static Rocket::Core::FileHandle Open(const Rocket::Core::String& path)
-    {
-        //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, (Rocket::Core::String("Rocket::Core::FileHandle Open: ") + path).CString());
-        AAsset* asset = AAssetManager_open(mAssetMgr, path.CString(), AASSET_MODE_BUFFER);
-        if(asset)
-        {
-            AndroidFilePointer* afp = new AndroidFilePointer();
-            afp->asset = asset;
-            afp->offset = 0;
-            Rocket::Core::FileHandle membuf = (Rocket::Core::FileHandle) afp;
-            return membuf;
-        }
-        return NULL;
-    }
-    */
-
-/*
-    // Reads data from a previously opened file.
-    static size_t Read(void* buffer, size_t size, Rocket::Core::FileHandle file) {
-        //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Rocket::Core::FileHandle Read %d ...", size);
-        if(!file) return 0;
-        AndroidFilePointer* afp = (AndroidFilePointer*) file;
-        AAsset* asset = afp->asset;
-
-
-        off_t length = AAsset_getLength(asset);
-        char const* assetBuffer = (char*) AAsset_getBuffer(asset);
-        if((afp->offset + size) <= length)
-        {
-            memcpy(buffer, assetBuffer + afp->offset, size);
-            afp->offset += size;
-            //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "... (afp->offset + size) <= length: read %d", size);
-            return size;
-        }
-        else
-        {
-            int s = (length - afp->offset);
-            memcpy(buffer, assetBuffer + afp->offset, s);
-            afp->offset += s;
-            //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "... (afp->offset + size) > length: read %d", s);
-            return s;
-        }
-    }
-    */
-/*
-    // Seeks to a point in a previously opened file.
-     static bool Seek(Rocket::Core::FileHandle file, long offset, int origin) {
-        AndroidFilePointer* afp = (AndroidFilePointer*) file;
-        AAsset* asset = afp->asset;
-        off_t length = AAsset_getLength(asset);
-
-        //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Rocket::Core::FileHandle Seek origin: %d offset %d, afp_offset %d...", origin, offset, afp->offset);
-
-        if(SEEK_SET == origin)
-        {
-            off_t pointer = offset;
-            //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "... SEEK_SET == origin %d", pointer);
-            if(pointer > length)
-                return false;
-            if(pointer < 0)
-                return false;
-
-            afp->offset = pointer;
-            return true;
-        }
-        else if(SEEK_CUR == origin)
-        {
-            off_t pointer = afp->offset + offset;
-            //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "... SEEK_CUR == origin %d", pointer);
-            if(pointer > length)
-                return false;
-            if(pointer < 0)
-                return false;
-
-            afp->offset = pointer;
-            return true;
-        }
-        else
-        {
-            off_t pointer = length + offset;
-            //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "... SEEK_END == origin %d", pointer);
-            if(pointer > length)
-                return false;
-            if(pointer < 0)
-                return false;
-
-            afp->offset = pointer;
-            return true;
-        }
-    }
-    */
-/*
-    // Returns the current position of the file pointer.
-    static size_t Tell(Rocket::Core::FileHandle file)
-    {
-        AndroidFilePointer* afp = (AndroidFilePointer*) file;
-        //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Rocket::Core::FileHandle Tell Offset %d", afp->offset);
-        return afp->offset;
-    }
-
-*/
-
-
-
-
-
-
-
-
-
-
 
 
 private:
@@ -734,8 +594,6 @@ private:
 
     static AAssetManager* mAssetMgr;       // Android asset manager to access files inside apk
 
-    static Ogre::FileSystemLayer* mFSLayer; // File system abstraction layer
-
     //cambia el browser por lo que sea, basevistas o baselisteners por ejemplo
     static Ventana* mVentana;
     static AndroidInputInjector* mInputInjector;
@@ -744,6 +602,8 @@ private:
     static Ogre::RenderWindow* mRenderWnd;
     static Ogre::Root* mRoot;
     static bool mInit;
+
+
     //static Ventana* punteroVentana;
 
 #ifdef OGRE_STATIC_LIB

@@ -171,7 +171,7 @@ endif ()
 # redo search if any of the environmental hints changed
 if(WIN32)
 message("WINDOOWOWOWO")
-set(OGRE_COMPONENTS #Paging Terrain Volume Overlay 
+set(OGRE_COMPONENTS RTShaderSystem #Paging Terrain Volume Overlay 
   Plugin_OctreeSceneManager #Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
  # Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
  RenderSystem_GL # RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2
@@ -182,7 +182,7 @@ elseif(ANDROID)
 
 message("ANDORROORORRO")
 
-set(OGRE_COMPONENTS #Paging Terrain Volume Overlay 
+set(OGRE_COMPONENTS RTShaderSystem #Paging Terrain Volume Overlay 
   Plugin_OctreeSceneManager #Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
  # Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
  RenderSystem_GLES2 # RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2
@@ -417,6 +417,8 @@ macro(ogre_find_component COMPONENT HEADER)
   find_library(OGRE_${COMPONENT}_LIBRARY_REL NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES} HINTS ${OGRE_LIBRARY_DIR_REL} PATH_SUFFIXES "" "Release" "RelWithDebInfo" "MinSizeRel")
   find_library(OGRE_${COMPONENT}_LIBRARY_DBG NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES_DBG} HINTS ${OGRE_LIBRARY_DIR_DBG} PATH_SUFFIXES "" "Debug")
   make_library_set(OGRE_${COMPONENT}_LIBRARY)
+  set(OGRE_${COMPONENT}_LIBRARIES ${OGRE_${COMPONENT}_LIBRARY})
+  set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${OGRE_${COMPONENT}_LIBRARIES})
   findpkg_finish(OGRE_${COMPONENT})
   if (OGRE_${COMPONENT}_FOUND)
     # find binaries
@@ -435,9 +437,9 @@ endmacro()
 # look for Terrain component
 #ogre_find_component(Terrain OgreTerrain.h)
 # look for Property component
-#ogre_find_component(Property OgreProperty.h)
+ogre_find_component(Property OgreProperty.h)
 # look for RTShaderSystem component
-#ogre_find_component(RTShaderSystem OgreRTShaderSystem.h)
+ogre_find_component(RTShaderSystem OgreRTShaderSystem.h)
 # look for Volume component
 #ogre_find_component(Volume OgreVolumePrerequisites.h)
 # look for Overlay component

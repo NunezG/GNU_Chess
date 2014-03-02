@@ -8,8 +8,8 @@ BaseListeners::BaseListeners( RocketListener* vistaO) :
     //, mRoot(0)
     //  mCamera(0)
     //, tablero(0)
-    mTarget(0)
-  ,mSceneMgr(0)
+    //mTarget(0)
+  mSceneMgr(0)
   
 {  
 
@@ -22,7 +22,6 @@ BaseListeners::BaseListeners( RocketListener* vistaO) :
     //vistaOgre->mWindow;
     std::cout << "base2 "<<std::endl;
 
-    context = Rocket::Core::GetContext("main");
     std::cout << "base 3"<<std::endl;
 
     mSceneMgr = Ogre::Root::getSingletonPtr()->getSceneManager("MANAGER");
@@ -30,10 +29,53 @@ BaseListeners::BaseListeners( RocketListener* vistaO) :
     std::cout << "base4 "<<std::endl;
 
     
+    //initEventListener();
+
+	    
+
+        //1
+        //mShaderGenerator->removeAllShaderBasedTechniques(); // clear techniques from the RTSS
+
+
+        //2
+        //	if(mRoot->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_FIXED_FUNCTION))
+        //          {
+        //            destroyDummyScene();
+        //          destroyRTShaderSystem();
+        //    }
+
+        //3
+        // if(mRoot->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_FIXED_FUNCTION))
+        //      {
+        //        createDummyScene();
+        //  }
+
+        //  setShaderGenerator(mShaderGenerator);
+
+
+        //6
+        //  if(mRoot->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_FIXED_FUNCTION) == false)
+        //{
+        //    mShaderGenerator->addSceneManager(mRoot->getSceneManager("MANAGER"));
+        //}
+
+
+        //mShaderGenerator->addSceneManager(mSceneMgr);
 
 
 
-    context->AddEventListener("click", this);
+
+	  //4 SETUP
+                        // Check if the render system supports any shader profiles.
+                        // Don't load samples that require shaders if we don't have any shader support, GL ES 1.x for example.
+                       // const Ogre::RenderSystemCapabilities* caps = vistaOgre->mRoot->getRenderSystem()->getCapabilities();
+                      //  Ogre::RenderSystemCapabilities::ShaderProfiles profiles = caps->getSupportedShaderProfiles();
+
+                        //5
+                   //     bool hasProgrammableGPU = (!profiles.empty());
+
+
+                    //    std::cout << "hasProgrammableGPU"<< hasProgrammableGPU<<std::endl;
 
 
 
@@ -43,9 +85,11 @@ BaseListeners::~BaseListeners()
 {
     std::cout << "del BaseListeners"<<std::endl;
 
+#ifdef USAROCKET
     context->RemoveEventListener("click", this);
     std::cout << "del BaseListeners222"<<std::endl;
     context->UnloadAllDocuments();
+#endif
 
     vistaOgre->mInputContext.mMouse->setEventCallback(0);
     vistaOgre->mInputContext.mKeyboard->setEventCallback(0);
@@ -78,25 +122,36 @@ BaseListeners::~BaseListeners()
 
 bool BaseListeners::touchMoved(const OIS::MultiTouchEvent& evt)
 {
-    std::cout << "HA DETECTADO MOVIMIENTO!! "<<std::endl;
+    std::cout << "HA DETECTADO MOVIMIENTO!! 1"<<std::endl;
+		//context->ProcessMouseMove(evt.state.X.abs, evt.state.Y.abs, 0);
+		    std::cout << "HA DETECTADO MOVIMIENTO!! 2"<<std::endl;
+
+	return true;
 
 }
+
 bool BaseListeners::touchPressed(const OIS::MultiTouchEvent& evt)
 {
+	    std::cout << "HA DETECTADO UNA PULSACION EN BASELISTENER!! "<<std::endl;
 
-    std::cout << "HA DETECTADO UNA PULSACION!! "<<std::endl;
+	//context->ProcessMouseMove(evt.state.X.abs, evt.state.Y.abs, 0);
+		  //   context->ProcessMouseButtonDown(0, 0);
 
     return true;
 
 }
 bool BaseListeners::touchReleased(const OIS::MultiTouchEvent& evt)
 {
-    std::cout << "HA DETECTADO UNA PULSACION SOLTADA!! "<<std::endl;
-
+    std::cout << "HA DETECTADO UNA PULSACION SOLTADA!! NE BASELISTENER "<<std::endl;
+//	context->ProcessMouseButtonUp(0, 0);
     return true;
 }
 bool BaseListeners::touchCancelled(const OIS::MultiTouchEvent& evt)
 {
+
+
+	    std::cout << "HA DETECTADO UNA CANCELACION!!!!!!!!!!!!!!!!!!! "<<std::endl;
+
     return true;
 
 }
@@ -106,24 +161,33 @@ bool BaseListeners::touchCancelled(const OIS::MultiTouchEvent& evt)
 
 bool BaseListeners::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
+	std::cout << "mousePressedmousePressedmousePressedmousePressedmousePressed en OIS"<<std::endl;
+   
+	#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 
-    context->ProcessMouseButtonDown((int) id, 0);
+
+				   #ifdef USAROCKET
+
+	context->ProcessMouseButtonDown((int) id, 0);
+#endif
     //context->Proc
-    // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
+#endif
+    	 
 
-    //context.injectMouseButtonDown(CEGUI::MouseButton(id));
-    //  sys->injectMouseButtonDown(convertButton(id));
+
+    // sys->injectMouseButtonDown(convertButton(id));
     return true;
 }
 
 bool BaseListeners::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
+	#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+				   #ifdef USAROCKET
+
     context->ProcessMouseButtonUp((int) id, 0);
-
-    //CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-    //CEGUI::MouseButton(buttonID);
-
-    // context.injectMouseButtonUp(CEGUI::MouseButton(id));
+#endif
+#endif
+    
     // sys->injectMouseButtonUp(convertButton(id));
     return true;
 }
@@ -131,42 +195,45 @@ bool BaseListeners::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID
 
 bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
 {
+    std::cout << "mouseMoved "<<e.state.X.abs <<"/" << e.state.Y.abs <<std::endl;
     //std::cout << "mouseMoved"<<std::endl;
 
     //int key_modifier_state = GetKeyModifierState();
 
     // std::cout << key_modifier_state<<std::endl;
     //mInputContext.
+
+	#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+				   #ifdef USAROCKET
+
     context->ProcessMouseMove(e.state.X.abs, e.state.Y.abs, 0);
     if (e.state.Z.rel != 0)
         context->ProcessMouseWheel(e.state.Z.rel / -120, 0);
-
-
+#endif
+#endif
     //	std::cout << "fin mouseMoved base"<<std::endl;
 
     //VistaAjedrez::mouseMoved(e);
-    // CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-    // context.injectMouseMove(evt.state.X.rel, evt.state.Y.rel) ;
+   
     return true;
 
 }
 
 #endif
-
-
-
 bool BaseListeners::keyPressed( const OIS::KeyEvent &evt )
 {
 
+	    std::cout << "HA PULSADO UNA PEAZO DE TECLAAAAAAAAA"<<std::endl;
+
+					   #ifdef USAROCKET
+
+    Rocket::Core::Input::KeyIdentifier key_identifier = vistaOgre->key_identifiers[evt.key];
 
 
-    Rocket::Core::Input::KeyIdentifier key_identifier = key_identifiers[evt.key];
 
+   context->ProcessKeyDown(key_identifier, 0);
 
-
-    context->ProcessKeyDown(key_identifier, 0);
-
-
+#endif
 
 
     return true;
@@ -174,19 +241,26 @@ bool BaseListeners::keyPressed( const OIS::KeyEvent &evt )
 
 bool BaseListeners::keyReleased( const OIS::KeyEvent &e )
 {
-    Rocket::Core::Input::KeyIdentifier key_identifier = key_identifiers[e.key];
+		    std::cout << "HA SOLTADO UNA PEAZO DE TECLAAAAAAAAA"<<std::endl;
+						   #ifdef USAROCKET
 
+    Rocket::Core::Input::KeyIdentifier key_identifier = vistaOgre->key_identifiers[e.key];
+			
     if (key_identifier != Rocket::Core::Input::KI_UNKNOWN)
         context->ProcessKeyUp(key_identifier, 0);
+#endif
 
-
-
-    //if (e.key == OIS::KC_ESCAPE)
-    //	running = false;
+    if (e.key == OIS::KC_ESCAPE)
+    	running = false;
 
 
     return true;
 }
+
+
+
+
+
 
 
 
@@ -204,26 +278,44 @@ Ogre::Ray BaseListeners ::getCameraToViewportRay()
 
 void BaseListeners::DistanciaCamara(int distanciaRelativa)
 {
-    Ogre::Real dist = (vistaOgre->mCamera->getPosition() - mTarget->_getDerivedPosition()).length();
+    Ogre::Real dist = (vistaOgre->mCamera->getPosition() - vistaOgre->mTarget->_getDerivedPosition()).length();
     vistaOgre->mCamera->moveRelative(Ogre::Vector3(0, 0, -distanciaRelativa * 0.0008f * dist));
 
 }
 
 
+			   #ifdef USAROCKET
 
+void BaseListeners::initEventListener()
+{
+	 std::cout << "initEventListener getcontxt"<<std::endl;
+    
+	context = Rocket::Core::GetContext("main");
+		    std::cout << "addeventlistener "<<std::endl;
+		std::cout << "context->GetName(): "<< context->GetName().CString() <<std::endl;
+
+
+
+    context->AddEventListener("click", this);
+	    std::cout << "finaddeventlistener "<<std::endl;
+
+
+}
+
+#endif
 void BaseListeners::rotacionCamara(Ogre::Degree angulo)
 {
-    Ogre::Real dist = (vistaOgre->mCamera->getPosition() - mTarget->_getDerivedPosition()).length();
+    Ogre::Real dist = (vistaOgre->mCamera->getPosition() - vistaOgre->mTarget->_getDerivedPosition()).length();
 
     //Mueve la camara a la posicion central
-    vistaOgre->mCamera->setPosition(mTarget->_getDerivedPosition());
+    vistaOgre->mCamera->setPosition(vistaOgre->mTarget->_getDerivedPosition());
     //Rota la camara
     vistaOgre->mCamera->yaw(-angulo);
 
     //Devuelve la camara a su posicion original
     vistaOgre->mCamera->moveRelative(Ogre::Vector3(0, 0, dist));
 }
-
+/*
 #if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
 
 
@@ -231,38 +323,7 @@ void BaseListeners::rotacionCamara(Ogre::Degree angulo)
 Rocket::Core::ElementDocument* BaseListeners::openFontRocket(const Ogre::String& fileName)
 {
 
-    /*
-          //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, (Rocket::Core::String("Rocket::Core::FileHandle Open: ") + path).CString());
-        AAsset* asset = AAssetManager_open(mAssetMgr, path.CString(), AASSET_MODE_BUFFER);
-       AndroidFilePointer* afp;
-        if(asset)
-        {
-            afp = new AndroidFilePointer();
-            afp->asset = asset;
-            afp->offset = 0;
-            Rocket::Core::FileHandle membuf = (Rocket::Core::FileHandle) afp;
-           // return membuf;
-        }
-
-
-
-         //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Rocket::Core::FileHandle Read %d ...", size);
-      //  if(!file) return 0;
-      //  AndroidFilePointer* afp = (AndroidFilePointer*) file;
-      //  AAsset* asset = afp->asset;
-
-        void* buffer;
-        off_t length = AAsset_getLength(asset);
-        char const* assetBuffer = (char*) AAsset_getBuffer(asset);
-
-            memcpy(buffer, assetBuffer, length);
-            afp->offset += size;
-            //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "... (afp->offset + size) <= length: read %d", size);
-           // return size;
-
-
-
-*/
+   
 
 
 
@@ -324,11 +385,7 @@ Rocket::Core::ElementDocument* BaseListeners::openFontRocket(const Ogre::String&
 
 
         //  AAsset_close(asset);
-        /*
-        std::cout << "LOADFONTTTT:" <<  document->GetTagName() <<std::endl;
-        std::cout << "LOADFONTTTT:" <<  document->GetAddress() <<std::endl;
-        std::cout << "LOADFONTTTT:" <<  document->GetClassNames() <<std::endl;
-        */
+    
         return document;
 
 
@@ -347,3 +404,4 @@ Rocket::Core::ElementDocument* BaseListeners::openFontRocket(const Ogre::String&
 
 
 #endif
+*/

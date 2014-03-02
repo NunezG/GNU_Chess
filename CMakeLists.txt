@@ -208,18 +208,6 @@ endif()
  
 # NUEVA SECCIÓN
 
-#message("llama a FINDCEGUI LO QUE OYES")
-#find_package(CEGUI REQUIRED)
-#message("ACABA FINDCEGUI.")
- #if(NOT CEGUI_FOUND)
- #message(SEND_ERROR "Failed to find CEGUI.")
-#endif()
-#message("INICIA CEGUIOGRE.")
-#find_package(CEGUIOGRE REQUIRED)
-#message("ACABA CEGUIOGRE.")
- #if(NOT CEGUIOGRE_FOUND)
-#message("Failed to find CEGUIOGRE.")
-#endif()
 
 message("INICIA LIBROCKET.")
 find_package(LIBROCKET REQUIRED)
@@ -383,8 +371,7 @@ include_directories(
 	${OGRE_INCLUDE_DIR}
 	#${OGRE_SAMPLES_INCLUDEPATH}
 	#NUEVA SECCIÓN
-    #${CEGUI_INCLUDE_DIR}
-	#${CEGUIOGRE_INCLUDE_DIR}
+
 #${BOOST_INCLUDE_DIR} 
 	${LIBROCKET_INCLUDE_DIR}
 	# FIN NUEVA SECCIÓN
@@ -397,8 +384,7 @@ include_directories(
   ${ANDROID_NATIVE_APP_GLUE_DIR} 
   ${OGRE_LIBRARY_DIRS} 
   ${OIS_LIBRARY_DIRS} 
- # ${CEGUI_LIBRARY_DIRS} 
- #${CEGUIOGRE_LIBRARY_DIRS} 
+
  ${LIBROCKET_LIBRARY_DIRS} 
   )
  
@@ -485,7 +471,6 @@ endif ()
 	   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Vistas)
 
 
-    # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
 
        # add_dependencies(ChessView ChessViewModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
       #  add_dependencies(ChessView Plugin_OctreeSceneManager)
@@ -529,7 +514,7 @@ endif ()
   endif()
 
 # CAMBIA target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
- #target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES}) # ${CEGUI_LIBRARY} ${CEGUIOGRE_LIBRARY_OPTIMIZED}
+ #target_link_libraries(OgreApp ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
 
 
 
@@ -541,8 +526,7 @@ endif ()
   ${ANDROID_NATIVE_APP_GLUE_DIR} 
   ${OGRE_LIBRARY_DIRS} 
   ${OIS_LIBRARY_DIRS} 
- # ${CEGUI_LIBRARY_DIRS} 
- #${CEGUIOGRE_LIBRARY_DIRS} 
+
  ${LIBROCKET_LIBRARY_DIRS} 
   )
 
@@ -633,13 +617,7 @@ elseif(WIN32)
 		${OGRE_PLUGIN_DIR_REL}/Plugin_OctreeSceneManager.dll
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
 		${OGRE_PLUGIN_DIR_REL}/OIS.dll
-		#${CEGUI_LIBRARY_DIRS}/CEGUIBase-0.dll
-		#${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0.dll
-		#${CEGUI_LIBRARY_DIRS}/CEGUITinyXMLParser.dll
-		#$ENV{CEGUI_DIR}/dependencies/bin/FreeImage.dll
-		#$ENV{CEGUI_DIR}/dependencies/bin/freetype.dll
-		#$ENV{CEGUI_DIR}/dependencies/bin/tinyxml.dll
-		#${CEGUI_LIBRARY_DIRS}/CEGUICoreWindowRendererSet.dll
+		
 		${ENV_LIBROCKET}/bin/RocketControls.dll
 		${ENV_LIBROCKET}/bin/RocketCore.dll
 		${ENV_LIBROCKET}/bin/RocketDebugger.dll
@@ -651,8 +629,7 @@ elseif(WIN32)
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_Direct3D9_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_GL_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/OIS_d.dll
-		#${CEGUI_LIBRARY_DIRS}/CEGUIBase-0_d.dll
-		#${CEGUI_LIBRARY_DIRS}/CEGUIOgreRenderer-0_d.dll
+		
 		DESTINATION bin
 		CONFIGURATIONS Debug
 	)

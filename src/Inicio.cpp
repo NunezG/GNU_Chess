@@ -35,8 +35,7 @@ AndroidKeyboard* OgreAndroidBridge::mKeyboard = NULL;
  bool OgreAndroidBridge::mInit = false;
  Ventana* OgreAndroidBridge::mVentana = NULL;
  AAssetManager* OgreAndroidBridge::mAssetMgr = NULL;
- Ogre::FileSystemLayer* OgreAndroidBridge::mFSLayer;
-
+ 
 
 #   ifdef OGRE_STATIC_LIB
   Ogre::StaticPluginLoader* OgreAndroidBridge::mStaticPluginLoader = NULL;
@@ -83,7 +82,7 @@ int main(int argc, char *argv[])
 
 			 Ventana* punteroVentana= new Ventana();
 
-	punteroVentana->init();
+	//punteroVentana->init();
         punteroVentana->go();
 
         delete punteroVentana;

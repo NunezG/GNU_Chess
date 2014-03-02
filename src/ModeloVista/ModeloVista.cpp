@@ -9,7 +9,7 @@ ModeloVista::ModeloVista():
   , JugadorActivo(0)
  // , dificultad(1)
   , modoJuego(0)
-  ,resolucion("1024 x 768")
+  ,resolucion("854 x 480")
   , pantallaCompleta(false)
   ,reiniciar(0)
   , jugadores(0)
@@ -212,16 +212,20 @@ void ModeloVista::aplicaCambio()
 {
 	escenaMV->getTablero()->setCasillaSeleccionada(-1);
 
-										   	std::cout << "aplicaCambio"<<std::endl;
+										   	std::cout << "aplicaCambio de MODELOVISTAAAAAA"<<std::endl;
     //MUEVE FICHA Y A LA VEZ COMPRUEBA EL FIN DE PARTIDA O SI EL JUGADOR CONTRARIO ESTA EN JAQUE JUSTO DESPUES DE MOVER FICHA
     bool resultado = JugadorActivo->aplicaSeleccion();
-											   	//std::cout << "resultado: "<<resultado<<std::endl;
+											  std::cout << "resultadodssds: "<<resultado<<std::endl;
 
     if (resultado == true)
     {//FICHA MOVIDA
+													  std::cout << "getNumPantalla: "<<getNumPantalla()<<std::endl;
+
         if (getNumPantalla() == 1)
 		{
-            escenaMV->rotaCamara = 180;
+			if (getTurnoNegras()) escenaMV->rotaCamara = 90;
+			else
+            escenaMV->rotaCamara = -90;
 													   	std::cout << "rotacamara"<<std::endl;
 
 		}
@@ -229,10 +233,9 @@ void ModeloVista::aplicaCambio()
         //CAMBIA JUGADOR ACTIVO
         JugadorActivo = jugadores.at(getTurnoNegras());
 
-        if (JugadorActivo->iniciaTurno())
-        {
-            aplicaCambio();
-        }
+		//HABRA QUE USAR OTRO THREAD
+        JugadorActivo->iniciaTurno();
+        
     }
 
 											   	std::cout << "FIN aplicaCambio"<<std::endl;
