@@ -61,13 +61,13 @@ public:
 			   virtual void trasladar(int x, int z) = 0;
 
 
-			virtual void creaHijo(std::string name, int mask, std::string mesh, std::string materials[2]) = 0;
+			virtual void creaHijo(std::string name, int mask, std::string mesh, std::vector<std::string> materials) = 0;
 
 				//void creaHijo(std::string nombre);
 	virtual void eliminaHijo(int hijo);
     virtual void agregaHijo(ObjetoEscena* objetoHijo);
    virtual int numHijos();
-	ObjetoEscena( std::string nombre, int mascara, std::string meshName, std::string materials[2]);
+	ObjetoEscena( std::string nombre, int mascara, std::string meshName, std::vector<std::string> materials);
 		std::string nombreObjeto;
 		   virtual void cambiaMaterial(int material) = 0;
 		   virtual void rota(int grados) = 0;
@@ -79,7 +79,7 @@ protected:
 				posicion posInView;
 
 				std::vector<ObjetoEscena*> vectorHijos;
-						 				std::string materialNames[2];
+				std::vector<std::string> materialNames;
 
 
 

@@ -14,7 +14,7 @@ VistaAjedrez::VistaAjedrez(RocketListener* vistaOgre) : BaseListeners( vistaOgre
 
 VistaAjedrez::~VistaAjedrez(void)
 {    
-    std::cout << "del VistaAjedrez"<<std::endl;
+    //COUTCOMENTADOstd::cout << "del VistaAjedrez"<<std::endl;
 
     mSceneMgr->destroyQuery(mRaySceneQuery);
 
@@ -33,7 +33,7 @@ void VistaAjedrez::actualizaNodo()
 
 std::string VistaAjedrez::encuentraCasillaSobrevolada(int posx, int posy)
 {
-    std::cout << "encuentraCasillaSobrevolada"<<std::endl;
+    //COUTCOMENTADOstd::cout << "encuentraCasillaSobrevolada"<<std::endl;
 
 
     Ogre::uint32 mask = CASILLA;
@@ -42,12 +42,12 @@ std::string VistaAjedrez::encuentraCasillaSobrevolada(int posx, int posy)
             (posx/float(vistaOgre->mWindow->getWidth()), posy/float(vistaOgre->mWindow->getHeight()));
 
 
-    std::cout << "encuentraCasillaSobrevolada 2222"<<std::endl;
+    //COUTCOMENTADOstd::cout << "encuentraCasillaSobrevolada 2222"<<std::endl;
 
     mRaySceneQuery->setRay(rayMouse);
     mRaySceneQuery->setSortByDistance(true);
     mRaySceneQuery->setQueryMask(mask);
-    std::cout << "encuentraCasillaSobrevolada33333"<<std::endl;
+    //COUTCOMENTADOstd::cout << "encuentraCasillaSobrevolada33333"<<std::endl;
 
     Ogre::RaySceneQueryResult &result = mRaySceneQuery->execute();
 
@@ -57,14 +57,14 @@ std::string VistaAjedrez::encuentraCasillaSobrevolada(int posx, int posy)
 
     if (it != result.end())
     {
-        std::cout << "nodo encontrado"<<std::endl;
+        //COUTCOMENTADOstd::cout << "nodo encontrado"<<std::endl;
 
 
         Ogre::SceneNode* nodoSobrevolado = it->movable->getParentSceneNode();
 
         return nodoSobrevolado->getName();
     }
-    std::cout << "encuentraCasillaSobrevolada fin"<<std::endl;
+    //COUTCOMENTADOstd::cout << "encuentraCasillaSobrevolada fin"<<std::endl;
 
     return "";
 }
@@ -75,35 +75,35 @@ std::string VistaAjedrez::encuentraCasillaSobrevolada(int posx, int posy)
 
 bool VistaAjedrez::touchMoved(const OIS::MultiTouchEvent& evt)
 {
-    std::cout << "HA DETECTADO MOVIMIENTO en VistaAjedrez!! "<<std::endl;
+    //COUTCOMENTADOstd::cout << "HA DETECTADO MOVIMIENTO en VistaAjedrez!! "<<std::endl;
 
 
 
 
-	BaseListeners::touchMoved(evt);
-	return true;
+    BaseListeners::touchMoved(evt);
+    return true;
 
 }
 /*
 bool VistaAjedrez::touchPressed(const OIS::MultiTouchEvent& evt)
 {
 
-    std::cout << "HA DETECTADO UNA PULSACION VistaAjedrez!! "<<std::endl;
-	BaseListeners::touchPressed(evt);
+    //COUTCOMENTADOstd::cout << "HA DETECTADO UNA PULSACION VistaAjedrez!! "<<std::endl;
+    BaseListeners::touchPressed(evt);
     return true;
 
 }
 */
 bool VistaAjedrez::touchReleased(const OIS::MultiTouchEvent& evt)
 {
-    std::cout << "HA DETECTADO UNA PULSACION SOLTADA VistaAjedrez!! "<<std::endl;
-	BaseListeners::touchReleased(evt);
+    //COUTCOMENTADOstd::cout << "HA DETECTADO UNA PULSACION SOLTADA VistaAjedrez!! "<<std::endl;
+    BaseListeners::touchReleased(evt);
     return true;
 }
 bool VistaAjedrez::touchCancelled(const OIS::MultiTouchEvent& evt)
 {
 
-	BaseListeners::touchCancelled(evt);
+    BaseListeners::touchCancelled(evt);
     return true;
 
 }
@@ -117,7 +117,7 @@ bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
 
     BaseListeners::mouseMoved(arg);
     
-    std::cout << "moviendo en ajedr"<<std::endl;
+    //COUTCOMENTADOstd::cout << "moviendo en ajedr"<<std::endl;
 
     if (getModoCamara())   // yaw around the target, and pitch locally
     {
@@ -129,27 +129,27 @@ bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
     }
     else{
 
-        std::cout << "busca a ver"<<std::endl;
+        //COUTCOMENTADOstd::cout << "busca a ver"<<std::endl;
 
 
         const std::string casilla = encuentraCasillaSobrevolada(arg.state.X.abs, arg.state.Y.abs);
-        std::cout << "fin busca a ver"<<std::endl;
+        //COUTCOMENTADOstd::cout << "fin busca a ver"<<std::endl;
 
 
         if (casilla != "")
         {
-            std::cout << "encuentra casilla sobrevvv"<<std::endl;
+            //COUTCOMENTADOstd::cout << "encuentra casilla sobrevvv"<<std::endl;
 
             vistaOgre->modeloVista->JugadorActivo->casillaSobrevolada(casilla);
             actualizaNodo();
         }
-        std::cout << "fincaca"<<std::endl;
+        //COUTCOMENTADOstd::cout << "fincaca"<<std::endl;
 
 
 
     }
 
-    std::cout << "acacacacacacadeeeeee"<<std::endl;
+    //COUTCOMENTADOstd::cout << "acacacacacacadeeeeee"<<std::endl;
 
 
     return true;
@@ -229,11 +229,11 @@ bool VistaAjedrez::touchPressed(const OIS::MultiTouchEvent& evt)
 bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id )
 #endif
 {  
-	    std::cout << "PROCESA MOUSE PULSADOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
+    //COUTCOMENTADOstd::cout << "PROCESA MOUSE PULSADOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
     BaseListeners::mousePressed(evt, id);
 #else 
-	BaseListeners::touchPressed(evt);
+    BaseListeners::touchPressed(evt);
 #endif
 
     int posx = evt.state.X.abs;   // Posicion del puntero
@@ -244,18 +244,18 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID i
     if (id == OIS::MB_Left)
     {  // Boton izquierdo o derecho -------------
 #endif
-       
-            std::cout << "pulsa1"<<std::endl;
 
-            //ObjetoOgre* tableroOgre = tablero
-            std::string nombreCasilla = encuentraCasillaSobrevolada(posx, posy);
+        //COUTCOMENTADOstd::cout << "pulsa1"<<std::endl;
 
-            std::cout << "pulsa2: "<<  nombreCasilla <<std::endl;
+        //ObjetoOgre* tableroOgre = tablero
+        std::string nombreCasilla = encuentraCasillaSobrevolada(posx, posy);
 
-		if (nombreCasilla!="")
-		{
+        //COUTCOMENTADOstd::cout << "pulsa2: "<<  nombreCasilla <<std::endl;
+
+        if (nombreCasilla!="")
+        {
             vistaOgre->modeloVista->procesaNodoPulsado(nombreCasilla);
-            std::cout << "pulsa3"<<std::endl;
+            //COUTCOMENTADOstd::cout << "pulsa3"<<std::endl;
 
             //HAY QUE ACTUALIZAR EL ESTADO DE LA VISTA DEL TABLERO
             //   tablero->getHijo(nombreCasilla);
@@ -263,11 +263,11 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID i
             ObjetoOgre* casilla = static_cast<ObjetoOgre*>(objetoInicio->getHijo(nombreCasilla));
 
 
-            std::cout << "pulsa4"<<std::endl;
+            //COUTCOMENTADOstd::cout << "pulsa4"<<std::endl;
 
             actualizaNodo();
-		}
-            std::cout << "pulsaend"<<std::endl;
+        }
+        //COUTCOMENTADOstd::cout << "pulsaend"<<std::endl;
 
         
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -279,16 +279,16 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID i
     }
 #endif
 
-		    std::cout << "FINNNNNNNNNNNN PROCESA MOUSE PULSADOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
+    //COUTCOMENTADOstd::cout << "FINNNNNNNNNNNN PROCESA MOUSE PULSADOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
 
     return true;
 }
 
-		 #ifdef USAROCKET
+#ifdef USAROCKET
 
 void VistaAjedrez::ProcessEvent(Rocket::Core::Event& event)
 {
-   // BaseListeners::ProcessEvent(event);
+    // BaseListeners::ProcessEvent(event);
 
 
 }
@@ -300,7 +300,7 @@ void VistaAjedrez::createView()
     mRaySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());
 
     // Escena = new Escena();
-    std::cout << "vistaajedreeez "<<std::endl;
+    //COUTCOMENTADOstd::cout << "vistaajedreeez "<<std::endl;
     //camera = mCamera;
     //modeloVista = modeloV;
 
@@ -314,14 +314,14 @@ void VistaAjedrez::createView()
     //escenaMV = new EscenaAjedrez();
 
 
-    std::cout << "generaJugadores "<<std::endl;
+    //COUTCOMENTADOstd::cout << "generaJugadores "<<std::endl;
 
     vistaOgre->modeloVista->generaJugadores();
-    std::cout << "inicia creaEscenaYModelo "<<std::endl;
+    //COUTCOMENTADOstd::cout << "inicia creaEscenaYModelo "<<std::endl;
 
 
     vistaOgre->modeloVista->creaEscenaYModelo();
-    std::cout << "finnnnn creaEscenaYModelo "<<std::endl;
+    //COUTCOMENTADOstd::cout << "finnnnn creaEscenaYModelo "<<std::endl;
     Escena::createScene();
 
 

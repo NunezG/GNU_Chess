@@ -72,7 +72,6 @@ public:
             Ogre::RenderWindow* pRenderWnd = static_cast<Ogre::RenderWindow*>(Ogre::Root::getSingleton().getRenderTarget("OgreWindow"));
             if(pRenderWnd)
             {
-                std::cout << "EL OIS MULTITOUCH LO ENCUENTRA BIEN; OSEA QUE RENDERWINDOW OgreWindow OK "<<std::endl;
 
                 OIS::MultiTouchState state;
                 state.width = pRenderWnd->getWidth();
@@ -213,7 +212,6 @@ public:
     static void init(struct android_app* state)
     {
 
-        std::cout << "INITITIT ANDRODI"<<std::endl;
 
         state->onAppCmd = &OgreAndroidBridge::handleCmd;
         state->onInputEvent = &OgreAndroidBridge::handleInput;
@@ -222,52 +220,47 @@ public:
             return;
 
 
-/*
-        std::cout << "ROOT"<<std::endl;
+        /*
 #ifdef OGRE_STATIC_LIB
-        std::cout << "STATIC ANDRODI"<<std::endl;
         mStaticPluginLoader = new Ogre::StaticPluginLoader();
         mStaticPluginLoader->load();
 #endif
-        std::cout << "RENERSS"<<std::endl;
         mRoot->setRenderSystem(mRoot->getAvailableRenderers().at(0));
 */
-		 if(!mVentana)
-                    {
-                        mVentana= OGRE_NEW Ventana();
-                    //    mVentana->init();
+        if(!mVentana)
+        {
+            mVentana= OGRE_NEW Ventana();
+            //    mVentana->init();
 
-                        // mBrowser = OGRE_NEW SampleBrowser();
-                        //mBrowser->initAppForAndroid(mRenderWnd, app, mTouch, mKeyboard);
-                        // mBrowser->initApp();
+            // mBrowser = OGRE_NEW SampleBrowser();
+            //mBrowser->initAppForAndroid(mRenderWnd, app, mTouch, mKeyboard);
+            // mBrowser->initApp();
 
-                        //  mWindow = createWindow();
-						
-						 mRoot = new Ogre::Root();
-                        mVentana->listener->mRoot = mRoot;
+            //  mWindow = createWindow();
 
-
-						mVentana->listener->configuraOgre();
-						mRoot->initialise(false);
+            mRoot = new Ogre::Root();
+            mVentana->listener->mRoot = mRoot;
 
 
-                        std::cout << "GO DE LA VeNTANA PARA CREAR VISTA"<<std::endl;
+            mVentana->listener->configuraOgre();
+            mRoot->initialise(false);
 
-                        //  mVentana->vista->mAssetMgr = mAssetMgr;
-						 // = mAssetMgr;
-					//   mVentana->listener->configuraRocket();
 
-					  std::cout << "Sinniiittttt"<<std::endl;
-					  
-                    // mRenderWnd->
-                    
-					
-		}
+
+            //  mVentana->vista->mAssetMgr = mAssetMgr;
+            // = mAssetMgr;
+            //   mVentana->listener->configuraRocket();
+
+
+            // mRenderWnd->
+
+
+        }
 
 
 
 
-      
+
 
 
 
@@ -345,7 +338,6 @@ public:
         case APP_CMD_SAVE_STATE:
             break;
         case APP_CMD_INIT_WINDOW:
-			 std::cout << "APP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOW"<<std::endl;
 
             if (app->window && mRoot)
             {
@@ -354,63 +346,61 @@ public:
 
                 if (!mRenderWnd)
                 {
-                       
-                       // locateResources();
 
-                       
+                    // locateResources();
 
-                    std::cout << "CREA VENTANA ANDROID"<<std::endl;
-					
+
+
+
                     Ogre::NameValuePairList opt;
                     opt["externalWindowHandle"] = Ogre::StringConverter::toString((int)app->window);
                     opt["androidConfig"] = Ogre::StringConverter::toString((int)config);
 
                     mRenderWnd = mRoot->createRenderWindow("OgreWindow", 0, 0, false, &opt);
 
-					   if(!mTouch)
+                    if(!mTouch)
                         mTouch = new AndroidMultiTouch();
 
                     if(!mKeyboard)
                         mKeyboard = new AndroidKeyboard();
 
 
-                        std::cout << "FIN createoverloay"<<std::endl;
 
 
-			           mVentana->listener->mWindow = mRenderWnd;
-
-					
-						if(app != NULL)
-                        {
-                            mAssetMgr = app->activity->assetManager;
-                            Ogre::ArchiveManager::getSingleton().addArchiveFactory( new Ogre::APKFileSystemArchiveFactory(app->activity->assetManager) );
-                            Ogre::ArchiveManager::getSingleton().addArchiveFactory( new Ogre::APKZipArchiveFactory(app->activity->assetManager) );
-                        }
-
-			//			 AndroidFileInterface*  mAndroidFileInterface = new AndroidFileInterface(mAssetMgr);
-            //            Rocket::Core::SetFileInterface(mAndroidFileInterface);
-
-						mVentana->listener->configuraGraficos();
+                    mVentana->listener->mWindow = mRenderWnd;
 
 
+                    if(app != NULL)
+                    {
+                        mAssetMgr = app->activity->assetManager;
+                        Ogre::ArchiveManager::getSingleton().addArchiveFactory( new Ogre::APKFileSystemArchiveFactory(app->activity->assetManager) );
+                        Ogre::ArchiveManager::getSingleton().addArchiveFactory( new Ogre::APKZipArchiveFactory(app->activity->assetManager) );
+                    }
 
-			
+                    //			 AndroidFileInterface*  mAndroidFileInterface = new AndroidFileInterface(mAssetMgr);
+                    //            Rocket::Core::SetFileInterface(mAndroidFileInterface);
+
+                    mVentana->listener->configuraGraficos();
 
 
 
 
-                        mVentana->go(); //crea vista
 
 
-						
-                        Ogre::Root::getSingleton().getRenderSystem()->_initRenderTargets();
-                        // Clear event times
-                        Ogre::Root::getSingleton().clearEventTimes();
-                       // mVentana->vista->initEventListener();
 
-						mInputInjector = new AndroidInputInjector(mVentana, mTouch, mKeyboard);
 
-                
+                    mVentana->go(); //crea vista
+
+
+
+                    Ogre::Root::getSingleton().getRenderSystem()->_initRenderTargets();
+                    // Clear event times
+                    Ogre::Root::getSingleton().clearEventTimes();
+                    // mVentana->vista->initEventListener();
+
+                    mInputInjector = new AndroidInputInjector(mVentana, mTouch, mKeyboard);
+
+
                 }
                 else
                 {
@@ -419,7 +409,6 @@ public:
 
                 AConfiguration_delete(config);
             }
-						 std::cout << "EEENDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD APP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOWAPP_CMD_INIT_WINDOW"<<std::endl;
 
             break;
         case APP_CMD_TERM_WINDOW:
@@ -438,7 +427,6 @@ public:
     static void go(struct android_app* state)
     {
 
-        //  std::cout << "GO"<<std::endl;
 
 
         int ident, events;
@@ -446,46 +434,35 @@ public:
 
         while (true)
         {
-            //std::cout << "LOOOOPPPERRR"<<std::endl;
 
             while ((ident = ALooper_pollAll(0, NULL, &events, (void**)&source)) >= 0)
             {
-                //std::cout << "ENLLOPER"<<std::endl;
 
                 if (source != NULL){
-                    //std::cout << "PRCOESA"<<std::endl;
 
                     source->process(state, source);
                 }
-                //std::cout << "SIGUEEEEEEEEEEEEEEEEEEEE"<<std::endl;
 
                 if (state->destroyRequested != 0){
-                    //std::cout << "DESTROREQUESTEEEEEE"<<std::endl;
 
                     return;
 
                 }
             }
-            //	 std::cout << "SIGUEEEEEEEEEEEEEEEEEEEE EN ELE EOTOTOTOSRS"<<std::endl;
 
             if(mRenderWnd != NULL && mRenderWnd->isActive() && !mVentana->modeloVista->getApagar() && !mVentana->modeloVista->reiniciar && !mRenderWnd->isClosed() && mRenderWnd->isVisible() && !mRenderWnd->isHidden())
             {
-                //  std::cout << "moveedorresized mRenderWnd->isHidden(): "<< mRenderWnd->isHidden()  <<std::endl;
 
 
 
                 mRenderWnd->windowMovedOrResized();
 
-                // std::cout << "RENDERONEGRAME"<<std::endl;
 
                 mRoot->renderOneFrame();
-                //  std::cout << "finrender"<<std::endl;
 
             }
-            // std::cout << "SIGUE WHULEEEEEEE"<<std::endl;
 
         }
-        std::cout << "FIN DEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
 
     }
 
@@ -503,15 +480,15 @@ public:
             -----------------------------------------------------------------------------*/
     static void locateResources()
     {
-		
-//-------------------------------------------------------------------------------------
-    // setup resources
-    // Only add the minimally required resource locations to load up the Ogre head mesh
-  
+
+        //-------------------------------------------------------------------------------------
+        // setup resources
+        // Only add the minimally required resource locations to load up the Ogre head mesh
 
 
 
-		/*
+
+        /*
 
         // load resource paths from config file
         Ogre::ConfigFile cf;
@@ -520,7 +497,6 @@ public:
 
 
 
-        std::cout << " mFSLayer->getConfigFilePath(resources.cfg) "<<   mVentana->listener->mFSLayer->getConfigFilePath("resources.cfg")  <<std::endl;
 
 
         Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
@@ -531,7 +507,6 @@ public:
         {
 
             sec = seci.peekNextKey();
-            std::cout << "ITERA CONFIG: "<<   sec <<std::endl;
 
             Ogre::ConfigFile::SettingsMultiMap* settings = seci.getNext();
             Ogre::ConfigFile::SettingsMultiMap::iterator i;
@@ -542,9 +517,7 @@ public:
 
                 type = i->first;
                 arch = i->second;
-                std::cout << "ITERA OPCION(type): "<<   type <<std::endl;
 
-                std::cout << "ITERA OPCION(arch): "<<   arch <<std::endl;
 
 
                 Ogre::ResourceGroupManager::getSingleton().addResourceLocation(arch, type, sec);
@@ -556,10 +529,9 @@ public:
         arch = genLocs.front()->archive->getName();
 
 
-		*/
-        //std::cout << "ARCH dEL LOCATION: "<<   arch <<std::endl;
+        */
 
-     
+
 
     }
 
@@ -567,7 +539,6 @@ public:
 
     static Ogre::DataStreamPtr openAPKFile(const Ogre::String& fileName)
     {
-		        std::cout << "openAPKFile"<<std::endl;
 
         Ogre::DataStreamPtr stream;
         AAsset* asset = AAssetManager_open(mAssetMgr, fileName.c_str(), AASSET_MODE_BUFFER);

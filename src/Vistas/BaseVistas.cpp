@@ -9,9 +9,9 @@ BaseVistas::BaseVistas(ModeloVista* modeloV) :
     mCamera(0)
   //, tablero(0)
   , mTarget(0)
-#ifdef USAROCKET
+  #ifdef USAROCKET
   ,context(0)
-#endif
+  #endif
   ,mRoot(0)
   , mFSLayer (OGRE_NEW_T(Ogre::FileSystemLayer, Ogre::MEMCATEGORY_GENERAL)(OGRE_VERSION_NAME))
 
@@ -32,19 +32,19 @@ BaseVistas::~BaseVistas()
 {
 
 #if ENABLE_SHADERS_CACHE_SAVE == 1
-            if (Ogre::GpuProgramManager::getSingleton().isCacheDirty())
-            {
-                Ogre::String path = mFSLayer->getWritablePath("cache.bin");
-                FILE * outFile = fopen(path.c_str(), "wb");
-                if (outFile)
-                {
-                    Ogre::LogManager::getSingleton().logMessage("Writing shader cache to ");
-                    Ogre::LogManager::getSingleton().logMessage(path.c_str());
-                    Ogre::DataStreamPtr ostream(new Ogre::FileHandleDataStream(path.c_str(), outFile, Ogre::DataStream::WRITE));
-                    Ogre::GpuProgramManager::getSingleton().saveMicrocodeCache(ostream);
-                    ostream->close();
-                }
-            }
+    if (Ogre::GpuProgramManager::getSingleton().isCacheDirty())
+    {
+        Ogre::String path = mFSLayer->getWritablePath("cache.bin");
+        FILE * outFile = fopen(path.c_str(), "wb");
+        if (outFile)
+        {
+            Ogre::LogManager::getSingleton().logMessage("Writing shader cache to ");
+            Ogre::LogManager::getSingleton().logMessage(path.c_str());
+            Ogre::DataStreamPtr ostream(new Ogre::FileHandleDataStream(path.c_str(), outFile, Ogre::DataStream::WRITE));
+            Ogre::GpuProgramManager::getSingleton().saveMicrocodeCache(ostream);
+            ostream->close();
+        }
+    }
 #endif
 
 
@@ -53,11 +53,6 @@ BaseVistas::~BaseVistas()
 
 
 
-
-    std::cout << "del BaseVistas"<<std::endl;
-    
-		
-    std::cout << "del BaseVistas222"<<std::endl;
 
     //Unattach OIS before window shutdown (very important under Linux)
     if( mInputManager )
@@ -69,22 +64,21 @@ BaseVistas::~BaseVistas()
         mInputContext.mKeyboard = 0;
         mInputManager = 0;
     }
-    std::cout << "findel BaseVistas"<<std::endl;
 
     mSceneMgr->removeRenderQueueListener( this );
 
-			   #ifdef USAROCKET
+#ifdef USAROCKET
 
-	// Shutdown Rocket.
+    // Shutdown Rocket.
     
-	context->RemoveReference();
-	  delete ogre_system;
+    context->RemoveReference();
+    delete ogre_system;
     ogre_system = NULL;
 
     delete ogre_renderer;
     ogre_renderer = NULL;
 #endif
-  
+
     // delete mWindow;
     // mWindow = 0;
 }
@@ -109,14 +103,7 @@ BaseVistas::~BaseVistas()
 
 bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
 {
-    // std::cout << "ES UN frameStarted de OGREEEEEEEEEEEEE CAPTURA"<<std::endl;
 
-    mInputContext.capture();      // capture input
-    // std::cout << "RETURN"<<std::endl;
-
-    // std::cout << "Ogre::FrameListener::frameStarted(evt) " <<  Ogre::FrameListener::frameStarted(evt)<<std::endl;
-
-    // std::cout << "running " <<  running<<std::endl;
 
     return	Ogre::FrameListener::frameStarted(evt) && running;
 }
@@ -126,40 +113,33 @@ bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
 
 bool BaseVistas::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-   // std::cout << "ES UN frameRenderingQueued " <<std::endl;
 
 
     if(modeloVista->getApagar() || modeloVista->reiniciar || mWindow->isClosed() || !mWindow->isVisible() || mWindow->isHidden()){
-        std::cout << "frameRenderingQueued"<< modeloVista->reiniciar <<mWindow->isClosed() << !mWindow->isVisible()<< mWindow->isHidden() <<std::endl;
 
         return false;
 
     }
 
-	
-		if (modeloVista->jugadaElegida()){
-            std::cout << "jugadaElegidajugadaElegida"<<std::endl;
-			//ESTO EN UN FUTURO HABRA QUE HACERLO EN OTRO THREAD
-            modeloVista->aplicaCambio();
-			            std::cout << "jugadaElegidajugadaElegida ESO ES QUE ACABA DE APLICAR EL CAMBIO"<<std::endl;
+
+    if (modeloVista->jugadaElegida()){
+        //ESTO EN UN FUTURO HABRA QUE HACERLO EN OTRO THREAD
+        modeloVista->aplicaCambio();
 
 
-        }
+    }
 
 
 
-	//std::cout << "frameRenderingQueued REOAD TABLERO"<<std::endl;
-   //Ogre::Entity* ent = mSceneMgr->getEntity("Casilla");
-  // ent->getMesh()->reload();
-		//std::cout << "frameRenderingQueued FINNN REOAD TABLERO"<<std::endl;
+    //Ogre::Entity* ent = mSceneMgr->getEntity("Casilla");
+    // ent->getMesh()->reload();
 
 
-//	Ogre::TextureManager::getSingleton().reloadAll();
-    	//Ogre::ResourceManager::reloadAll();
+    //	Ogre::TextureManager::getSingleton().reloadAll();
+    //Ogre::ResourceManager::reloadAll();
 
-    //std::cout << "frameRenderingQueued"<<std::endl;
 
-  //  mInputContext.capture();
+    //  mInputContext.capture();
 
     //poner esto en otro sitio
 
@@ -172,7 +152,7 @@ bool BaseVistas::frameRenderingQueued(const Ogre::FrameEvent& evt)
     if(modeloVista->escenaMV->rotaCamara != 0)
     {
         float fRot = Ogre::Real(80.0f) * evt.timeSinceLastFrame;
-		if (modeloVista->escenaMV->rotaCamara < 0) fRot = -fRot;
+        if (modeloVista->escenaMV->rotaCamara < 0) fRot = -fRot;
 
         Ogre::Degree rot = Ogre::Degree(fRot);
 
@@ -190,39 +170,32 @@ bool BaseVistas::frameRenderingQueued(const Ogre::FrameEvent& evt)
             rotacionCamara(rot);
             modeloVista->escenaMV->rotaCamara = modeloVista->escenaMV->rotaCamara - fRot;
         }
-    }
+    }else mInputContext.capture();      // capture input
 
     return true;
 }
 
- #ifdef USAROCKET
+#ifdef USAROCKET
 // Called from Ogre before a queue group is rendered.
 void BaseVistas::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& ROCKET_UNUSED(skipThisInvocation))
 {
-   // std::cout << "ES UN renderQueueStarted de OGREEEEEEEEEEEEE"<<std::endl;
 
-  //  std::cout << "Ogre::RENDER_QUEUE_OVERLAY "<<  Ogre::RENDER_QUEUE_OVERLAY <<  " queueGroupId " << (int)queueGroupId    <<std::endl;
-  //  std::cout << "getOverlaysEnabled: "<<Ogre::Root::getSingleton().getRenderSystem()->_getViewport()->getOverlaysEnabled() <<std::endl;
-	
     if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && Ogre::Root::getSingleton().getRenderSystem()->_getViewport()->getOverlaysEnabled())
     {
-      //std::cout << "updat de context"<<std::endl;
-//#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+        //#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 
         context->Update();
-	//	#endif
-       configureRenderSystem();
-	  // #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+        //	#endif
+        configureRenderSystem();
+        // #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 
-      context->Render();
-//#endif
+        context->Render();
+        //#endif
 
-     // std::cout << "fin updat de context"<<std::endl;
 
 
     }
 
-  //  std::cout << "acaba rederquqee"<<std::endl;
 
 }
 
@@ -230,7 +203,6 @@ void BaseVistas::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String
 void BaseVistas::renderQueueEnded(Ogre::uint8 ROCKET_UNUSED(queueGroupId), const Ogre::String& ROCKET_UNUSED(invocation), bool& ROCKET_UNUSED(repeatThisInvocation))
 {
 
-   // std::cout << "renderQueueEnded"<<std::endl;
 
 }
 
@@ -265,7 +237,7 @@ void BaseVistas::configureRenderSystem()
     render_system->_setProjectionMatrix(projection_matrix);
 
 
-  render_system->_setViewMatrix(Ogre::Matrix4::IDENTITY);
+    render_system->_setViewMatrix(Ogre::Matrix4::IDENTITY);
 
     // Disable lighting, as all of Rocket's geometry is unlit.
     render_system->setLightingEnabled(false);
@@ -310,7 +282,7 @@ void BaseVistas::configureRenderSystem()
     render_system->_setDepthBias(0, 0);
 }
 
-		
+
 
 void BaseVistas::BuildKeyMaps()
 {
@@ -533,63 +505,55 @@ Ogre::Ray BaseVistas ::getCameraToViewportRay()
 void BaseVistas::createCamera(void)
 {
 
-    std::cout << "1 "<<std::endl;
 
     // Create the camera
     mCamera = mSceneMgr->createCamera("MiCam");
 
-    std::cout << "ssetpos "<<std::endl;
 
     // Position it at 500 in Z direction
-   // mCamera->setPosition(Ogre::Vector3(40,40,50));
+    // mCamera->setPosition(Ogre::Vector3(40,40,50));
     // Look back along -Z
 
-    std::cout << "look "<<std::endl;
 
-   // mCamera->lookAt(Ogre::Vector3(0,0,0));
+    // mCamera->lookAt(Ogre::Vector3(0,0,0));
 
-    std::cout << "clip "<<std::endl;
 
-  // mCamera->setNearClipDistance(5);
+    // mCamera->setNearClipDistance(5);
 
 
     if (mCamera->getSceneManager()->getRootSceneNode() != mTarget)
     {
 
-        std::cout << "sea lo que sea es distinto "<<std::endl;
 
         mTarget = mCamera->getSceneManager()->getRootSceneNode();
         if(mTarget)
         {
 
-            std::cout << "CAMBIA DATOSO DE MCAMERA "<<std::endl;
 
             mCamera->setPosition(mTarget->_getDerivedPosition());
             mCamera->setOrientation(mTarget->_getDerivedOrientation());
-		
-										//rota sobre su eje horizontal (arriba/abajo)
-           mCamera->pitch(Ogre::Degree(-45));
 
-						//rota sobre su eje vertical (Izquieda/derecha)
-			           mCamera->yaw(Ogre::Degree(90));
-					    mCamera->moveRelative(Ogre::Vector3(0, -6, 100));
+            //rota sobre su eje horizontal (arriba/abajo)
+            mCamera->pitch(Ogre::Degree(-48));
+
+            //rota sobre su eje vertical (Izquieda/derecha)
+            mCamera->yaw(Ogre::Degree(90));
+            mCamera->moveRelative(Ogre::Vector3(0, 0, 100));
 
 
 
-         //   mCamera->setAutoTracking(true, mTarget);
+            //mCamera->setAutoTracking(true, mTarget);
         }
         else
         {
 
-            std::cout << "sELSLEE "<<std::endl;
 
             mCamera->setAutoTracking(false);
         }
     }
 
-    std::cout << "fijaeje "<<std::endl;
 
-    mCamera->setFixedYawAxis(true);
+    mCamera->setFixedYawAxis(true,Ogre::Vector3(0, 0, 0));
 
     // mInputMan = new InputMan::SdkCameraMan(mCamera);   // create a default camera controller
     //  mTopSpeed = topSpeed;
@@ -599,19 +563,18 @@ void BaseVistas::createCamera(void)
 
 void BaseVistas::createViewports(Ogre::RenderWindow* window)
 {
-  //  mWindow = window;
+    //  mWindow = window;
     // Create one viewport, entire window
     Ogre::Viewport* vp = mWindow->addViewport(mCamera);
-	  std::cout << "CAMBIA MATERIAL"<<std::endl;
 
     vp->setBackgroundColour(Ogre::ColourValue(0,0,0,50));
-		vp->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+    vp->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
     // Alter the camera aspect ratio to match the viewport
     mCamera->setAspectRatio(
                 Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
-	mCamera->setAutoAspectRatio(true);
-	mCamera->setNearClipDistance(5);
+    mCamera->setAutoAspectRatio(true);
+    mCamera->setNearClipDistance(5);
 
 
 }
@@ -627,10 +590,11 @@ void BaseVistas::DistanciaCamara(int distanciaRelativa)
 
 void BaseVistas::rotacionCamara(Ogre::Degree angulo)
 {
-    Ogre::Real dist = (mCamera->getPosition() - mTarget->_getDerivedPosition()).length();
+    Ogre::Real dist = mCamera->getPosition().length();
 
+    mCamera->moveRelative(Ogre::Vector3(0, 0, -dist));
     //Mueve la camara a la posicion central
-    mCamera->setPosition(mTarget->_getDerivedPosition());
+    // mCamera->setPosition(Ogre::Vector3(0,0,0));
     //Rota la camara
     mCamera->pitch(-angulo);
 
@@ -647,7 +611,6 @@ void BaseVistas::rotacionCamara(Ogre::Degree angulo)
 
 bool BaseVistas::configuraGraficos()
 {
-		  std::cout << "configuraGraficoOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOs"<<std::endl;
 
 #if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID
 
@@ -672,7 +635,7 @@ bool BaseVistas::configuraGraficos()
         }
     }
 
-	    //CONFIGURE RENDER SYSTEM
+    //CONFIGURE RENDER SYSTEM
     Ogre::RenderSystem *renderSystem = Ogre::Root::getSingleton().getRenderSystem();
     // Manually set some configuration options (optional)
     
@@ -699,15 +662,15 @@ bool BaseVistas::configuraGraficos()
 #else
 
 
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/", "APKFileSystem", "General");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib", "APKFileSystem", "General");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib/cache", "APKFileSystem", "General");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib/GLSLES", "APKFileSystem", "General");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/materials/scripts", "APKFileSystem", "General");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/materials/textures", "APKFileSystem", "General");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/materials/programs", "APKFileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/", "APKFileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib", "APKFileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib/cache", "APKFileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib/GLSLES", "APKFileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/materials/scripts", "APKFileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/materials/textures", "APKFileSystem", "General");
+    //Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/materials/programs", "APKFileSystem", "General");
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/models", "APKFileSystem", "General");
-	
+
 #ifdef USAROCKET
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/", "APKFileSystem", "Rocket");
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/librocket", "APKFileSystem", "Rocket");
@@ -720,15 +683,6 @@ bool BaseVistas::configuraGraficos()
 
 
 
-
-
-
-
-
-
-    
-			  std::cout << "END configuraGraficoOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOs"<<std::endl;
-
     return true;
 }
 
@@ -739,31 +693,23 @@ bool BaseVistas::configuraGraficos()
 bool BaseVistas::configuraRocket()
 {
 
-    std::cout << "INICIA ROCKET"<<std::endl;
     ogre_system = NULL;
     ogre_renderer = NULL;
     // Rocket initialisation.
-    std::cout << "RenderInterfaceOgre3D"<<std::endl;
-    std::cout << "mWindow->getWidth()"<<mWindow->getWidth()<<std::endl;
-    std::cout << "mWindow->getHeight()"<<mWindow->getHeight()<<std::endl;
+
 
     ogre_renderer = new RenderInterfaceOgre3D(mWindow->getWidth(), mWindow->getHeight());
-    std::cout << " ROCKETtttttrt"<<std::endl;
 
-	//ogre_renderer->setCustomProjectionMatrix(projection_matrix);
+    //ogre_renderer->setCustomProjectionMatrix(projection_matrix);
 
 
     Rocket::Core::SetRenderInterface(ogre_renderer);
-    std::cout << "TRES"<<std::endl;
 
     ogre_system = new SystemInterfaceOgre3D();
     Rocket::Core::SetSystemInterface(ogre_system);
 
 
-    std::cout << "Uno"<<std::endl;
-
     Rocket::Core::Initialise();
-    std::cout << "UNODOS"<<std::endl;
 
     Rocket::Controls::Initialise();
 
@@ -776,8 +722,6 @@ bool BaseVistas::configuraRocket()
 
     context->SetDimensions( Rocket::Core::Vector2i( mWindow->getWidth(), mWindow->getHeight() ) );
 
-
-    std::cout << "createScene "<<std::endl;
 
     //Ogre::ResourceGroupManager::getSingleton().createResourceGroup("Rocket");
     //Ogre::ResourceGroupManager::getSingleton().addResourceLocation(rocket_path.Replace("\\", "/").CString(), "FileSystem", "Rocket");
@@ -796,30 +740,21 @@ bool BaseVistas::configuraRocket()
 
     if (cursor)
         cursor->RemoveReference();
-    else std::cout << "NO encuentra el cursor"<<std::endl;
 
 #elif OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
 
-    std::cout << "LOADEA EL FONT FACE1"<<std::endl;
 
-          Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Roman.otf");
-    std::cout << "LOADEA EL FONT FACE2"<<std::endl;
+    Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Roman.otf");
 
-        Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Bold.otf");
-      Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Italic.otf");
+    Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Bold.otf");
+    Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-Italic.otf");
     Rocket::Core::FontDatabase::LoadFontFace("librocket/Delicious-BoldItalic.otf");
-    std::cout << "FIN LOADEA EL FONT FACE1"<<std::endl;
 
 #endif
 
-   /* std::cout << "addeventlistener "<<std::endl;
-        std::cout << "context->GetName(): "<< context->GetName().CString() <<std::endl;
-
+    /*
     context->AddEventListener("click", );
 
-
-
-    std::cout << "FIN INICIA ROCKET"<<std::endl;
 */
     return true;
 }
@@ -828,14 +763,9 @@ bool BaseVistas::configuraRocket()
 
 bool BaseVistas::configuraOgre()
 {
-    //SOLO WIN32
 
-
-    std::cout << "BaseVistas OGRE"<<std::endl;
     //INICIA OGRE, PLUGINS ESTATICOS
     
-    std::cout << "NICIA OGRE 2222"<<std::endl;
-
 #ifdef OGRE_STATIC_LIB
     mStaticPluginLoader = new Ogre::StaticPluginLoader();
     //mStaticPluginLoader->
@@ -846,7 +776,6 @@ bool BaseVistas::configuraOgre()
 
 
     //configuraGraficos();
-    std::cout << "NItalize"<<std::endl;
     // Ogre::Root::getSingleton().createRenderWindow("OgreWindow", 0, 0, false, &opt);
 
 
@@ -874,11 +803,11 @@ bool BaseVistas::configuraOIS()
 
     mInputContext.mMouse->getMouseState().width = mWindow->getWidth();
     mInputContext.mMouse->getMouseState().height = mWindow->getHeight();
-	
+
 
 #elif OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
-	
-				/*	 if(!mInputContext.mTouch)
+
+    /*	 if(!mInputContext.mTouch)
                         mInputContext.mTouch = new AndroidMultiTouch();
 
                     if(!mInputContext.mKeyboard)
@@ -889,7 +818,6 @@ bool BaseVistas::configuraOIS()
 
 #endif
 
-    std::cout << "finois "<<std::endl;
 
     //mMouse->setEventCallback(vista);
     // mKeyboard->setEventCallback(vista);
@@ -908,37 +836,30 @@ bool BaseVistas::configuraOIS()
 void BaseVistas::init()
 {
 
-			std::cout << "iniinit"<<std::endl;
 
     if (!mRoot)
-	{
-        std::cout << "NO HAY MROOT Y CREA UNO"<<std::endl;
-		mRoot =new Ogre::Root(/*"plugins.cfg"*/);
+    {
+        mRoot =new Ogre::Root(/*"plugins.cfg"*/);
 
-	        configuraOgre();
-			configuraGraficos();
-  
-	std::cout << "NO HAY mWindow Y CREA UNO"<<std::endl;
+        configuraOgre();
+        configuraGraficos();
+
 
         mWindow = mRoot->initialise(true,"3D CHESS");
 
 
-		        std::cout << "ROCKETTTTTTTTTt"<<std::endl;
+        configuraOIS();
 
-		configuraOIS();
-
-} 
+    }
 
 
     //Register as a Window listener
     mWindow->removeAllViewports();
 
-	    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(0);
-		mSceneMgr = Ogre::Root::getSingletonPtr()->createSceneManager(Ogre::ST_GENERIC, "MANAGER");
+    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(0);
+    mSceneMgr = Ogre::Root::getSingletonPtr()->createSceneManager(Ogre::ST_GENERIC, "MANAGER");
 
     createCamera();
-
-    std::cout << "viewoproors nombre window: "<<mWindow->getName()<<std::endl;
 
     createViewports(mWindow);
 
@@ -946,39 +867,31 @@ void BaseVistas::init()
 
 
 
-	setupShaderSystem();
+    setupShaderSystem();
 
 
-   	 Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();  
+    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
 
 
     //OIS::InputContext mInputContext;
 
 
-	    
-
-	
-    std::cout << "framelistener "<<std::endl;
-
     mRoot->addFrameListener(this);
     // Add the application as a listener to Ogre's render queue so we can render during the overlay.
     mSceneMgr->addRenderQueueListener(this);
 
-    std::cout << "camera "<<std::endl;
-	//configureRenderSystem();
+    //configureRenderSystem();
 
 
-						 	
+
 
     //context->AddEventListener("click", this);
-			std::cout << "OIS"<<std::endl;
-			   #ifdef USAROCKET
+#ifdef USAROCKET
 
-	 			configuraRocket();
-			#endif
+    configuraRocket();
+#endif
     running = true;
-    std::cout << "SALEEEEEEE"<<std::endl;
 
 }
 
@@ -987,97 +900,85 @@ void BaseVistas::init()
 
 void BaseVistas::setupShaderSystem(){
 
-                        std::cout << "Slo nuevooooooooooooo"<<std::endl;
+
+    // 7  - JUSTO DESPUES DE ADDVIERPORT DEL WINDOW
+    // Initialize shader generator.
+    // Must be before resource loading in order to allow parsing extended material attributes.
+    bool success = initialiseRTShaderSystem(mRoot->getSceneManager("MANAGER"));
+    if (!success)
+    {
+        OGRE_EXCEPT(Ogre::Exception::ERR_FILE_NOT_FOUND,
+                    "Shader Generator Initialization failed - Core shader libs path not found",
+                    "SampleBrowser::createDummyScene");
+    }
+    if(mRoot->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_FIXED_FUNCTION) == false)
+    {
 
 
-                        // 7  - JUSTO DESPUES DE ADDVIERPORT DEL WINDOW
-                        // Initialize shader generator.
-                        // Must be before resource loading in order to allow parsing extended material attributes.
-                        bool success = initialiseRTShaderSystem(mRoot->getSceneManager("MANAGER"));
-                        if (!success)
-                        {
-                            OGRE_EXCEPT(Ogre::Exception::ERR_FILE_NOT_FOUND,
-                                        "Shader Generator Initialization failed - Core shader libs path not found",
-                                        "SampleBrowser::createDummyScene");
-                        }
-                        if(mRoot->getRenderSystem()->getCapabilities()->hasCapability(Ogre::RSC_FIXED_FUNCTION) == false)
-                        {
-                          
-						                              std::cout << "SHADEDEERE"<<std::endl;
+        mWindow->getViewport(0)->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 
-                            mWindow->getViewport(0)->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+        // creates shaders for base material BaseWhite using the RTSS
+        Ogre::MaterialPtr baseWhite = Ogre::MaterialManager::getSingleton().getByName("BaseWhite", Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
 
-                            // creates shaders for base material BaseWhite using the RTSS
-                            Ogre::MaterialPtr baseWhite = Ogre::MaterialManager::getSingleton().getByName("BaseWhite", Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
-                            							  std::cout << "baseWhite"<<std::endl;
+        baseWhite->setLightingEnabled(false);
 
-							baseWhite->setLightingEnabled(false);
-							                            							  std::cout << "baseWhite22"<<std::endl;
+        mShaderGenerator->createShaderBasedTechnique(
+                    "BaseWhite",
+                    Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+                    Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+        mShaderGenerator->validateMaterial(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
+                                           "BaseWhite");
 
-                            mShaderGenerator->createShaderBasedTechnique(
-                                        "BaseWhite",
-                                        Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
-                                        Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-                            mShaderGenerator->validateMaterial(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
-                                                               "BaseWhite");
-								 std::cout << "baseWhite33"<<std::endl;
+        if(baseWhite->getNumTechniques() > 1)
+        {
+            baseWhite->getTechnique(0)->getPass(0)->setVertexProgram(
+                        baseWhite->getTechnique(1)->getPass(0)->getVertexProgram()->getName());
+            baseWhite->getTechnique(0)->getPass(0)->setFragmentProgram(
+                        baseWhite->getTechnique(1)->getPass(0)->getFragmentProgram()->getName());
+        }
 
-                            if(baseWhite->getNumTechniques() > 1)
-                            {
-                                baseWhite->getTechnique(0)->getPass(0)->setVertexProgram(
-                                            baseWhite->getTechnique(1)->getPass(0)->getVertexProgram()->getName());
-                                baseWhite->getTechnique(0)->getPass(0)->setFragmentProgram(
-                                            baseWhite->getTechnique(1)->getPass(0)->getFragmentProgram()->getName());
-                            }
-							  std::cout << "shader222"<<std::endl;
-
-                            // creates shaders for base material BaseWhiteNoLighting using the RTSS
-                            mShaderGenerator->createShaderBasedTechnique(
-                                        "BaseWhiteNoLighting",
-                                        Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
-                                        Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-                            mShaderGenerator->validateMaterial(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
-                                                               "BaseWhiteNoLighting");
-                            Ogre::MaterialPtr baseWhiteNoLighting = Ogre::MaterialManager::getSingleton().getByName("BaseWhiteNoLighting", Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
-                            if(baseWhite->getNumTechniques() > 1)
-                            {
-                                baseWhiteNoLighting->getTechnique(0)->getPass(0)->setVertexProgram(
-                                            baseWhiteNoLighting->getTechnique(1)->getPass(0)->getVertexProgram()->getName());
-                                baseWhiteNoLighting->getTechnique(0)->getPass(0)->setFragmentProgram(
-                                            baseWhiteNoLighting->getTechnique(1)->getPass(0)->getFragmentProgram()->getName());
-                            }
-                        }
-						                            std::cout << "ACABA SHADER"<<std::endl;
+        // creates shaders for base material BaseWhiteNoLighting using the RTSS
+        mShaderGenerator->createShaderBasedTechnique(
+                    "BaseWhiteNoLighting",
+                    Ogre::MaterialManager::DEFAULT_SCHEME_NAME,
+                    Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+        mShaderGenerator->validateMaterial(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME,
+                                           "BaseWhiteNoLighting");
+        Ogre::MaterialPtr baseWhiteNoLighting = Ogre::MaterialManager::getSingleton().getByName("BaseWhiteNoLighting", Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+        if(baseWhite->getNumTechniques() > 1)
+        {
+            baseWhiteNoLighting->getTechnique(0)->getPass(0)->setVertexProgram(
+                        baseWhiteNoLighting->getTechnique(1)->getPass(0)->getVertexProgram()->getName());
+            baseWhiteNoLighting->getTechnique(0)->getPass(0)->setFragmentProgram(
+                        baseWhiteNoLighting->getTechnique(1)->getPass(0)->getFragmentProgram()->getName());
+        }
+    }
 
 
 
 
-		
-
-
-											   											
 #if ENABLE_SHADERS_CACHE_SAVE == 1
-            if(Ogre::GpuProgramManager::getSingleton().canGetCompiledShaderBuffer())
-                Ogre::GpuProgramManager::getSingleton().setSaveMicrocodesToCache(true);
+    if(Ogre::GpuProgramManager::getSingleton().canGetCompiledShaderBuffer())
+        Ogre::GpuProgramManager::getSingleton().setSaveMicrocodesToCache(true);
 #endif
 #if	ENABLE_SHADERS_CACHE_LOAD == 1
-            // Load for a package version of the shaders.
-            Ogre::String path = "cache.bin";
-            FILE * inFile = NULL;
-            inFile = fopen(path.c_str(), "rb");
-            // If that does not exist, see if there is a version in the writable location.
-            if (!inFile)
-            {
-                path = mFSLayer->getWritablePath("cache.bin");
-                inFile = fopen(path.c_str(), "rb");
-            }
-            if (inFile)
-            {
-                Ogre::LogManager::getSingleton().logMessage("Loading shader cache from ");
-                Ogre::LogManager::getSingleton().logMessage(path.c_str());
-                Ogre::DataStreamPtr istream(new Ogre::FileHandleDataStream(path.c_str(), inFile, Ogre::DataStream::READ));
-                Ogre::GpuProgramManager::getSingleton().loadMicrocodeCache(istream);
-            }
+    // Load for a package version of the shaders.
+    Ogre::String path = "cache.bin";
+    FILE * inFile = NULL;
+    inFile = fopen(path.c_str(), "rb");
+    // If that does not exist, see if there is a version in the writable location.
+    if (!inFile)
+    {
+        path = mFSLayer->getWritablePath("cache.bin");
+        inFile = fopen(path.c_str(), "rb");
+    }
+    if (inFile)
+    {
+        Ogre::LogManager::getSingleton().logMessage("Loading shader cache from ");
+        Ogre::LogManager::getSingleton().logMessage(path.c_str());
+        Ogre::DataStreamPtr istream(new Ogre::FileHandleDataStream(path.c_str(), inFile, Ogre::DataStream::READ));
+        Ogre::GpuProgramManager::getSingleton().loadMicrocodeCache(istream);
+    }
 #endif
 
 
@@ -1086,76 +987,72 @@ void BaseVistas::setupShaderSystem(){
 
 
 
-    //-----------------------------------------------------------------------------
-    //      | Initialize the RT Shader system.
-    //      -----------------------------------------------------------------------------
-    bool BaseVistas::initialiseRTShaderSystem(Ogre::SceneManager* sceneMgr)
+//-----------------------------------------------------------------------------
+//      | Initialize the RT Shader system.
+//      -----------------------------------------------------------------------------
+bool BaseVistas::initialiseRTShaderSystem(Ogre::SceneManager* sceneMgr)
+{
+
+    if (Ogre::RTShader::ShaderGenerator::initialize())
     {
+        mShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
 
-        std::cout << "initialiseRTShaderSystem"<<std::endl;
-
-        if (Ogre::RTShader::ShaderGenerator::initialize())
-        {
-            std::cout << "init OK"<<std::endl;
-
-            mShaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
-
-            mShaderGenerator->addSceneManager(sceneMgr);
+        mShaderGenerator->addSceneManager(sceneMgr);
 
 
 
-			
+
 #if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID && OGRE_PLATFORM != OGRE_PLATFORM_NACL && OGRE_PLATFORM != OGRE_PLATFORM_WINRT
-                // Setup core libraries and shader cache path.
-                Ogre::StringVector groupVector = Ogre::ResourceGroupManager::getSingleton().getResourceGroups();
-                Ogre::StringVector::iterator itGroup = groupVector.begin();
-                Ogre::StringVector::iterator itGroupEnd = groupVector.end();
-                Ogre::String shaderCoreLibsPath;
-                Ogre::String shaderCachePath;
+        // Setup core libraries and shader cache path.
+        Ogre::StringVector groupVector = Ogre::ResourceGroupManager::getSingleton().getResourceGroups();
+        Ogre::StringVector::iterator itGroup = groupVector.begin();
+        Ogre::StringVector::iterator itGroupEnd = groupVector.end();
+        Ogre::String shaderCoreLibsPath;
+        Ogre::String shaderCachePath;
 
-                for (; itGroup != itGroupEnd; ++itGroup)
+        for (; itGroup != itGroupEnd; ++itGroup)
+        {
+            Ogre::ResourceGroupManager::LocationList resLocationsList = Ogre::ResourceGroupManager::getSingleton().getResourceLocationList(*itGroup);
+            Ogre::ResourceGroupManager::LocationList::iterator it = resLocationsList.begin();
+            Ogre::ResourceGroupManager::LocationList::iterator itEnd = resLocationsList.end();
+            bool coreLibsFound = false;
+
+            // Try to find the location of the core shader lib functions and use it
+            // as shader cache path as well - this will reduce the number of generated files
+            // when running from different directories.
+            for (; it != itEnd; ++it)
+            {
+                if ((*it)->archive->getName().find("RTShaderLib") != Ogre::String::npos)
                 {
-                    Ogre::ResourceGroupManager::LocationList resLocationsList = Ogre::ResourceGroupManager::getSingleton().getResourceLocationList(*itGroup);
-                    Ogre::ResourceGroupManager::LocationList::iterator it = resLocationsList.begin();
-                    Ogre::ResourceGroupManager::LocationList::iterator itEnd = resLocationsList.end();
-                    bool coreLibsFound = false;
-
-                    // Try to find the location of the core shader lib functions and use it
-                    // as shader cache path as well - this will reduce the number of generated files
-                    // when running from different directories.
-                    for (; it != itEnd; ++it)
-                    {
-                        if ((*it)->archive->getName().find("RTShaderLib") != Ogre::String::npos)
-                        {
-                            shaderCoreLibsPath = (*it)->archive->getName() + "/cache/";
-                            shaderCachePath = shaderCoreLibsPath;
-                            coreLibsFound = true;
-                            break;
-                        }
-                    }
-                    // Core libs path found in the current group.
-                    if (coreLibsFound)
-                        break;
+                    shaderCoreLibsPath = (*it)->archive->getName() + "/cache/";
+                    shaderCachePath = shaderCoreLibsPath;
+                    coreLibsFound = true;
+                    break;
                 }
+            }
+            // Core libs path found in the current group.
+            if (coreLibsFound)
+                break;
+        }
 
-                // Core shader libs not found -> shader generating will fail.
-                if (shaderCoreLibsPath.empty())
-                    return false;
+        // Core shader libs not found -> shader generating will fail.
+        if (shaderCoreLibsPath.empty())
+            return false;
 
-				
+
 #ifdef _RTSS_WRITE_SHADERS_TO_DISK
-                // Set shader cache path.
+        // Set shader cache path.
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS
-                shaderCachePath = Ogre::macCachePath();
+        shaderCachePath = Ogre::macCachePath();
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-                shaderCachePath = Ogre::macCachePath() + "/org.gnusoft.RTShaderCache";
+        shaderCachePath = Ogre::macCachePath() + "/org.gnusoft.RTShaderCache";
 #endif
-                mShaderGenerator->setShaderCachePath(shaderCachePath);
+        mShaderGenerator->setShaderCachePath(shaderCachePath);
 #endif
-	
+
 
 #else
-			         //       mShaderGenerator->setShaderCachePath("RTShaderLib/cache");
+        //       mShaderGenerator->setShaderCachePath("RTShaderLib/cache");
 
 
 #endif
@@ -1166,39 +1063,38 @@ void BaseVistas::setupShaderSystem(){
 
 
 
-            // Create and register the material manager listener if it doesn't exist yet.
-            if (mMaterialMgrListener == NULL) {
-                std::cout << "materia manager listener"<<std::endl;
-                mMaterialMgrListener = new ShaderGeneratorTechniqueResolverListener(mShaderGenerator);
-                Ogre::MaterialManager::getSingleton().addListener(mMaterialMgrListener);
-            }
-        }else std::cout << "init para nada OK, osea que KO"<<std::endl;
-
-
-        return true;
+        // Create and register the material manager listener if it doesn't exist yet.
+        if (mMaterialMgrListener == NULL) {
+            mMaterialMgrListener = new ShaderGeneratorTechniqueResolverListener(mShaderGenerator);
+            Ogre::MaterialManager::getSingleton().addListener(mMaterialMgrListener);
+        }
     }
 
-    //-----------------------------------------------------------------------------
-     ////   | Destroy the RT Shader system.
-      //    -----------------------------------------------------------------------------
-    void BaseVistas::destroyRTShaderSystem()
+
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+////   | Destroy the RT Shader system.
+//    -----------------------------------------------------------------------------
+void BaseVistas::destroyRTShaderSystem()
+{
+    // Restore default scheme.
+    Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::MaterialManager::DEFAULT_SCHEME_NAME);
+
+    // Unregister the material manager listener.
+    if (mMaterialMgrListener != NULL)
     {
-        // Restore default scheme.
-        Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::MaterialManager::DEFAULT_SCHEME_NAME);
-
-        // Unregister the material manager listener.
-        if (mMaterialMgrListener != NULL)
-        {
-            Ogre::MaterialManager::getSingleton().removeListener(mMaterialMgrListener);
-            delete mMaterialMgrListener;
-            mMaterialMgrListener = NULL;
-        }
-
-        // Destroy RTShader system.
-        if (mShaderGenerator != NULL)
-        {
-            Ogre::RTShader::ShaderGenerator::destroy();
-            mShaderGenerator = NULL;
-        }
+        Ogre::MaterialManager::getSingleton().removeListener(mMaterialMgrListener);
+        delete mMaterialMgrListener;
+        mMaterialMgrListener = NULL;
     }
-	
+
+    // Destroy RTShader system.
+    if (mShaderGenerator != NULL)
+    {
+        Ogre::RTShader::ShaderGenerator::destroy();
+        mShaderGenerator = NULL;
+    }
+}
+

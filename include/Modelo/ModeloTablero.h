@@ -48,28 +48,30 @@ struct ModeloTablero
     ~ModeloTablero();
 
     //constructor de copia
-    ModeloTablero( const ModeloTablero& original, int casInicia, int casFinal);
+    ModeloTablero( const ModeloTablero& original);
     bool evaluaJaque();
 
    // std::vector<ModeloTablero*> vectorMov;
-    void cambiaTurno();
+    bool cambiaTurno();
 	void generaTablero();
     //* movIniciales;
 
     // unsigned char* test[2];
 
-    std::vector<unsigned char*> vectorJugadas;
-    std::vector<unsigned char*> vectorJugadasPeores;
-    std::vector<unsigned char*> vectorJugadasNormales;
+    std::vector<std::string> vectorJugadas;
+    std::vector<std::string> vectorJugadasPeores;
+    std::vector<std::string> vectorJugadasNormales;
 
     //std::vector<unsigned char[]> vectorJugadas2;
+	void borraJugadas();
 
     int numCasillasProtegidas;
 
     //HACER EN LISTA O VECTOR PARA QUE HAYA TAMAÑO??
-    std::vector<unsigned char*> casillasProtegidas;
+    std::vector<char*> casillasProtegidas;
     char casillasInt[144];
-    unsigned char jugada[2];
+    std::string jugadas;
+	char jugadaPrincipal[2];
     unsigned char alPaso;
     bool turnoN;
     bool nodoInicial;

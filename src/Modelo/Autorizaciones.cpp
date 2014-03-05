@@ -5,27 +5,23 @@
 int Autorizaciones::autorizaCasilla()
 {   
 
-	ModeloTablero* tableroModelo = Modelo::getSingletonPtr()->tableroModelo;
+    ModeloTablero* tableroModelo = Modelo::getSingletonPtr()->tableroModelo;
 
-	if (Modelo::getSingletonPtr()->tableroModelo->turnoN)
+    if (Modelo::getSingletonPtr()->tableroModelo->turnoN)
     {
-						  						std::cout << "TURNOONNNNNN"<<std::endl;
 
-      //  tableroModelo->jugada[0] = 143-tableroModelo->jugada[0];
-       // tableroModelo->jugada[1] = 143-tableroModelo->jugada[1];
+        //  tableroModelo->jugada[0] = 143-tableroModelo->jugada[0];
+        // tableroModelo->jugada[1] = 143-tableroModelo->jugada[1];
     }
-					  						std::cout << "MIRA SI ES COMESTIBLE"<<std::endl;
-											std::cout << (int)tableroModelo->casillasInt[tableroModelo->jugada[1]]<<std::endl;
 
 
-											//el tipo es la ficha de casillasint
-		int tipoo =  tableroModelo->casillasInt[tableroModelo->jugada[0]];
+    //el tipo es la ficha de casillasint
+    int tipoo =  tableroModelo->casillasInt[tableroModelo->jugadaPrincipal[0]];
 
-							  						std::cout << "TIPO: "<< tipoo<<std::endl;
-if (tipoo<0)tipoo = -tipoo;
+    if (tipoo<0)tipoo = -tipoo;
 
- 
-               return 0;
+
+    return 0;
 
 }
 
@@ -34,111 +30,121 @@ if (tipoo<0)tipoo = -tipoo;
 std::vector<int> Autorizaciones::casillasAutorizadas()
 {   
 
-	ModeloTablero* tableroModelo = Modelo::getSingletonPtr()->tableroModelo;
+    ModeloTablero* tableroModelo = Modelo::getSingletonPtr()->tableroModelo;
 
-	if (Modelo::getSingletonPtr()->tableroModelo->turnoN)
+    if (Modelo::getSingletonPtr()->tableroModelo->turnoN)
     {
-						  						std::cout << "TURNOONNNNNN"<<std::endl;
 
-      //  tableroModelo->jugada[0] = 143-tableroModelo->jugada[0];
-       // tableroModelo->jugada[1] = 143-tableroModelo->jugada[1];
+        //  tableroModelo->jugada[0] = 143-tableroModelo->jugada[0];
+        // tableroModelo->jugada[1] = 143-tableroModelo->jugada[1];
     }
-					  					//	std::cout << "MIRA SI ES COMESTIBLE"<<std::endl;
-										//	std::cout << (int)tableroModelo->casillasInt[tableroModelo->jugada[1]]<<std::endl;
 
 
 
 
+    //BUSCA EN EL TABLERO LAS FICHAS Y SEGUN SU TIPO VA GENERANDO LOS MOVIMIENTOS
 
-	  //BUSCA EN EL TABLERO LAS FICHAS Y SEGUN SU TIPO VA GENERANDO LOS MOVIMIENTOS
-  
     bool movimiento = false;
-  // Movimientos::generaMovimientos(miTablero);
+    // Movimientos::generaMovimientos(miTablero);
     
 
-											//el tipo es la ficha de casillasint
-		//int tipoo =  tableroModelo->casillasInt[tableroModelo->jugada[0]];
+    //el tipo es la ficha de casillasint
+    //int tipoo =  tableroModelo->casillasInt[tableroModelo->jugada[0]];
 
-							  						//std::cout << "TIPO: "<< tipoo<<std::endl;
-//if (tipoo<0)tipoo = -tipoo;
+    //if (tipoo<0)tipoo = -tipoo;
 
- 
-				  						std::cout << "PUEDE MOVER"<<std::endl;
 
-     bool resus=   Movimientos::movimientosUnaFicha(tableroModelo);
+    std::cout << "PUEDE MOVER??"<<std::endl;
+
+    bool resus=   Movimientos::movimientosUnaFicha(tableroModelo);
     
-	 std::vector<int> listaJugadas;
 
-		
-    for (std::vector<unsigned char*>::iterator it = tableroModelo->vectorJugadas.begin(); it!=tableroModelo->vectorJugadas.end(); it++)
+    std::cout << "fingeneramov?"<<std::endl;
+
+
+    std::vector<int> listaJugadas;
+
+
+
+
+
+    for (std::vector<std::string>::iterator it = tableroModelo->vectorJugadas.begin(); it!=tableroModelo->vectorJugadas.end(); it++)
     {
+        std::cout << "for?"<<std::endl;
+
+
+        std::string jugada = *it;
+
+
+
+        //	 for (std::vector<unsigned char*>::iterator itt = jugada.begin(); itt!=jugada.end(); itt++)
+        //{
         
-        unsigned char* jugada = *it;
+        for (int i =0; i<jugada.size(); i = i+2)
+        {
+            std::cout << "JUGADA RESALTADA? "<<(int)jugada[i+1] <<std::endl;
+
+            //punot inicial
+            //jugada[i]
+
+            listaJugadas.push_back((int)jugada[i+1]);
+
+            //punto final
+
+
+        }
+        // unsigned char* mov = *jugada.begin();
+
+        //std::cout << "MOV0? "<<  (int)mov[0]   <<std::endl;
+
+        //	std::cout << "MOV1? "<<  (int)mov[1]   <<std::endl;
+
+
+
+        //     ModeloTablero* tablero = Movimientos::aplicaMovimiento(*tableroModelo);
+
         
-       listaJugadas.push_back(jugada[1]);
-            
-       //     ModeloTablero* tablero = Movimientos::aplicaMovimiento(*tableroModelo);
-            
+        //  delete mov;
+        //   mov = NULL;
         
-        delete jugada;
-        jugada = NULL;
-        
+        // }
     }
-    tableroModelo->vectorJugadas.clear();
 
 
 
-	return listaJugadas;
+    // tableroModelo->vectorJugadas.clear();
+
+    std::cout << "BORRA JUGADASSSS?"<<std::endl;
+
+    tableroModelo->borraJugadas();
+    std::cout << "RET?"<<std::endl;
 
 
-   
+    return listaJugadas;
+
+
+
 }
 
 bool Autorizaciones::pruebaJaqueMate(ModeloTablero* miTablero)
 {    
-    //BUSCA EN EL TABLERO LAS FICHAS Y SEGUN SU TIPO VA GENERANDO LOS MOVIMIENTOS
-  
+    //VA GENERANDO LOS MOVIMIENTOS
+
     bool movimiento = false;
-   Movimientos::generaMovimientos(miTablero);
+
+    Movimientos::generaMovimientos(miTablero);
     
-    for (std::vector<unsigned char*>::iterator it = miTablero->vectorJugadas.begin(); it!=miTablero->vectorJugadas.end(); it++)
+    if(miTablero->vectorJugadas.size() > 0)
     {
+        movimiento = true;
         
-        unsigned char* jugada = *it;
-        
-        if (!movimiento)
-        {
-            miTablero->jugada[0] = jugada[0];
-            miTablero->jugada[1] = jugada[1];
-            
-            ModeloTablero* tablero = Movimientos::aplicaMovimiento(*miTablero);
-            
-            if (tablero != NULL)
-            {
-                //movimiento encontrado
-                movimiento = true;
-            }
-            delete tablero;
-            tablero = NULL;
-        }
-        delete jugada;
-        jugada = NULL;
-        
+
+        miTablero->borraJugadas();
+
+
+        if (movimiento)  return false;
+        //else return true;
+
+        return true; //JAQUE MATE O AHOGADO
     }
-    miTablero->vectorJugadas.clear();
-    
-    for (int i = 0; i <  miTablero->casillasProtegidas.size(); i++)
-    {        
-        // unsigned char* casilla = *it;
-        
-        delete miTablero->casillasProtegidas.at(i);
-        miTablero->casillasProtegidas.at(i) = NULL;    
-    }
-    
-    miTablero->casillasProtegidas.clear();
-    
-    if (movimiento)  return false;
-    //else return true;
-    
-    return true; //JAQUE MATE O AHOGADO
-    }
+}

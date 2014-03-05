@@ -6,7 +6,6 @@
 class Movimientos
 {
 public:
-    static ModeloTablero* aplicaMovimiento(ModeloTablero& miTablero);
 	static bool generaMovimientos(ModeloTablero* miTablero); 
 	static bool movimientosUnaFicha(ModeloTablero* miTablero);
 

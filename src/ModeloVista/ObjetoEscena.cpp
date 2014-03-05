@@ -1,23 +1,22 @@
 #include "../../include/ModeloVista/ObjetoEscena.h"
 
 
-ObjetoEscena::ObjetoEscena(std::string nombre, int mascara, std::string meshName, std::string materials[2]) :
-   // esNegra(0),
+ObjetoEscena::ObjetoEscena(std::string nombre, int mascara, std::string meshName, std::vector<std::string> materials) :
+    // esNegra(0),
     //muerta(0),
-  //  tipo_ObjetoEscena(tipo),
-	//seleccionada(0)
-   // salto(false)
-     nombreMalla(meshName)
-	, nombreObjeto(nombre)
-	, mask(mascara)
-	
-	, rotate(0)
+    //  tipo_ObjetoEscena(tipo),
+    //seleccionada(0)
+    // salto(false)
+    nombreMalla(meshName)
+  , nombreObjeto(nombre)
+  , mask(mascara)
+
+  , rotate(0)
 {
-											    std::cout << "crea ObjetoEscena"<<std::endl;
 
-   materialNames[0] = materials[0];
-      materialNames[1] = materials[1];
-
+    materialNames = materials;
+    //  materialNames[1] = materials[1];
+    // materialNames[2] = materials[2];
 }
 
 ObjetoEscena::~ObjetoEscena()
@@ -25,13 +24,13 @@ ObjetoEscena::~ObjetoEscena()
 }
 
 ObjetoEscena::ObjetoEscena( const ObjetoEscena& ObjetoEscenaOriginal, std::string nombre, int tipo )
-   // esNegra(ObjetoEscenaOriginal.esNegra),
-   // muerta(0),
-   // tipo_ObjetoEscena(tipo),
-	//seleccionada(0)
-   // ObjetoOgre(nombre)
-   // salto(false)
-  //  tipo_ObjetoEscena = ObjetoEscenaOriginal
+// esNegra(ObjetoEscenaOriginal.esNegra),
+// muerta(0),
+// tipo_ObjetoEscena(tipo),
+//seleccionada(0)
+// ObjetoOgre(nombre)
+// salto(false)
+//  tipo_ObjetoEscena = ObjetoEscenaOriginal
 {
 }
 
@@ -54,7 +53,7 @@ void ObjetoEscena::eliminaHijo(int hijo)
 int ObjetoEscena::numHijos()
 {
     if (vectorHijos.empty()) return 0;
-	else return vectorHijos.size();
+    else return vectorHijos.size();
 }
 
 void ObjetoEscena::agregaHijo(ObjetoEscena* objetoHijo)
@@ -82,14 +81,11 @@ ObjetoEscena* ObjetoEscena::getHijo(std::string posicion)
     {
         ObjetoEscena* obj = vectorHijos[i];
         if (posicion.compare(obj->nombreObjeto) == 0)
-      {
-		  	std::cout << "ObjetoEscena::getHijo con no mbre: "<<std::endl;
-					  	std::cout <<obj->getNombre()<<std::endl;
+        {
 
-          return obj;
+            return obj;
         }
     }
-			  	std::cout << "no encuentra hijo con nombre: "<< posicion.c_str()<<std::endl;
 
     return NULL;
 }

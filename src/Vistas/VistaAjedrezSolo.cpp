@@ -9,7 +9,7 @@ VistaAjedrezSolo::VistaAjedrezSolo(RocketListener* vistaOgre)
 
 VistaAjedrezSolo::~VistaAjedrezSolo(void)
 {    
-					std::cout << "del VistaAjedrez"<<std::endl;
+    //COUTCOMENTADOstd::cout << "del VistaAjedrez"<<std::endl;
 
 }
 
@@ -70,9 +70,9 @@ bool VistaAjedrezSolo::keyReleased( const OIS::KeyEvent &arg )
 
 //bool VistaAjedrezSolo::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //{
-  // return VistaAjedrez::frameRenderingQueued(evt);
+// return VistaAjedrez::frameRenderingQueued(evt);
 
-  /*  if (!BaseVistas::frameRenderingQueued(evt)) return false;
+/*  if (!BaseVistas::frameRenderingQueued(evt)) return false;
     else if(escenaAjedrez->tablero->rotacionCamara != Ogre::Degree(0))
     {
         mueveCamara(evt.timeSinceLastFrame);

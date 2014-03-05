@@ -17,11 +17,12 @@ public:
     void mueveTablero();
 
     ModeloTablero* tableroModelo;
-    unsigned char jugadaElegida[2];
+
+	std::string jugadasElegidas;
+
 	    int dificultad;
 
 private:
-    void agregaJugada(int inicio, int fin);
 	int jaqueMate();
 
     //Singleton;

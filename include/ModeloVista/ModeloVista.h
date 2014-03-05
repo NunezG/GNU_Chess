@@ -30,6 +30,7 @@ public:
 	bool pantallaCompleta;
    // int dificultad;
     int modoJuego;
+	int voltea;
 
     void aplicaCambio();
 		std::string nombres[2];

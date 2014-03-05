@@ -57,19 +57,19 @@ int ArbolBusqueda::alphaBeta(ModeloTablero* table,int alpha,int beta,const int d
         return ev;
     }
 
-    if (!Movimientos::generaMovimientos(table)) 
+    if (!Movimientos::generaMovimientos(table))
         return 0;
     
 
     //  unsigned char jugadaElegida[2];
     int score;
-    for (std::vector<unsigned char*>::iterator it = table->vectorJugadas.begin(); it!=table->vectorJugadas.end(); it++)
-    {       
-        unsigned char* jugada = *it;
-        table->jugada[0] = jugada[0];
-        table->jugada[1] = jugada[1];
+    for (std::vector<std::string>::iterator it = table->vectorJugadas.begin(); it!=table->vectorJugadas.end(); it++)
+    {
+        std::string jugada = *it;
+        table->jugadas = jugada;
+        //table->jugadaPrincipal[1] = jugada[0][1];
 
-        ModeloTablero* tablero = Movimientos::aplicaMovimiento(*table);
+        ModeloTablero* tablero = new ModeloTablero(*table);
 
         if (tablero != NULL)
         {
@@ -79,29 +79,29 @@ int ArbolBusqueda::alphaBeta(ModeloTablero* table,int alpha,int beta,const int d
             tablero = NULL;
 
             if( score >= beta )
-            {      
+            {
                 return beta;
                 //  fail hard beta-cutoff
             }
             else if( score > alpha )
-            {            
+            {
                 alpha = score;
                 //LE PASA EL MOVIMIENTO A SU PADRE SOLO SI EL PADRE ES EL INICIAL
                 if (table->nodoInicial)
                 {//RELLENA LA JUGADA DEL NODO INICIAL
-                    Modelo::getSingletonPtr()->jugadaElegida[0] = jugada[0];
-                    Modelo::getSingletonPtr()->jugadaElegida[1] = jugada[1];
-                }        
-            }        
+                    Modelo::getSingletonPtr()->jugadasElegidas = jugada;
+                    // Modelo::getSingletonPtr()->jugadasElegidas[0][1] = jugada[1];
+                }
+            }
             // delete tablero;
             // tablero = NULL;
         }
 
-       // if (table->nodoInicial)
+        // if (table->nodoInicial)
         //{
-       //   delete tablero;
+        //   delete tablero;
         //  tablero = NULL;
-       // }
+        // }
     }
 
     //for(int i = 0; i < table->vectorMov.size(); i++)
@@ -138,13 +138,13 @@ int ArbolBusqueda::evaluaTablero(ModeloTablero* tablero)
                 //   BlackCheck = false;
                 //   }
 
-               if (tablero->turnoN) suma =  suma + valorFicha(tipoFicha(-tablero->casillasInt[(i*12)+y]));
-				   else suma =  suma - valorFicha(tipoFicha(-tablero->casillasInt[(i*12)+y]));
+                if (tablero->turnoN) suma =  suma + valorFicha(tipoFicha(-tablero->casillasInt[(i*12)+y]));
+                else suma =  suma - valorFicha(tipoFicha(-tablero->casillasInt[(i*12)+y]));
 
             }else if (tablero->casillasInt[(i*12)+y] > 0)
             {
                 if (tablero->turnoN) suma =  suma - valorFicha(tipoFicha(tablero->casillasInt[(i*12)+y]));
-					else suma =  suma + valorFicha(tipoFicha(tablero->casillasInt[(i*12)+y]));
+                else suma =  suma + valorFicha(tipoFicha(tablero->casillasInt[(i*12)+y]));
             }
             //MVV (Most valuable victim)/LVA (Least valuable attacker)
 
@@ -155,10 +155,9 @@ int ArbolBusqueda::evaluaTablero(ModeloTablero* tablero)
     {
         //EL VALOR DEFENSIVO SE PIERDE SI SE MUEVE FICHA
         suma = suma - (tablero->valorDefensivo);
-		//if (suma < 0)
-		//suma = 0;				
-	//	std::cout << "tablero->valorDefensivo"<<tablero->valorDefensivo<<std::endl;
-	//	std::cout << "SUMA CON VALOR DEFENSIVO "<<suma<<std::endl;
+        //if (suma < 0)
+        //suma = 0;
+
     }
     //if(!turnoN)
     //suma = -suma;

@@ -10,14 +10,14 @@ JugadorArtificial::~JugadorArtificial()
 
 bool JugadorArtificial::botonIzquierdo(ObjetoEscena* obj)
 {  
-	return true;
+    return true;
 }
 
 
 
 bool JugadorArtificial::iniciaTurno()
 {
-	Jugador::iniciaTurno();
+    Jugador::iniciaTurno();
 
     //delete modelo->tableroModelo->cambiaTurno()
 
@@ -25,7 +25,7 @@ bool JugadorArtificial::iniciaTurno()
 
     // resultado = resultado;
 
-    if (modelo->jugadaElegida[0] == modelo->jugadaElegida[1])
+    if (modelo->jugadasElegidas[0] == modelo->jugadasElegidas[1])
     {//SIN RESULTADO
         return false;
     }
@@ -36,28 +36,29 @@ bool JugadorArtificial::iniciaTurno()
 bool JugadorArtificial::aplicaSeleccion()
 {
 
-						    std::cout << "APLICASELECCION EN JUGADOR ARTIFICIAL"<<std::endl;
 
 
-
+    /*
     posicion inicial;
     posicion final;
 
-    inicial.Fila = (modelo->jugadaElegida[0]/12)-2;
-    inicial.Columna = (modelo->jugadaElegida[0]%12)-2;
-    final.Fila = (modelo->jugadaElegida[1]/12)-2;
-    final.Columna = (modelo->jugadaElegida[1]%12)-2;
-	/*
+    inicial.Fila = (modelo->jugadasElegidas[0][0]/12)-2;
+    inicial.Columna = (modelo->jugadasElegidas[0][0]%12)-2;
+    final.Fila = (modelo->jugadasElegidas[0][1]/12)-2;
+    final.Columna = (modelo->jugadasElegidas[0][1]%12)-2;
+
+    */
+    /*
     if (modelo->tableroModelo->turnoN)
     {//INVIERTE
           inicial.Fila = 7-inicial.Fila;
           inicial.Columna =  7-inicial.Columna;
           final.Fila = 7-final.Fila;
-          final.Columna =  7-final.Columna;  
+          final.Columna =  7-final.Columna;
       }
-	  */
-   // escenaMV->getTablero()->setCasillaSeleccionada((inicial.Fila * 8) + inicial.Columna);
-   // escenaMV->getTablero()->setCasillaSobrevolada((final.Fila* 8) + final.Columna);
+      */
+    // escenaMV->getTablero()->setCasillaSeleccionada((inicial.Fila * 8) + inicial.Columna);
+    // escenaMV->getTablero()->setCasillaSobrevolada((final.Fila* 8) + final.Columna);
 
     return Jugador::aplicaSeleccion();
 }

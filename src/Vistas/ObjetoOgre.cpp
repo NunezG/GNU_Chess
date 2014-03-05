@@ -1,27 +1,27 @@
 #include "ObjetoOgre.h"
 
 
-ObjetoOgre::ObjetoOgre(std::string name, int mask, std::string mesh, std::string materials[2], Ogre::SceneManager* sceneMgr) : ObjetoEscena(name,mask,mesh,materials)
+ObjetoOgre::ObjetoOgre(std::string name, int mask, std::string mesh, std::vector<std::string> materials, Ogre::SceneManager* sceneMgr) : ObjetoEscena(name,mask,mesh,materials)
   // ,vectorHijos(0),
   //  nodoEscena(NULL)
   , entidad(NULL)
   , activo(true)
 {
 
-										  //  std::cout << "crea objetoogree"<<std::endl;
+    //  //COUTCOMENTADOstd::cout << "crea objetoogree"<<std::endl;
 
-	mSceneMgr = sceneMgr;
+    mSceneMgr = sceneMgr;
 
-	//materials
-	creaModelo3D(mSceneMgr, mesh, mask);
-		 										   // std::cout << "pe y ja"<<std::endl;
+    //materials
+    creaModelo3D(mSceneMgr, mesh, mask);
+    // //COUTCOMENTADOstd::cout << "pe y ja"<<std::endl;
 
-	 cambiaMaterial(0);
-	 										 //   std::cout << "medio"<<std::endl;
+    cambiaMaterial(0);
+    //   //COUTCOMENTADOstd::cout << "medio"<<std::endl;
 
 
     nombreObjeto = name;
-								   // std::cout << "objetoogre"<<std::endl;
+    // //COUTCOMENTADOstd::cout << "objetoogre"<<std::endl;
 
 }
 
@@ -48,17 +48,17 @@ ObjetoOgre::~ObjetoOgre()
 
 void ObjetoOgre::cambiaMaterial(int material)
 {
-						//std::cout << "obj: "<<getNombre()<<std::endl;
+    ////COUTCOMENTADOstd::cout << "obj: "<<getNombre()<<std::endl;
 
-				//	std::cout << "cambiaMaterial aaaa: "<<material<<std::endl;
-										//std::cout << "que es: "<<materialNames[material]<<std::endl;
-
-    entidad->setMaterialName(materialNames[material]);
+    //	//COUTCOMENTADOstd::cout << "cambiaMaterial aaaa: "<<material<<std::endl;
+    ////COUTCOMENTADOstd::cout << "que es: "<<materialNames[material]<<std::endl;
+    if (materialNames.size() > material)
+        entidad->setMaterialName(materialNames[material]);
 }
 
 void ObjetoOgre::creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask)
 {
-        // std::cout << "crea modelito"<<std::endl;
+    // //COUTCOMENTADOstd::cout << "crea modelito"<<std::endl;
 
     //  entidad = mSceneMgr->createEntity("test12", "Tablero.mesh");
     mSceneMgr = sceneMgr;
@@ -79,21 +79,17 @@ void ObjetoOgre::trasladar(int x, int z)
 
 void ObjetoOgre::rota(int grados)
 {
-	//Ogre::SceneNode* mTarget = mSceneMgr->getRootSceneNode();
+    //Ogre::SceneNode* mTarget = mSceneMgr->getRootSceneNode();
 
-	// Ogre::Real dist = (nodoEscena->getPosition() - mTarget->_getDerivedPosition()).length();
+    // Ogre::Real dist = (nodoEscena->getPosition() - mTarget->_getDerivedPosition()).length();
 
     //Mueve nodoEscena a la posicion central
-   // nodoEscena->setPosition(mTarget->_getDerivedPosition());
+    // nodoEscena->setPosition(mTarget->_getDerivedPosition());
     //Rota nodoEscena
-  //  nodoEscena->yaw(Ogre::Degree(grados));
+    //  nodoEscena->yaw(Ogre::Degree(grados));
 
     //Devuelve la camara a su posicion original
-  //  nodoEscena->translate(Ogre::Vector3(0, 0, dist));
-
-
-
-
+    //  nodoEscena->translate(Ogre::Vector3(0, 0, dist));
 
 
 
@@ -105,17 +101,17 @@ void ObjetoOgre::rota(int grados)
 void ObjetoOgre::eliminaHijo(int hijo)
 {
     getNodoOgre()->removeChild(hijo);
-   // getNodoOgre()->chil
+    // getNodoOgre()->chil
     
-	ObjetoEscena::eliminaHijo(hijo);
-	//vectorHijos.erase(vectorHijos.begin()+hijo);
+    ObjetoEscena::eliminaHijo(hijo);
+    //vectorHijos.erase(vectorHijos.begin()+hijo);
 
 }
 
 /*
 void ObjetoOgre::cambiaPadre(int hijo)
 {
-	getNodoOgre()->getParent()->removeChild(getNodoOgre());
+    getNodoOgre()->getParent()->removeChild(getNodoOgre());
    // getNodoOgre()->removeChild(hijo);
     vectorHijos.erase(vectorHijos.begin()+hijo);
 }
@@ -125,24 +121,24 @@ void ObjetoOgre::cambiaPadre(int hijo)
 void ObjetoOgre::agregaHijo(ObjetoEscena* objetoHijo)
 {
 
-	//mejor crearlo aqui?
+    //mejor crearlo aqui?
 
-  //  vectorHijos.push_back(objetoHijo);
-	ObjetoEscena::agregaHijo(objetoHijo);
+    //  vectorHijos.push_back(objetoHijo);
+    ObjetoEscena::agregaHijo(objetoHijo);
     if (nodoEscena != NULL) nodoEscena->addChild(static_cast<ObjetoOgre*>(objetoHijo)->getNodoOgre());
 
 }
 
-void ObjetoOgre::creaHijo(std::string name, int mask, std::string mesh, std::string materials[2])
+void ObjetoOgre::creaHijo(std::string name, int mask, std::string mesh, std::vector<std::string> materials)
 {
-	//mejor crearlo aqui?
-	//ObjetoEscena::creaHijo(name, mask, mesh, material);
+    //mejor crearlo aqui?
+    //ObjetoEscena::creaHijo(name, mask, mesh, material);
 
-		ObjetoOgre*	objeto = new ObjetoOgre(name, mask, mesh, materials, mSceneMgr);
+    ObjetoOgre*	objeto = new ObjetoOgre(name, mask, mesh, materials, mSceneMgr);
 
-	
 
-	 agregaHijo(objeto);
+
+    agregaHijo(objeto);
 
 
 }

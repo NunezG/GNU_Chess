@@ -20,12 +20,12 @@ public:
     void creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask);
 	void eliminaHijo(int hijo);
     void agregaHijo(ObjetoEscena* objetoHijo);
-    void creaHijo(std::string name, int mask, std::string mesh, std::string materials[2]);
+    void creaHijo(std::string name, int mask, std::string mesh, std::vector<std::string> materials);
 
     void cambiaMaterial(int material);
     void rota(int grados);
     void trasladar(int x, int z);
-        ObjetoOgre(std::string name, int mask, std::string mesh, std::string materials[2], Ogre::SceneManager* sceneMgr);
+    ObjetoOgre(std::string name, int mask, std::string mesh, std::vector<std::string> materials, Ogre::SceneManager* sceneMgr);
 		
 
 	bool activo;

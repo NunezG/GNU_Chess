@@ -24,25 +24,25 @@
 #endif
 
 
-  
+
 #if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
 //SampleBrowser* OgreAndroidBridge::mBrowser = NULL;
 AndroidInputInjector* OgreAndroidBridge::mInputInjector = NULL;
- AndroidMultiTouch* OgreAndroidBridge::mTouch = NULL;
+AndroidMultiTouch* OgreAndroidBridge::mTouch = NULL;
 AndroidKeyboard* OgreAndroidBridge::mKeyboard = NULL;
- Ogre::RenderWindow* OgreAndroidBridge::mRenderWnd = NULL;
- Ogre::Root* OgreAndroidBridge::mRoot = NULL;
- bool OgreAndroidBridge::mInit = false;
- Ventana* OgreAndroidBridge::mVentana = NULL;
- AAssetManager* OgreAndroidBridge::mAssetMgr = NULL;
- 
+Ogre::RenderWindow* OgreAndroidBridge::mRenderWnd = NULL;
+Ogre::Root* OgreAndroidBridge::mRoot = NULL;
+bool OgreAndroidBridge::mInit = false;
+Ventana* OgreAndroidBridge::mVentana = NULL;
+AAssetManager* OgreAndroidBridge::mAssetMgr = NULL;
+
 
 #   ifdef OGRE_STATIC_LIB
-  Ogre::StaticPluginLoader* OgreAndroidBridge::mStaticPluginLoader = NULL;
+Ogre::StaticPluginLoader* OgreAndroidBridge::mStaticPluginLoader = NULL;
 #   endif
 #endif
 
-  
+
 
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -54,41 +54,35 @@ int main(int argc, char *argv[])
 #endif
 {
 #if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
- app_dummy();
+    app_dummy();
 
     // Make sure glue isn't stripped.
-	
- //__android_log_write(ANDROID_LOG_INFO, "tag here", "message here");
-	//std::ofstream out("./Salida.txt");
-    //std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
-	//std::ofstream out("/Salida.txt");
-    //std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
-    std::cout << "INICIA EN ANDROIDDDDDDDD"<<std::endl;
+    //__android_log_write(ANDROID_LOG_INFO, "tag here", "message here");
 
 
-   // Ventana* punteroVentana= new Ventana();
+    // Ventana* punteroVentana= new Ventana();
 
     OgreAndroidBridge::init(state);
     OgreAndroidBridge::go(state);
 
 #else
 
-	std::ofstream out("./Salida.txt");
+    std::ofstream out("./Salida.txt");
     std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
     try
     {
- 
 
-			 Ventana* punteroVentana= new Ventana();
 
-	//punteroVentana->init();
+        Ventana* punteroVentana= new Ventana();
+
+        //punteroVentana->init();
         punteroVentana->go();
 
         delete punteroVentana;
 
-       // Inicio& init = new Inicio();
-       // delete init;
+        // Inicio& init = new Inicio();
+        // delete init;
     } catch( Ogre::Exception& e )
     {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -98,7 +92,7 @@ int main(int argc, char *argv[])
                      e.getFullDescription().c_str() << std::endl;
 #endif
     }
-return 0;
+    return 0;
 
 #endif
 

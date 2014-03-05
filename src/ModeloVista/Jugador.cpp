@@ -12,7 +12,6 @@ Jugador::Jugador(EscenaAjedrez* miEscena, Modelo* modelo, std::string nombreJuga
   , modelo(modelo)
   //esperaEleccion(false)
 {
-			    				    std::cout << "Jugadorrr "<<std::endl;
 
     // tablero = escena->tablero;
 }
@@ -23,33 +22,25 @@ Jugador::~Jugador()
 
 bool Jugador::casillaSobrevolada(const std::string nombreCasilla)
 {
-      std::cout << "auto1: " << nombreCasilla<< std::endl;
-	  ObjetoEscena* casillaSobre = escenaMV->getTablero()->objetoPadre->getHijo(nombreCasilla);
+    ObjetoEscena* casillaSobre = escenaMV->getTablero()->objetoPadre->getHijo(nombreCasilla);
     ObjetoEscena* casillaSobreAnterior =  escenaMV->getTablero()->getCasillaSobrevolada();
-      std::cout << "CasillaSobrevolada: "<<   casillaSobre->getNombre()  << std::endl;
 
     //devulve true si ha cambiado de casilla
     if (!casillaSobreAnterior || casillaSobre->getNombre() != casillaSobreAnterior-> getNombre())
     {
-		      std::cout << "poozzzz: "<<    std::endl;
 
-     //   if (casillaSobreAnterior )
-     //   {
-      //           std::cout << "CasillaSobrevolada ANTERIOR: "<<   casillaSobreAnterior->getNombre()  << std::endl;
-      //       escenaMV->apagaVentanaEmergente();
+        //   if (casillaSobreAnterior )
+        //   {
+        //       escenaMV->apagaVentanaEmergente();
 
-     //       casillaSobreAnterior->cambiaMaterial(0);
-            //tablero->setNodoCasillaSobrevolada(-1);
-    //    }
+        //       casillaSobreAnterior->cambiaMaterial(0);
+        //tablero->setNodoCasillaSobrevolada(-1);
+        //    }
 
-           std::cout << "CAMBIA LA CASILLA SOBREVOLADA: " << std::endl;
-         escenaMV->getTablero()->setCasillaSobrevolada(casillaSobre);
-		            std::cout << "CAMBIA Lfin" << std::endl;
+        escenaMV->getTablero()->setCasillaSobrevolada(casillaSobre);
 
         return true;
     }
-
-			  						std::cout << "no cambia de casilla"<<std::endl;
 
     return false;
 }
@@ -68,14 +59,17 @@ int Jugador::jaqueMate()
 {
     // tablero->cambiaTurno();
     //    if(tablero->turnoN) tablero->casillasInt = Movimientos::normalizaTablero(tablero->casillasInt);
-  //  ModeloTablero* turnoSiguiente = new ModeloTablero(*modelo->tableroModelo);
+    //  ModeloTablero* turnoSiguiente = new ModeloTablero(*modelo->tableroModelo);
     bool Jaque = false;
     //   if (turnoNegras)tablero = Calculos::normalizaTablero(tablero);
     Jaque = modelo->tableroModelo->evaluaJaque();  //JAQUE AL REY
+
+    std::cout << "HAY JAUQUE ASECAS PARA EL ENEMIGO DESPUES DE MOVER? "<<Jaque <<std::endl;
+
     //MIRA TODOS LOS MOVIMIENTOS POSIBLES DEL TURNO CONTRARIO
     if (Autorizaciones::pruebaJaqueMate(modelo->tableroModelo))
     {
-      //  delete turnoSiguiente;
+        //  delete turnoSiguiente;
 
         //SE EVALUA EL JAQUE Y SI EL REY NO ESTA EN JAQUE ES QUE ES AHOGADO
         //EVALUA JAQUE
@@ -90,14 +84,14 @@ int Jugador::jaqueMate()
     }
     else
     {
-      //  delete turnoSiguiente;
+        //  delete turnoSiguiente;
         if (Jaque)
         {//Jaque asecas
             return 2;
         }
 
         //Mueve
-            return 1;
+        return 1;
     }
     //FINDE PARTIDA
 
@@ -108,8 +102,8 @@ int Jugador::jaqueMate()
 
 bool Jugador::iniciaTurno()
 {
-	 escenaMV->nombreActivo = nombre;
-	return false;
+    escenaMV->nombreActivo = nombre;
+    return false;
 }
 
 bool Jugador::aplicaSeleccion()
@@ -117,45 +111,47 @@ bool Jugador::aplicaSeleccion()
 
 
     //ATUALIZA EL TABLERO DE LA VISTA
-     escenaMV->apagaVentanaEmergente();
-     modelo->mueveTablero();
+    escenaMV->apagaVentanaEmergente();
+    modelo->mueveTablero();
 
-	int resultado = jaqueMate();
-	
-     escenaMV->getTablero()->actualizaTablero();
+    escenaMV->getTablero()->actualizaTablero();
 
     //PROMOCIONA PEÓN
     //  escena->getTablero()->promocionaPeon(escena->mSceneMgr);
-
     //COMPRUEBA JAQUE AL MOVER TABLERO EN MODELO
-    modelo->jugadaElegida[0] = 0;
-    modelo->jugadaElegida[1] = 0;
+
+    int resultado = jaqueMate();
+
+    std::cout << "RESULTAOD DE JAQUE DESPUES DE MOVER PARA VER SI AMENAZA"<<resultado <<std::endl;
 
 
-															   	std::cout << "result aplicaseleccion"<<  resultado <<std::endl;
+    //HABRA QUE BORRAR BIEN LOS PUNTEROS O NO USARLOS
+    modelo->jugadasElegidas.clear();
+
+
 
 
     switch (resultado)
     {
     case 2:
-												   	std::cout << "Jaque"<<std::endl;
+        std::cout << "HAY JAQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe"<<std::endl;
 
         escenaMV->muestraVentanaEmergente("Jaque");
         return true;
     case 3:
-												   	std::cout << "JaqueMate"<<std::endl;
+        std::cout << "JaqueMateEEESESEESE"<<std::endl;
 
-		//escena->nom
+        //escena->nom
         escenaMV->muestraVentanaEmergente("JaqueMate");
         return false;
     case 4:
-												   	std::cout << "Tablas"<<std::endl;
+        std::cout << "TablaAAAASASASDASDASDASD"<<std::endl;
 
         escenaMV->muestraVentanaEmergente("Tablas");
         return false;
     default: //MOVIMIENTO NORMAL
-														   	std::cout << "normal"<<std::endl;
+        std::cout << "MUEVE N EREROROROARAMMAL"<<std::endl;
 
         return true;
-    }  
+    }
 }

@@ -1,24 +1,23 @@
 #include "EscenaAjedrez.h"
 
 EscenaAjedrez::EscenaAjedrez() :
-	    rotaCamara(0)
-   // ,mCamera(0)
+    rotaCamara(0)
+  // ,mCamera(0)
   //, tablero(0)
- // , mTarget(0)
- // , mTopSpeed(150)
- // ,   mRaySceneQuery(0)
+  // , mTarget(0)
+  // , mTopSpeed(150)
+  // ,   mRaySceneQuery(0)
   //, mOrbiting(false)
   ,modoCamara(false)
   , camaraDerecha(false)
   , camaraIzquierda(false)
- // , columnas("ABCDEFGH")
- // , ventanaEmergente(0)
+  // , columnas("ABCDEFGH")
+  // , ventanaEmergente(0)
   , modoVS(0)
- // , listaNodos(0)
+  // , listaNodos(0)
 {
-		std::cout << "CONSTRUCTOR ESCNAAJEDREZ "<<std::endl;
 
-   			 tablero = new TableroMV();
+    tablero = new TableroMV();
 
 
 
@@ -36,15 +35,9 @@ TableroMV* EscenaAjedrez::getTablero()
 }
 void EscenaAjedrez::createSceneMV()
 {
-						    std::cout << "creaTableroYCasillas en escenaajedrez"<<std::endl;
-						   // std::cout << "creaT 11"<< 	mSceneMgr->getName()<<std::endl;
-
-							//std::cout << "creaT 2"<< tablero->getNombre() <<std::endl;
 
 
-   // tablero->creaTableroYCasillas(mSceneMgr);
-						    std::cout << "creaTableroYCasillas "<<std::endl;
-
+    // tablero->creaTableroYCasillas(mSceneMgr);
 
 
 }
@@ -87,21 +80,21 @@ void EscenaAjedrez::setModoCamara(bool modo)
 
 bool EscenaAjedrez::getModoCamara()
 {
-   return modoCamara;
+    return modoCamara;
 }
 
 
 void EscenaAjedrez::muestraVentanaEmergente(std::string nombreLayout)
 {
     //CEGUI::WindowManager::getSingleton().isAlive(nombreLayout);
-/*
+    /*
     if (!CEGUI::System::getSingleton().getDefaultGUIContext().getRootWindow()->isChild(nombreLayout))
     {
         ventanaEmergente = CEGUI::WindowManager::getSingleton().loadLayoutFromFile(nombreLayout+"CEED.layout");
-		ventanaEmergente->setMouseCursor("Vanilla-Images/MouseArrow");
+        ventanaEmergente->setMouseCursor("Vanilla-Images/MouseArrow");
 
-		if (nombreLayout == "JaqueMate") 	
-			ventanaEmergente->getChild("VentanaJM")->getChild("VarGanador")->setText(nombreActivo);
+        if (nombreLayout == "JaqueMate")
+            ventanaEmergente->getChild("VentanaJM")->getChild("VarGanador")->setText(nombreActivo);
 
         //  newWindow->setSize( CEGUI::UVCEGUI2( CEGUI::UCEGUI1.0f, 0 ), CEGUI::UDim( 1.0f, 0 ) ) );
 
@@ -113,18 +106,18 @@ void EscenaAjedrez::muestraVentanaEmergente(std::string nombreLayout)
         ventanaEmergente = CEGUI::System::getSingleton().getDefaultGUIContext().getRootWindow()->getChild(nombreLayout);
         ventanaEmergente->setVisible(true);
     }
-	*/
+    */
 }
 
 
 void EscenaAjedrez::apagaVentanaEmergente()
 {
-  /*  //CEGUI::System::getSingleton().getGUISheet()->cleanupChildren();
+    /*  //CEGUI::System::getSingleton().getGUISheet()->cleanupChildren();
      if (ventanaEmergente != NULL && ventanaEmergente->isVisible())
      {
          ventanaEmergente->setVisible(false);
          CEGUI::WindowManager::getSingleton().destroyWindow(ventanaEmergente);
          ventanaEmergente = NULL;
      }
-	 */
+     */
 }
