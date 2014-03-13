@@ -29,6 +29,7 @@ public:
     // Opens a file.
     virtual Rocket::Core::FileHandle Open(const Rocket::Core::String& path)
     {
+				  std::cout << "abre archivo " << path.CString()<<std::endl;
 
         //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, (Rocket::Core::String("Rocket::Core::FileHandle Open: ") + path).CString());
         AAsset* asset = AAssetManager_open(mAssetMgr, path.CString(), AASSET_MODE_BUFFER);
@@ -46,6 +47,8 @@ public:
     // Closes a previously opened file.
     virtual void Close(Rocket::Core::FileHandle file)
     {
+						  std::cout << "abrcierra e archivo" <<std::endl;
+
         //__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Rocket::Core::FileHandle Close");
         if(file)
         {

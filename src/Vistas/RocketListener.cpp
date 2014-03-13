@@ -14,7 +14,7 @@
 //#include <Rocket/Core/Context.h>
 
 
-RocketListener::RocketListener(ModeloVista* modeloV):  BaseVistas(modeloV)   
+RocketListener::RocketListener(ModeloVista* modeloV):  FrameListeners(modeloV)   
   //,vista(0)
 
 {

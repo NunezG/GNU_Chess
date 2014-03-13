@@ -1,5 +1,5 @@
-#ifndef __BaseVistas_
-#define __BaseVistas_
+#ifndef __FrameListeners_
+#define __FrameListeners_
 
 #define OGRE_STATIC_OctreeSceneManager
 #define STATIC_LIB
@@ -8,12 +8,13 @@
 #define _RTSS_WRITE_SHADERS_TO_DISK
 //#define ENABLE_SHADERS_CACHE_SAVE 1
 //#define ENABLE_SHADERS_CACHE_LOAD 1
-
 #include <OISEvents.h>
 #include <OISInputManager.h>
 #include <OISKeyboard.h>
 #include <OISMouse.h>
-#include <OIS.h>
+#include <OISMultiTouch.h>
+#include <OISJoyStick.h>
+
 
 #include "ModeloVista.h"
 
@@ -33,9 +34,9 @@
 #include "RTShaderSystem/OgreRTShaderSystem.h"
 
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+//#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define USAROCKET
-#endif
+//#endif
 
 #ifdef USAROCKET
 #include <Rocket/Core/Context.h>
@@ -201,12 +202,12 @@ protected:
 	};
 
 
-class BaseVistas : public Ogre::RenderQueueListener, public Ogre::FrameListener
+class FrameListeners : public Ogre::RenderQueueListener, public Ogre::FrameListener
 {
 public:
-	   BaseVistas(ModeloVista* modeloV);
+	   FrameListeners(ModeloVista* modeloV);
 
-    ~BaseVistas(void);
+    ~FrameListeners(void);
 
 
 	void init();
@@ -267,7 +268,6 @@ protected:
 		 #ifdef USAROCKET
 	// Configures Ogre's rendering system for rendering Rocket.
 		void configureRenderSystem();
-		Ogre::Matrix4 projection_matrix;	  
 
 		#endif
 

@@ -11,11 +11,9 @@ ModeloVista::ModeloVista():
   , modoJuego(0)
   ,resolucion("854 x 480")
   , pantallaCompleta(false)
-  ,reiniciar(0)
+  ,reiniciar(1)
   , jugadores(0)
-  //#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
-  ,voltea(90)
-  //#else
+  ,voltea(0)
 
   //#endif
 
@@ -199,6 +197,7 @@ void ModeloVista::aplicaCambio()
 
         if (getNumPantalla() == 1)
         {
+
             if (getTurnoNegras()) escenaMV->rotaCamara = voltea;
             else
                 escenaMV->rotaCamara = -voltea;

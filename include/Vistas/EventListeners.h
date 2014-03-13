@@ -1,5 +1,5 @@
-#ifndef __BaseListeners_
-#define __BaseListeners_
+#ifndef __EventListeners_
+#define __EventListeners_
 
 #include <OISEvents.h>
 #include <OISInputManager.h>
@@ -52,7 +52,7 @@
 
 
 
-class BaseListeners : 
+class EventListeners : 
 #ifdef USAROCKET
 	public Rocket::Core::EventListener,
 #endif
@@ -65,9 +65,9 @@ class BaseListeners :
 
 {
 public:
-	   BaseListeners(RocketListener* vistaOgre);
+	   EventListeners(RocketListener* vistaOgre);
 
-    ~BaseListeners(void);
+    ~EventListeners(void);
 
 	
     // Ogre::SceneNode* mTarget;

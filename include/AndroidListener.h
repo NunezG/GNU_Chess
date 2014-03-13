@@ -377,8 +377,8 @@ public:
                         Ogre::ArchiveManager::getSingleton().addArchiveFactory( new Ogre::APKZipArchiveFactory(app->activity->assetManager) );
                     }
 
-                    //			 AndroidFileInterface*  mAndroidFileInterface = new AndroidFileInterface(mAssetMgr);
-                    //            Rocket::Core::SetFileInterface(mAndroidFileInterface);
+                    		 AndroidFileInterface*  mAndroidFileInterface = new AndroidFileInterface(mAssetMgr);
+                                Rocket::Core::SetFileInterface(mAndroidFileInterface);
 
                     mVentana->listener->configuraGraficos();
 
@@ -392,13 +392,17 @@ public:
                     mVentana->go(); //crea vista
 
 
+					/*
+					mVentana->creaVista();
 
+					
                     Ogre::Root::getSingleton().getRenderSystem()->_initRenderTargets();
                     // Clear event times
                     Ogre::Root::getSingleton().clearEventTimes();
                     // mVentana->vista->initEventListener();
 
                     mInputInjector = new AndroidInputInjector(mVentana, mTouch, mKeyboard);
+					*/
 
 
                 }
@@ -450,15 +454,29 @@ public:
                 }
             }
 
-            if(mRenderWnd != NULL && mRenderWnd->isActive() && !mVentana->modeloVista->getApagar() && !mVentana->modeloVista->reiniciar && !mRenderWnd->isClosed() && mRenderWnd->isVisible() && !mRenderWnd->isHidden())
+            if(mRenderWnd != NULL && mRenderWnd->isActive() && !mVentana->modeloVista->getApagar() && !mRenderWnd->isClosed() && mRenderWnd->isVisible() && !mRenderWnd->isHidden())
             {
 
+				if (mVentana->modeloVista->reiniciar)
+				{
 
+					mVentana->creaVista();
+
+                    Ogre::Root::getSingleton().getRenderSystem()->_initRenderTargets();
+
+                    // Clear event times
+                    Ogre::Root::getSingleton().clearEventTimes();
+                    // mVentana->vista->initEventListener();
+					delete mInputInjector;
+					mInputInjector = NULL;
+                    mInputInjector = new AndroidInputInjector(mVentana, mTouch, mKeyboard);
+
+				}
 
                 mRenderWnd->windowMovedOrResized();
 
-
-                mRoot->renderOneFrame();
+				
+                bool resultFrame = mRoot->renderOneFrame();
 
             }
 
@@ -565,7 +583,7 @@ private:
 
     static AAssetManager* mAssetMgr;       // Android asset manager to access files inside apk
 
-    //cambia el browser por lo que sea, basevistas o baselisteners por ejemplo
+    //cambia el browser por lo que sea, FrameListeners o EventListeners por ejemplo
     static Ventana* mVentana;
     static AndroidInputInjector* mInputInjector;
     static AndroidMultiTouch* mTouch;

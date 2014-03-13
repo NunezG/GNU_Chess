@@ -401,6 +401,7 @@ bool Movimientos::recorreCasillas(ModeloTablero* miTablero, unsigned char salto)
             miTablero->casillasProtegidas.push_back(protege);
         }
     }
+
     // miTablero->numCasillasProtegidas++;
     return mueveFicha;
 }
@@ -417,20 +418,28 @@ bool Movimientos::mueveCaballo(ModeloTablero* miTablero)
     {
         if (miTablero->casillasInt[casilla+movimientos[i]] != 99)
         {
+
             if ((!miTablero->turnoN && miTablero->casillasInt[casilla+movimientos[i]] <= 0) || (miTablero->turnoN && miTablero->casillasInt[casilla+movimientos[i]] >= 0))
             {
+					   std::cout << "muevecaballo"<<std::endl;
+
                 miTablero->jugadaPrincipal[1] = casilla+movimientos[i];
                 miTablero->jugadas = miTablero->jugadas + miTablero->jugadaPrincipal[0] + miTablero->jugadaPrincipal[1];
 
                 nuevoMovimiento(miTablero);
+					   std::cout << "fin muevecaballo"<<std::endl;
+
                 mueveCaballo = true;
             }else if ((!miTablero->turnoN && miTablero->casillasInt[casilla+movimientos[i]] > 0) || (miTablero->turnoN && miTablero->casillasInt[casilla+movimientos[i]] < 0))
             {
+					   std::cout << "protege caballo"<<std::endl;
+
                 char protege[2];
                 protege[0] = miTablero->jugadaPrincipal[0];
                 protege[1] = miTablero->casillasInt[casilla+movimientos[i]];
                 //    miTablero->casillasProtegidas =
                 miTablero->casillasProtegidas.push_back(protege);
+					   std::cout <<" fin protege caballo"<<std::endl;
 
             }
         }
@@ -455,9 +464,9 @@ bool Movimientos::mueveRey(ModeloTablero* miTablero)
     //   bool pasa = false;
     //  char filaRey = 2;
 
-    std::cout << "MUEVEREY: "<<casilla <<std::endl;
+    //std::cout << "MUEVEREY: "<<casilla <<std::endl;
 
-    std::cout << "MUEVE2: "<<filaRey <<std::endl;
+    //std::cout << "MUEVE2: "<<filaRey <<std::endl;
 
 
     bool mueveRey = false;

@@ -251,7 +251,7 @@ set(HDRVIEW
         ./include/Vistas/VistaAjedrezSolo.h
       #  ./include/Vistas/MenuInicio.h
                 ./include/Vistas/MenuRocket.h
-        ./include/Vistas/BaseVistas.h
+        ./include/Vistas/FrameListeners.h
                  ./include/Vistas/RocketListener.h
                  ./include/Vistas/RenderInterfaceOgre3D.h
                 #./include/Vistas/RocketApplication.h
@@ -259,7 +259,7 @@ set(HDRVIEW
                 ./include/Vistas/Escena.h
                 ./include/Vistas/ObjetoOgre.h
         #	./include/Vistas/Tablero.h
-                ./include/Vistas/BaseListeners.h
+                ./include/Vistas/EventListeners.h
         #	./include/Vistas/OgreStaticPluginLoader.h
 
 
@@ -294,14 +294,14 @@ set(SRCVIEW
         ./src/Vistas/VistaAjedrezSolo.cpp
         ./src/Vistas/Ventana.cpp
                 ./src/Vistas/MenuRocket.cpp
-        ./src/Vistas/BaseVistas.cpp
+        ./src/Vistas/FrameListeners.cpp
                 ./src/Vistas/RocketListener.cpp
                 ./src/Vistas/RenderInterfaceOgre3D.cpp
                 ./src/Vistas/SystemInterfaceOgre3D.cpp
                         ./src/Vistas/Escena.cpp
                          ./src/Vistas/ObjetoOgre.cpp
 
-                        ./src/Vistas/BaseListeners.cpp
+                        ./src/Vistas/EventListeners.cpp
 
 )
 

@@ -28,12 +28,12 @@
 //#include "MenuRocket.h"
 //#include "VistaAjedrez.h"
 //#include "VistaAjedrezSolo.h"
-#include "BaseVistas.h"
+#include "FrameListeners.h"
 
 #include <OgreWindowEventUtilities.h>
 
 
-class RocketListener: public BaseVistas
+class RocketListener: public FrameListeners
 {
 	public:
 		RocketListener(ModeloVista* modeloV);

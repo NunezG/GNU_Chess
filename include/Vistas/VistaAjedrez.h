@@ -2,10 +2,10 @@
 #define __VistaAjedrez_h_
 #include "Escena.h"
 
-#include "BaseListeners.h"
+#include "EventListeners.h"
 
 
-class VistaAjedrez : public Escena, public BaseListeners
+class VistaAjedrez : public Escena, public EventListeners
 {
 public:
     VistaAjedrez(RocketListener* vistaOgre);

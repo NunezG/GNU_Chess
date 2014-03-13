@@ -21,14 +21,14 @@ public:
 	void init();
     void go();
 		  RocketListener* listener;
-          BaseListeners* vista;
+          EventListeners* vista;
 	  	   ModeloVista* modeloVista;
+	  	void creaVista();
 
 private:
-  //  BaseVistas* vista;
+  //  FrameListeners* vista;
      // ModeloVista* modeloVista;
 
-	  	void creaVista();
 
 };
 

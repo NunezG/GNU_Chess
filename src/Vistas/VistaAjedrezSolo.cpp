@@ -72,7 +72,7 @@ bool VistaAjedrezSolo::keyReleased( const OIS::KeyEvent &arg )
 //{
 // return VistaAjedrez::frameRenderingQueued(evt);
 
-/*  if (!BaseVistas::frameRenderingQueued(evt)) return false;
+/*  if (!FrameListeners::frameRenderingQueued(evt)) return false;
     else if(escenaAjedrez->tablero->rotacionCamara != Ogre::Degree(0))
     {
         mueveCamara(evt.timeSinceLastFrame);

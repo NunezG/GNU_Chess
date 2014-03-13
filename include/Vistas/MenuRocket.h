@@ -1,9 +1,9 @@
 #ifndef __MenuRocket_
 #define __MenuRocket_
 
-#include "BaseListeners.h"
+#include "EventListeners.h"
 
-class MenuRocket : public BaseListeners
+class MenuRocket : public EventListeners
 {
 public:
     MenuRocket(RocketListener* vistaOgre);//Ventana* mFrameListener);

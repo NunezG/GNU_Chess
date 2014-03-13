@@ -1,6 +1,6 @@
-#include "BaseVistas.h"
+#include "FrameListeners.h"
 
-BaseVistas::BaseVistas(ModeloVista* modeloV) :
+FrameListeners::FrameListeners(ModeloVista* modeloV) :
     //mInputManager(0),
     //mMouse(0),
     //mKeyboard(0)
@@ -28,7 +28,7 @@ BaseVistas::BaseVistas(ModeloVista* modeloV) :
 
 
 
-BaseVistas::~BaseVistas()
+FrameListeners::~FrameListeners()
 {
 
 #if ENABLE_SHADERS_CACHE_SAVE == 1
@@ -83,7 +83,7 @@ BaseVistas::~BaseVistas()
     // mWindow = 0;
 }
 
-//void BaseVistas::createFrameListener()
+//void FrameListeners::createFrameListener()
 //{
 // Create the RocketFrameListener.
 //mFrameListener = new RocketListener();
@@ -94,14 +94,14 @@ BaseVistas::~BaseVistas()
 //mFrameListener->showDebugOverlay(true);
 //}
 
-//int BaseVistas::getFPS()
+//int FrameListeners::getFPS()
 //{
 //    Ogre::RenderTarget::FrameStats stats = mWindow->getStatistics();
 //    return ((int)stats.lastFPS);
 //}
 
 
-bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
+bool FrameListeners::frameStarted(const Ogre::FrameEvent& evt)
 {
 
 
@@ -111,23 +111,9 @@ bool BaseVistas::frameStarted(const Ogre::FrameEvent& evt)
 
 
 
-bool BaseVistas::frameRenderingQueued(const Ogre::FrameEvent& evt)
+bool FrameListeners::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
 
-
-    if(modeloVista->getApagar() || modeloVista->reiniciar || mWindow->isClosed() || !mWindow->isVisible() || mWindow->isHidden()){
-
-        return false;
-
-    }
-
-
-    if (modeloVista->jugadaElegida()){
-        //ESTO EN UN FUTURO HABRA QUE HACERLO EN OTRO THREAD
-        modeloVista->aplicaCambio();
-
-
-    }
 
 
 
@@ -151,6 +137,7 @@ bool BaseVistas::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(modeloVista->escenaMV->rotaCamara != 0)
     {
+
         float fRot = Ogre::Real(80.0f) * evt.timeSinceLastFrame;
         if (modeloVista->escenaMV->rotaCamara < 0) fRot = -fRot;
 
@@ -162,34 +149,64 @@ bool BaseVistas::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
         if ((fRot > 0 && rot > rotRestante) ||(fRot < 0 && rot < rotRestante))
         {
+
+
             rotacionCamara( rotRestante);
             modeloVista->escenaMV->rotaCamara = Ogre::Real(0.0f);
         }
         else
         {
+
             rotacionCamara(rot);
             modeloVista->escenaMV->rotaCamara = modeloVista->escenaMV->rotaCamara - fRot;
         }
-    }else mInputContext.capture();      // capture input
+
+	}else{
+
+		mInputContext.capture();      // capture input
+	}
+
+
+	
+    if(modeloVista->getApagar() || modeloVista->reiniciar || mWindow->isClosed() || !mWindow->isVisible() || mWindow->isHidden()){
+		           std::cout << "SALE DE FRAMERENDEREINQUEUE  "<<std::endl;
+
+        return false;
+
+    } 
+
+
+    if (modeloVista->jugadaElegida()){
+        //ESTO EN UN FUTURO HABRA QUE HACERLO EN OTRO THREAD
+        modeloVista->aplicaCambio();
+
+
+    }
+
+
+
+
 
     return true;
 }
 
 #ifdef USAROCKET
 // Called from Ogre before a queue group is rendered.
-void BaseVistas::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& ROCKET_UNUSED(skipThisInvocation))
+void FrameListeners::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& ROCKET_UNUSED(skipThisInvocation))
 {
 
     if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && Ogre::Root::getSingleton().getRenderSystem()->_getViewport()->getOverlaysEnabled())
     {
-        //#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 
         context->Update();
-        //	#endif
-        configureRenderSystem();
+       
+       // #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+	    configureRenderSystem();
+	 //	#endif
         // #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-
         context->Render();
+	  	ogre_renderer->hecho = true;
+
         //#endif
 
 
@@ -200,14 +217,14 @@ void BaseVistas::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String
 }
 
 // Called from Ogre after a queue group is rendered.
-void BaseVistas::renderQueueEnded(Ogre::uint8 ROCKET_UNUSED(queueGroupId), const Ogre::String& ROCKET_UNUSED(invocation), bool& ROCKET_UNUSED(repeatThisInvocation))
+void FrameListeners::renderQueueEnded(Ogre::uint8 ROCKET_UNUSED(queueGroupId), const Ogre::String& ROCKET_UNUSED(invocation), bool& ROCKET_UNUSED(repeatThisInvocation))
 {
 
 
 }
-
+/*
 // Builds an OpenGL-style orthographic projection matrix.
-void BaseVistas::buildProjectionMatrix(Ogre::Matrix4& projection_matrix)
+void FrameListeners::buildProjectionMatrix(Ogre::Matrix4& projection_matrix)
 {					
     float z_near = -1;
     float z_far = 1;
@@ -222,22 +239,30 @@ void BaseVistas::buildProjectionMatrix(Ogre::Matrix4& projection_matrix)
     projection_matrix[2][2]= -2.0f / (z_far - z_near);
     projection_matrix[3][3]= 1.0000000f;
 }
-
+*/
 
 
 // Configures Ogre's rendering system for rendering Rocket.
-void BaseVistas::configureRenderSystem()
+void FrameListeners::configureRenderSystem()
 {
+
+
+
     Ogre::RenderSystem* render_system = Ogre::Root::getSingleton().getRenderSystem();
 
     // Set up the projection and view matrices.
     
-    buildProjectionMatrix(projection_matrix);
-
-    render_system->_setProjectionMatrix(projection_matrix);
 
 
-    render_system->_setViewMatrix(Ogre::Matrix4::IDENTITY);
+
+
+   // buildProjectionMatrix(projection_matrix);
+
+ //   render_system->_setProjectionMatrix(projection_matrix);
+  //  render_system->_setViewMatrix(Ogre::Matrix4::IDENTITY);
+
+
+
 
     // Disable lighting, as all of Rocket's geometry is unlit.
     render_system->setLightingEnabled(false);
@@ -251,8 +276,9 @@ void BaseVistas::configureRenderSystem()
     // Enable writing to all four channels.
     render_system->_setColourBufferWriteEnabled(true, true, true, true);
     // Unbind any vertex or fragment programs bound previously by the application.
-    render_system->unbindGpuProgram(Ogre::GPT_FRAGMENT_PROGRAM);
-    render_system->unbindGpuProgram(Ogre::GPT_VERTEX_PROGRAM);
+   // render_system->unbindGpuProgram(Ogre::GPT_FRAGMENT_PROGRAM);
+   // render_system->unbindGpuProgram(Ogre::GPT_VERTEX_PROGRAM);
+	
 
     // Set texture settings to clamp along both axes.
     Ogre::TextureUnitState::UVWAddressingMode addressing_mode;
@@ -267,7 +293,7 @@ void BaseVistas::configureRenderSystem()
     render_system->_setTextureCoordCalculation(0, Ogre::TEXCALC_NONE);
     // Enable linear filtering; images should be rendering 1 texel == 1 pixel, so point filtering could be used
     // except in the case of scaling tiled decorators.
-    render_system->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_POINT);
+   // render_system->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_POINT);
     // Disable texture coordinate transforms.
     render_system->_setTextureMatrix(0, Ogre::Matrix4::IDENTITY);
     // Reject pixels with an alpha of 0.
@@ -280,11 +306,13 @@ void BaseVistas::configureRenderSystem()
 
     // Disable depth bias.
     render_system->_setDepthBias(0, 0);
+
+
 }
 
 
 
-void BaseVistas::BuildKeyMaps()
+void FrameListeners::BuildKeyMaps()
 {
     key_identifiers[OIS::KC_UNASSIGNED] = Rocket::Core::Input::KI_UNKNOWN;
     key_identifiers[OIS::KC_ESCAPE] = Rocket::Core::Input::KI_ESCAPE;
@@ -433,7 +461,7 @@ void BaseVistas::BuildKeyMaps()
     key_identifiers[OIS::KC_MEDIASELECT] = Rocket::Core::Input::KI_LAUNCH_MEDIA_SELECT;
 }
 
-int BaseVistas::GetKeyModifierState()
+int FrameListeners::GetKeyModifierState()
 {
     int modifier_state = 0;
 
@@ -481,8 +509,9 @@ int BaseVistas::GetKeyModifierState()
 
 
 //Adjust mouse clipping area
-void BaseVistas::windowResized()
+void FrameListeners::windowResized()
 {
+
     unsigned int width, height, depth;
     int left, top;
     mWindow->getMetrics(width, height, depth, left, top);
@@ -493,7 +522,7 @@ void BaseVistas::windowResized()
     ms.height = height;
 }
 /*
-Ogre::Ray BaseVistas ::getCameraToViewportRay()
+Ogre::Ray FrameListeners ::getCameraToViewportRay()
 {
 
     return mCamera->getCameraToViewportRay
@@ -502,7 +531,7 @@ Ogre::Ray BaseVistas ::getCameraToViewportRay()
 }
 
 */
-void BaseVistas::createCamera(void)
+void FrameListeners::createCamera(void)
 {
 
 
@@ -553,7 +582,7 @@ void BaseVistas::createCamera(void)
     }
 
 
-    mCamera->setFixedYawAxis(true,Ogre::Vector3(0, 0, 0));
+ //   mCamera->setFixedYawAxis(true,Ogre::Vector3(0, 0, 0));
 
     // mInputMan = new InputMan::SdkCameraMan(mCamera);   // create a default camera controller
     //  mTopSpeed = topSpeed;
@@ -561,7 +590,7 @@ void BaseVistas::createCamera(void)
     // return mCamera;
 }
 
-void BaseVistas::createViewports(Ogre::RenderWindow* window)
+void FrameListeners::createViewports(Ogre::RenderWindow* window)
 {
     //  mWindow = window;
     // Create one viewport, entire window
@@ -580,7 +609,7 @@ void BaseVistas::createViewports(Ogre::RenderWindow* window)
 }
 
 
-void BaseVistas::DistanciaCamara(int distanciaRelativa)
+void FrameListeners::DistanciaCamara(int distanciaRelativa)
 {
     Ogre::Real dist = (mCamera->getPosition() - mTarget->_getDerivedPosition()).length();
     mCamera->moveRelative(Ogre::Vector3(0, 0, -distanciaRelativa * 0.0008f * dist));
@@ -588,7 +617,7 @@ void BaseVistas::DistanciaCamara(int distanciaRelativa)
 
 
 
-void BaseVistas::rotacionCamara(Ogre::Degree angulo)
+void FrameListeners::rotacionCamara(Ogre::Degree angulo)
 {
     Ogre::Real dist = mCamera->getPosition().length();
 
@@ -596,7 +625,14 @@ void BaseVistas::rotacionCamara(Ogre::Degree angulo)
     //Mueve la camara a la posicion central
     // mCamera->setPosition(Ogre::Vector3(0,0,0));
     //Rota la camara
+
+	#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
     mCamera->pitch(-angulo);
+#else
+    mCamera->yaw(-angulo);
+
+
+#endif
 
     //Devuelve la camara a su posicion original
     mCamera->moveRelative(Ogre::Vector3(0, 0, dist));
@@ -609,7 +645,7 @@ void BaseVistas::rotacionCamara(Ogre::Degree angulo)
 
 
 
-bool BaseVistas::configuraGraficos()
+bool FrameListeners::configuraGraficos()
 {
 
 #if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID
@@ -664,6 +700,7 @@ bool BaseVistas::configuraGraficos()
 
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/", "APKFileSystem", "General");
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib", "APKFileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib/materials", "APKFileSystem", "General");
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib/cache", "APKFileSystem", "General");
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/RTShaderLib/GLSLES", "APKFileSystem", "General");
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/materials/scripts", "APKFileSystem", "General");
@@ -690,7 +727,7 @@ bool BaseVistas::configuraGraficos()
 #ifdef USAROCKET
 
 
-bool BaseVistas::configuraRocket()
+bool FrameListeners::configuraRocket()
 {
 
     ogre_system = NULL;
@@ -702,14 +739,16 @@ bool BaseVistas::configuraRocket()
 
     //ogre_renderer->setCustomProjectionMatrix(projection_matrix);
 
-
     Rocket::Core::SetRenderInterface(ogre_renderer);
+
 
     ogre_system = new SystemInterfaceOgre3D();
     Rocket::Core::SetSystemInterface(ogre_system);
 
-
     Rocket::Core::Initialise();
+
+
+
 
     Rocket::Controls::Initialise();
 
@@ -718,7 +757,8 @@ bool BaseVistas::configuraRocket()
 
 
     context = Rocket::Core::CreateContext("main", Rocket::Core::Vector2i(mWindow->getWidth(), mWindow->getHeight()));
-    Rocket::Debugger::Initialise(context);
+   
+	Rocket::Debugger::Initialise(context);
 
     context->SetDimensions( Rocket::Core::Vector2i( mWindow->getWidth(), mWindow->getHeight() ) );
 
@@ -761,7 +801,7 @@ bool BaseVistas::configuraRocket()
 #endif
 
 
-bool BaseVistas::configuraOgre()
+bool FrameListeners::configuraOgre()
 {
 
     //INICIA OGRE, PLUGINS ESTATICOS
@@ -785,7 +825,7 @@ bool BaseVistas::configuraOgre()
     return true;
 }
 
-bool BaseVistas::configuraOIS()
+bool FrameListeners::configuraOIS()
 {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
     //INICIA OIS
@@ -833,7 +873,7 @@ bool BaseVistas::configuraOIS()
 }
 
 
-void BaseVistas::init()
+void FrameListeners::init()
 {
 
 
@@ -845,8 +885,9 @@ void BaseVistas::init()
         configuraGraficos();
 
 
-        mWindow = mRoot->initialise(true,"3D CHESS");
+       mWindow = mRoot->initialise(true, "3D Chess");
 
+	// mWindow = mRoot->createRenderWindow("3D Chess", 800, 600, false, 0);
 
         configuraOIS();
 
@@ -898,7 +939,7 @@ void BaseVistas::init()
 
 
 
-void BaseVistas::setupShaderSystem(){
+void FrameListeners::setupShaderSystem(){
 
 
     // 7  - JUSTO DESPUES DE ADDVIERPORT DEL WINDOW
@@ -990,7 +1031,7 @@ void BaseVistas::setupShaderSystem(){
 //-----------------------------------------------------------------------------
 //      | Initialize the RT Shader system.
 //      -----------------------------------------------------------------------------
-bool BaseVistas::initialiseRTShaderSystem(Ogre::SceneManager* sceneMgr)
+bool FrameListeners::initialiseRTShaderSystem(Ogre::SceneManager* sceneMgr)
 {
 
     if (Ogre::RTShader::ShaderGenerator::initialize())
@@ -1077,7 +1118,7 @@ bool BaseVistas::initialiseRTShaderSystem(Ogre::SceneManager* sceneMgr)
 //-----------------------------------------------------------------------------
 ////   | Destroy the RT Shader system.
 //    -----------------------------------------------------------------------------
-void BaseVistas::destroyRTShaderSystem()
+void FrameListeners::destroyRTShaderSystem()
 {
     // Restore default scheme.
     Ogre::MaterialManager::getSingleton().setActiveScheme(Ogre::MaterialManager::DEFAULT_SCHEME_NAME);

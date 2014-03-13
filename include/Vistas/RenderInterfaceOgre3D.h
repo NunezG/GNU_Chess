@@ -35,8 +35,9 @@
 	A sample render interface for Rocket into Ogre3D.
 
 	@author Peter Curry
- */
 
+	Modified by Brett Didemus to work with programable pipeline
+ */
 class RenderInterfaceOgre3D : public Rocket::Core::RenderInterface
 {
 	public:
@@ -71,14 +72,33 @@ class RenderInterfaceOgre3D : public Rocket::Core::RenderInterface
 		/// Returns the native vertical texel offset for the renderer.
 		float GetVerticalTexelOffset();
 
+		void setCustomProjectionMatrix( Ogre::Matrix4 projMatrix );
+		void CreateShader();
+		void BuildProjectionMatrix(Ogre::Matrix4& projection_matrix);
+
+				bool hecho;
+
 	private:
-		Ogre::Matrix4 customProjectionMatrix;
-		Ogre::TexturePtr m_blankTexture;
+				Ogre::Matrix4 projection_matrix;	  
+
+				unsigned int mWindowWidth;
+				unsigned int mWindowHeight;
+
+	Ogre::HighLevelGpuProgramPtr	mVertexProgram;
+
+
+		Ogre::HighLevelGpuProgramPtr mFragmentProgram;
+	Ogre::GpuProgramParametersSharedPtr  mVertexProgramParams;
+Ogre::GpuProgramParametersSharedPtr mFragmentProgramParams;
 
 		Ogre::RenderSystem* render_system;
 
 		Ogre::LayerBlendModeEx colour_blend_mode;
 		Ogre::LayerBlendModeEx alpha_blend_mode;
+
+		Ogre::Matrix4 customProjectionMatrix;
+
+		Ogre::TexturePtr m_blankTexture;
 
 		bool scissor_enable;
 		int scissor_left;
@@ -86,5 +106,5 @@ class RenderInterfaceOgre3D : public Rocket::Core::RenderInterface
 		int scissor_right;
 		int scissor_bottom;
 };
-
 #endif
+

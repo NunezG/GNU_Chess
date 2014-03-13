@@ -1,6 +1,6 @@
-#include "BaseListeners.h"
+#include "EventListeners.h"
 
-BaseListeners::BaseListeners( RocketListener* vistaO) :
+EventListeners::EventListeners( RocketListener* vistaO) :
     //mInputManager(0),
     //mMouse(0),
     //mKeyboard(0)
@@ -76,23 +76,42 @@ BaseListeners::BaseListeners( RocketListener* vistaO) :
 
 }
 
-BaseListeners::~BaseListeners()
+EventListeners::~EventListeners()
 {
+
+
+						 std::cout << "BORRARA! "<<std::endl;
 
 #ifdef USAROCKET
     context->RemoveEventListener("click", this);
     context->UnloadAllDocuments();
 #endif
 
-    vistaOgre->mInputContext.mMouse->setEventCallback(0);
-    vistaOgre->mInputContext.mKeyboard->setEventCallback(0);
+		#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+		    vistaOgre->mInputContext.mKeyboard->setEventCallback(0);
 
+    vistaOgre->mInputContext.mMouse->setEventCallback(0);
+
+#endif
+
+	
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
+								 std::cout << "BORRARA ANDROID "<<std::endl;
+ if(vistaOgre->mInputContext.mMultiTouch)
+    {
+		vistaOgre->mInputContext.mMultiTouch->setEventCallback(0);
+ }
+	//if (vistaOgre->mInputContext.mAccelerometer) vistaOgre->mInputContext.mAccelerometer->setEventCallback(0);
+#endif
+
+										 std::cout << "BORRARA END "<<std::endl;
 
     // delete mWindow;
     // mWindow = 0;
 }
 
-//void BaseListeners::createFrameListener()
+//void EventListeners::createFrameListener()
 //{
 // Create the RocketFrameListener.
 //mFrameListener = new RocketListener();
@@ -103,7 +122,7 @@ BaseListeners::~BaseListeners()
 //mFrameListener->showDebugOverlay(true);
 //}
 
-//int BaseListeners::getFPS()
+//int EventListeners::getFPS()
 //{
 //    Ogre::RenderTarget::FrameStats stats = mWindow->getStatistics();
 //    return ((int)stats.lastFPS);
@@ -112,30 +131,34 @@ BaseListeners::~BaseListeners()
 
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
 
-bool BaseListeners::touchMoved(const OIS::MultiTouchEvent& evt)
+bool EventListeners::touchMoved(const OIS::MultiTouchEvent& evt)
 {
-    //context->ProcessMouseMove(evt.state.X.abs, evt.state.Y.abs, 0);
+    context->ProcessMouseMove(evt.state.X.abs, evt.state.Y.abs, 0);
 
     return true;
 
 }
 
-bool BaseListeners::touchPressed(const OIS::MultiTouchEvent& evt)
+bool EventListeners::touchPressed(const OIS::MultiTouchEvent& evt)
 {
 
-    //context->ProcessMouseMove(evt.state.X.abs, evt.state.Y.abs, 0);
-    //   context->ProcessMouseButtonDown(0, 0);
+    context->ProcessMouseMove(evt.state.X.abs, evt.state.Y.abs, 0);
+      context->ProcessMouseButtonDown(0, 0);
+
 
     return true;
 
 }
-bool BaseListeners::touchReleased(const OIS::MultiTouchEvent& evt)
+bool EventListeners::touchReleased(const OIS::MultiTouchEvent& evt)
 {
-    //	context->ProcessMouseButtonUp(0, 0);
+		  context->ProcessMouseButtonUp(0, 0);
+
     return true;
 }
-bool BaseListeners::touchCancelled(const OIS::MultiTouchEvent& evt)
+bool EventListeners::touchCancelled(const OIS::MultiTouchEvent& evt)
 {
+		  context->ProcessMouseButtonUp(0, 0);
+
 
     return true;
 
@@ -144,7 +167,7 @@ bool BaseListeners::touchCancelled(const OIS::MultiTouchEvent& evt)
 
 
 
-bool BaseListeners::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+bool EventListeners::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -163,7 +186,7 @@ bool BaseListeners::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID 
     return true;
 }
 
-bool BaseListeners::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+bool EventListeners::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #ifdef USAROCKET
@@ -177,7 +200,7 @@ bool BaseListeners::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID
 }
 
 
-bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
+bool EventListeners::mouseMoved( const OIS::MouseEvent &e )
 {
     //int key_modifier_state = GetKeyModifierState();
 
@@ -189,6 +212,7 @@ bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
     context->ProcessMouseMove(e.state.X.abs, e.state.Y.abs, 0);
     if (e.state.Z.rel != 0)
         context->ProcessMouseWheel(e.state.Z.rel / -120, 0);
+
 #endif
 #endif
 
@@ -199,7 +223,7 @@ bool BaseListeners::mouseMoved( const OIS::MouseEvent &e )
 }
 
 #endif
-bool BaseListeners::keyPressed( const OIS::KeyEvent &evt )
+bool EventListeners::keyPressed( const OIS::KeyEvent &evt )
 {
 
 
@@ -217,7 +241,7 @@ bool BaseListeners::keyPressed( const OIS::KeyEvent &evt )
     return true;
 }
 
-bool BaseListeners::keyReleased( const OIS::KeyEvent &e )
+bool EventListeners::keyReleased( const OIS::KeyEvent &e )
 {
 #ifdef USAROCKET
 
@@ -242,7 +266,7 @@ bool BaseListeners::keyReleased( const OIS::KeyEvent &e )
 
 
 /*
-Ogre::Ray BaseListeners ::getCameraToViewportRay()
+Ogre::Ray EventListeners ::getCameraToViewportRay()
 {
 
     return mCamera->getCameraToViewportRay
@@ -253,7 +277,7 @@ Ogre::Ray BaseListeners ::getCameraToViewportRay()
 */
 
 
-void BaseListeners::DistanciaCamara(int distanciaRelativa)
+void EventListeners::DistanciaCamara(int distanciaRelativa)
 {
     Ogre::Real dist = (vistaOgre->mCamera->getPosition() - vistaOgre->mTarget->_getDerivedPosition()).length();
     vistaOgre->mCamera->moveRelative(Ogre::Vector3(0, 0, -distanciaRelativa * 0.0008f * dist));
@@ -263,7 +287,7 @@ void BaseListeners::DistanciaCamara(int distanciaRelativa)
 
 #ifdef USAROCKET
 
-void BaseListeners::initEventListener()
+void EventListeners::initEventListener()
 {
     
     context = Rocket::Core::GetContext("main");
@@ -276,7 +300,7 @@ void BaseListeners::initEventListener()
 }
 
 #endif
-void BaseListeners::rotacionCamara(Ogre::Degree angulo)
+void EventListeners::rotacionCamara(Ogre::Degree angulo)
 {
     Ogre::Real dist = (vistaOgre->mCamera->getPosition() - vistaOgre->mTarget->_getDerivedPosition()).length();
 
@@ -293,7 +317,7 @@ void BaseListeners::rotacionCamara(Ogre::Degree angulo)
 
 
 
-Rocket::Core::ElementDocument* BaseListeners::openFontRocket(const Ogre::String& fileName)
+Rocket::Core::ElementDocument* EventListeners::openFontRocket(const Ogre::String& fileName)
 {
 
 

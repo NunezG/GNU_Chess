@@ -157,21 +157,12 @@ bool JugadorHumano::fichaPulsada()
         if (!jugadasResaltadas.empty())
         {
 
-            std::cout << "foororor?"<<std::endl;
-
             for (std::vector<int>::iterator it = jugadasResaltadas.begin(); it!=jugadasResaltadas.end(); it++)
             {
                 int jugada = *it;
 
-
-
-
-                std::cout << "obobo?"<<jugada <<std::endl;
-
-
                 ObjetoEscena* ob = escenaMV->getTablero()->objetoPadre->getHijo(((jugada/12)-2)*8 + ((jugada%12)-2));
 
-                std::cout << "obobo2222222211?"<<std::endl;
 
 
                 if (ob->numHijos() > 0)
@@ -183,10 +174,6 @@ bool JugadorHumano::fichaPulsada()
                 //  escenaMV->getTablero()->getCasillaSobrevolada()->cambiaMaterial(1);
 
             }
-
-
-
-            std::cout << "retete?"<<std::endl;
 
             return true;
         }
