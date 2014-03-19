@@ -4,29 +4,44 @@
 
 Ventana::Ventana() :
     //modeloVista(modeloVista),
-    vista(0)
+    listener(0)
+  ,framework(0)
 {
 
 
+    framework = new OgreFramework();
 
     //Rocket Listener
-    modeloVista = new ModeloVista();
+    
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
-modeloVista->voltea = 90;
-
-#else
-	modeloVista->voltea = 180;
-
-
-#endif
-    listener = new RocketListener(modeloVista);
 }
+
+
+Ventana::~Ventana() 
+{
+
+    delete listener;
+    listener = NULL;
+
+
+
+    delete framework;
+    framework = NULL;
+    
+
+}
+
 
 
 void Ventana::init(void)
 { 
-   
+
+    framework->init();
+
+
+    //AQUI CREA EL LISTENER!!!
+
+
 
 
 
@@ -35,57 +50,54 @@ void Ventana::init(void)
 
 void Ventana::go(void)
 {   
+
+    listener = new RocketFrameListener(framework);
+
     listener->init();
 
-   
-
-//#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
-   // modeloVista->reiniciar = false;
+    //#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
+    // modeloVista->reiniciar = false;
 
     //creaVista();
 
-//#ifdef USAROCKET
+    //#ifdef USAROCKET
 
-  //  vista->initEventListener();
-//#endif
+    //  vista->initEventListener();
+    //#endif
 
-  //  vista->createView(); //inicia vista
-//#else
+    //  vista->createView(); //inicia vista
+    //#else
 
 
-	#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-
-    Ogre::WindowEventUtilities::addWindowEventListener(listener->mWindow, this);
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+    Ogre::WindowEventUtilities::addWindowEventListener(framework->mWindow, this);
 
 
     //CREA VISTA
-    while(!listener->modeloVista->getApagar())
+    while(!framework->modeloVista->getApagar())
     {
-        
+
         creaVista();
-
-
 
         //   creaVista??z
         //EMPIEZA RENDERIZADO
-	
-        listener->empieza();	
 
+        framework->empieza();
 
     }
 
-    delete vista;
+
+    //listener->borraVistaActiva();
+
+    //  delete vista;
 
     //DESTRUYE VISTA
-    Ogre::WindowEventUtilities::removeWindowEventListener(listener->mWindow, this);
+    Ogre::WindowEventUtilities::removeWindowEventListener(framework->mWindow, this);
 
-    delete listener;
-    listener = NULL;
 
-    delete modeloVista;
-		#endif
+#endif
 
-//#endif
+    //#endif
 
 }
 
@@ -98,21 +110,23 @@ void Ventana::creaVista()
 
     // }
 
-    delete vista;
+    //ES TODO ESTO NECESARIO???
+    listener->borraVistaActiva();
 
-    vista = NULL;
+    RocketEventListener* vista;
 
-	modeloVista->reiniciar = false;
+    //framework->modeloVista->reiniciar = false;
 
     //vista->context->dele
 
-//#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
- //  modeloVista->setNumPantalla(1);
-//#endif
+    //#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
+    //framework->modeloVista->setNumPantalla(1);
+    //#endif
 
-    if (modeloVista->getNumPantalla() == 0)
+    if (framework->modeloVista->getNumPantalla() == 0)
     {
-        vista = new MenuRocket(listener);
+
+        vista = new MenuRocket(framework);
 
 
         //static_cast<VistaAjedrez*>(vista)->createScene();
@@ -120,45 +134,34 @@ void Ventana::creaVista()
     }else
     {
 
-        if (modeloVista->getNumPantalla() == 1)
+        if (framework->modeloVista->getNumPantalla() == 1)
         {
 
-            vista =  new VistaAjedrez(listener);
+            vista =  new VistaAjedrez(framework);
 
 
         }
-        else if (modeloVista->getNumPantalla() == 2) {//EL CONTRUCTOR DE FrameListeners CONFIGURA OPENGL, INICIA mWINDOW, INICIA OIS Y CEGUI
+        else if (framework->modeloVista->getNumPantalla() == 2) {//EL CONTRUCTOR DE FrameListeners CONFIGURA OPENGL, INICIA mWINDOW, INICIA OIS Y CEGUI
 
-            vista =  new VistaAjedrezSolo(listener);
+            vista =  new VistaAjedrezSolo(framework);
         }
 
         //static_cast<VistaAjedrez*>(vista)->createScene();
 
     }
     //  listener->createScene();
-   
-
-    //LISTENERS
-#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-    listener->mInputContext.mMouse->setEventCallback(vista);
-    listener->mInputContext.mKeyboard->setEventCallback(vista);
-
-#else
-
-    if(listener->mInputContext.mMultiTouch)
-    {
-        listener->mInputContext.mMultiTouch->setEventCallback(vista);
-    }
 
 
+    //ASIGNA VISTA A LISTENER!!!
+
+    listener->setVistaActiva(vista);
 
 
-#endif 
+    vista->createView();
 
-#ifdef USAROCKET
+    framework->mWindow->setActive(true);
 
-        vista->initEventListener();
-#endif
-        vista->createView();
+    vista = NULL;
 
-}
+}		 
+

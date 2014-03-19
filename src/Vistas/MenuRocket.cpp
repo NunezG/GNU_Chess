@@ -1,11 +1,17 @@
 ﻿#include "MenuRocket.h"
 
 //-------------------------------------------------------------------------------------
-MenuRocket::MenuRocket(RocketListener* vistaOgre) : EventListeners( vistaOgre)
+MenuRocket::MenuRocket(OgreFramework* fw) : RocketEventListener( fw)
   //  ,ventanaConfig(NULL),
   //  listaResoluciones(NULL)
 {
     //modeloVista = vistaOgre->modeloVista;
+
+	//PARECE QUE ESTO JODE EL ANDROID A VECES...
+		 // Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Essential");
+
+
+	  Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Rocket");
 
     pantallaInicio();
 
@@ -312,18 +318,15 @@ bool MenuRocket::pantallaConfig()
 }
 
 
-#ifdef USAROCKET
 
 
 void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
 {
 
-
-
-    //EventListeners::ProcessEvent(event);
+    //RocketEventListener::ProcessEvent(event);
     Rocket::Core::Element* element =  event.GetTargetElement();
     //element->Get
-   
+
 
     //Rocket::Core::StringList commands;
     //Rocket::Core::StringUtilities::ExpandString(commands,"hooo", ';');
@@ -338,9 +341,8 @@ void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
 
     if (std::string("options") == element->GetId().CString())
     {
-			Ogre::LogManager::getSingletonPtr()->logMessage( "INICIAMENNU" );
-
-			#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+        Ogre::LogManager::getSingletonPtr()->logMessage( "INICIAMENNU" );
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 
         Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/options.rml");
 #else
@@ -358,81 +360,84 @@ void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
         document->RemoveReference();
 
     }
-    else
-        if (element->GetId().CString() == std::string("twoPlayer"))
-        {
-            vistaOgre->modeloVista->setNumPantalla(1);
-            vistaOgre->modeloVista->reiniciar = true;
+    else if (element->GetId().CString() == std::string("twoPlayer"))
+    {
 
-            //vistaOgre->reinicia = true;
-            //mWindow->setVisible(false);
-            //Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/game.rml");
-            //Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
-            // Load the window, and if successful close the old window.
-            //if (LoadWindow(values[1]))
-            //	event.GetTargetElement()->GetOwnerDocument()->Close();
+        framework->modeloVista->setNumPantalla(1);
+        running = false;
+        framework->mWindow->setActive(false);
 
-        }else if (element->GetId().CString() == std::string("onePlayer"))
-        {
-            vistaOgre->modeloVista->setNumPantalla(2);
-            vistaOgre->modeloVista->reiniciar = true;
+        //vistaOgre->reinicia = true;
+        //mWindow->setVisible(false);
+        //Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/game.rml");
+        //Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+        // Load the window, and if successful close the old window.
+        //if (LoadWindow(values[1]))
+        //	event.GetTargetElement()->GetOwnerDocument()->Close();
 
-            //mWindow->setVisible(false);
+    }else if (element->GetId().CString() == std::string("onePlayer"))
+    {
 
-            //Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/start_game.rml");
-            //Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
+        framework->modeloVista->setNumPantalla(2);
+        running = false;
+        framework->mWindow->setActive(false);
 
-        }else
-            if (element->GetId().CString() == std::string("exit"))
-            {
-                //listener-
-                vistaOgre->modeloVista->setApagar(true);
+        //mWindow->setVisible(false);
 
-                //	vista->c
+        //Rocket::Core::String document_path = Rocket::Core::String("../media/librocket/start_game.rml");
+        //Rocket::Core::ElementDocument* document = context->LoadDocument(document_path.CString());
 
-                // Load the window.
-                //LoadWindow(values[1]);
-            }
+    }else if (element->GetId().CString() == std::string("exit"))
+    {
 
-            else
-                if (element->GetId().CString() == std::string("accept"))
-                {
+        //listener-
+        framework->modeloVista->setApagar(true);
+        running = false;
+        framework->mWindow->setActive(false);
+        //	vista->c
 
-                    //if (event.GetParameter< Rocket::Core::String >("submit", "cancdd") == "accept")
-                    //	{
-                    // Fetch the results of the form submission. These are stored as parameters directly on the event itself.
-                    // Like HTML form events, the name of the parameter is the 'name' attribute of the control, and the value
-                    // is whatever was put into the 'value' attribute. Checkbox values are only sent through if the box was
-                    // clicked. Radio buttons send through one value for the active button.
-                    bool fullSc = event.GetParameter< Rocket::Core::String >("fullscreen", "") == "true";
+        // Load the window.
+        //LoadWindow(values[1]);
+    }
 
-                    Rocket::Core::String dif = event.GetParameter< Rocket::Core::String >("difficulty", "easy");
+    else  if (element->GetId().CString() == std::string("accept"))
+    {
 
-                    //bool spatialisation = event.GetParameter< Rocket::Core::String >("3d", "") == "true";
-                    Rocket::Core::String res = event.GetParameter< Rocket::Core::String >("resolution", "1024x768");
+        //if (event.GetParameter< Rocket::Core::String >("submit", "cancdd") == "accept")
+        //	{
+        // Fetch the results of the form submission. These are stored as parameters directly on the event itself.
+        // Like HTML form events, the name of the parameter is the 'name' attribute of the control, and the value
+        // is whatever was put into the 'value' attribute. Checkbox values are only sent through if the box was
+        // clicked. Radio buttons send through one value for the active button.
+        bool fullSc = event.GetParameter< Rocket::Core::String >("fullscreen", "") == "true";
 
+        Rocket::Core::String dif = event.GetParameter< Rocket::Core::String >("difficulty", "easy");
 
-
-
-
-                    //	GameDetails::SetReverb(reverb);
-                    //	GameDetails::Set3DSpatialisation(spatialisation);
-                    //	}
+        //bool spatialisation = event.GetParameter< Rocket::Core::String >("3d", "") == "true";
+        Rocket::Core::String res = event.GetParameter< Rocket::Core::String >("resolution", "1024x768");
 
 
 
 
 
+        //	GameDetails::SetReverb(reverb);
+        //	GameDetails::Set3DSpatialisation(spatialisation);
+        //	}
 
 
-                    /*
+
+
+
+
+
+        /*
 
 
                 const Rocket::Core::Dictionary*  param = event.GetParameters();
         //event.GetParameter< Rocket::Controls::ElementFormControlInput* >("easy","0");
     Rocket::Core::Variant* variant = param->Get("difficulty");
     //param->
-       
+
 
         std::string selec = variant->Get< std::string >();
 
@@ -440,64 +445,66 @@ void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
 
 
 
-                    Rocket::Controls::ElementFormControlInput* sele = static_cast<Rocket::Controls::ElementFormControlInput*>(context->GetDocument("options")->GetElementById("easy"));
-                   
-
-                    //	Rocket::Core::String result=	sele->GetAttribute("checked")->Get<Rocket::Core::String>();
+        Rocket::Controls::ElementFormControlInput* sele = static_cast<Rocket::Controls::ElementFormControlInput*>(context->GetDocument("options")->GetElementById("easy"));
 
 
-                    //	event.GetParameter< Rocket::Core::String >("fullscreen", "")
+        //	Rocket::Core::String result=	sele->GetAttribute("checked")->Get<Rocket::Core::String>();
 
 
-                    Rocket::Controls::ElementFormControlInput* sele2 = static_cast<Rocket::Controls::ElementFormControlInput*>(context->GetDocument("options")->GetElementById("hard"));
-                    //	result=	sele2->GetAttribute("checked")->Get< Rocket::Core::String >();
-
-                    Rocket::Controls::ElementFormControlInput* fullScr = static_cast<Rocket::Controls::ElementFormControlInput*>(context->GetDocument("options")->GetElementById("fullscreen"));
-                    //	result=	sele2->GetAttribute("checked")->Get< Rocket::Core::String >();
-
-                    //if (sele->GetValue().CString())
-
-                    Rocket::Controls::ElementFormControlSelect* resol = static_cast<Rocket::Controls::ElementFormControlSelect*>(context->GetDocument("options")->GetElementById("resolution"));
-                   
-
-                    std::string difficulty;
+        //	event.GetParameter< Rocket::Core::String >("fullscreen", "")
 
 
-                    if	(sele2->GetAttribute("checked") == 0)
-                    {
-                        difficulty = "easy";
-                    }else difficulty = "hard";
+        Rocket::Controls::ElementFormControlInput* sele2 = static_cast<Rocket::Controls::ElementFormControlInput*>(context->GetDocument("options")->GetElementById("hard"));
+        //	result=	sele2->GetAttribute("checked")->Get< Rocket::Core::String >();
+
+        Rocket::Controls::ElementFormControlInput* fullScr = static_cast<Rocket::Controls::ElementFormControlInput*>(context->GetDocument("options")->GetElementById("fullscreen"));
+        //	result=	sele2->GetAttribute("checked")->Get< Rocket::Core::String >();
+
+        //if (sele->GetValue().CString())
+
+        Rocket::Controls::ElementFormControlSelect* resol = static_cast<Rocket::Controls::ElementFormControlSelect*>(context->GetDocument("options")->GetElementById("resolution"));
 
 
-                    vistaOgre->modeloVista->cambiaOpciones(difficulty, resol->GetValue().CString(), (fullScr->GetAttribute("checked") != 0));
-
-                    context->GetDocument("options")->Close();
-
-                    //	vista->c
-
-                    // Load the window.
-                    //LoadWindow(values[1]);
-                }else
-                    if (element->GetId().CString() == std::string("cancel"))
-                    {
-
-						context->GetDocument("options")->Close();
+        std::string difficulty;
 
 
-                        //	vista->c
+        if	(sele2->GetAttribute("checked") == 0)
+        {
+            difficulty = "easy";
+        }else difficulty = "hard";
 
-                        // Load the window.
-                        //LoadWindow(values[1]);
-                    }
+
+        framework->modeloVista->cambiaOpciones(difficulty, resol->GetValue().CString(), (fullScr->GetAttribute("checked") != 0));
+
+        context->GetDocument("options")->Close();
+
+        //	vista->c
+
+        // Load the window.
+        //LoadWindow(values[1]);
+    }else  if (element->GetId().CString() == std::string("cancel"))
+    {
+
+        context->GetDocument("options")->Close();
+
+
+        //	vista->c
+
+        // Load the window.
+        //LoadWindow(values[1]);
+    }
     //}
+
+
+
 }
-#endif
+
 
 
 
 void MenuRocket::createView()
 {
-#ifdef USAROCKET
+
     Rocket::Core::ElementDocument* document;
 
 #if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID
@@ -521,12 +528,12 @@ void MenuRocket::createView()
 
     if (document)
     {
-       
+
         document->Show();
         //document->RemoveReference();
 
     }
-#endif
+
 }
 
 
@@ -535,15 +542,15 @@ void MenuRocket::createView()
 bool MenuRocket::keyReleased( const OIS::KeyEvent &e )
 {
 
-
     if (e.key == OIS::KC_ESCAPE)// Pulsa Esc
     {
 
-        vistaOgre->modeloVista->setApagar(true);
+        framework->modeloVista->setApagar(true);
+
         //  modeloVista->setApagar(true);
     }
 
-    EventListeners::keyReleased(e);
+    RocketEventListener::keyReleased(e);
 
 
     return true;

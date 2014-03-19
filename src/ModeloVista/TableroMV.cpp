@@ -26,6 +26,9 @@ TableroMV::TableroMV() : //ObjetoEscena(nombre, tipo, "Tablero", "MaterialTabler
 
 TableroMV::~TableroMV()
 {
+
+	delete objetoPadre;
+	objetoPadre = NULL;
 }
 
 

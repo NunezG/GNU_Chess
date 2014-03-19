@@ -11,7 +11,7 @@ ModeloVista::ModeloVista():
   , modoJuego(0)
   ,resolucion("854 x 480")
   , pantallaCompleta(false)
-  ,reiniciar(1)
+  //,reiniciar(1)
   , jugadores(0)
   ,voltea(0)
 
@@ -32,12 +32,7 @@ ModeloVista::ModeloVista():
 
 ModeloVista::~ModeloVista(void)
 {
-    for (int i=0; i<jugadores.size();i++)
-    {
-        delete jugadores.at(i);
-        jugadores.at(i) = NULL;
-    }
-    jugadores.clear();
+    borraJugadores();
 }
 
 bool ModeloVista::getApagar()
@@ -86,11 +81,39 @@ void ModeloVista::generaJugadores()
     numJugadores++;
 }
 
+
+void ModeloVista::borraJugadores()
+{
+
+
+	 for (std::vector<Jugador*>::iterator it = jugadores.begin(); it!=jugadores.end(); it++)
+        {
+			Jugador* jugador = *it;
+			delete jugador;
+			jugador = NULL;
+	 }
+
+
+
+	jugadores.clear();
+
+   
+}
+
+
+void ModeloVista::borraTablero()
+{
+
+
+   
+}
+
+
 bool ModeloVista::jugadaElegida()
 {
     return modelo->jugadasElegidas.size() > 0;
 }
-
+/*
 void ModeloVista::creaEscenaYModelo()
 {
 
@@ -108,7 +131,7 @@ void ModeloVista::creaEscenaYModelo()
     }
 
 }
-
+*/
 
 void ModeloVista::traduceTablero()
 {

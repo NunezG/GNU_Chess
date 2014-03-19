@@ -249,18 +249,23 @@ set(HDRVIEW
         ./include/Vistas/Ventana.h
         ./include/Vistas/VistaAjedrez.h
         ./include/Vistas/VistaAjedrezSolo.h
-      #  ./include/Vistas/MenuInicio.h
-                ./include/Vistas/MenuRocket.h
-        ./include/Vistas/FrameListeners.h
-                 ./include/Vistas/RocketListener.h
-                 ./include/Vistas/RenderInterfaceOgre3D.h
-                #./include/Vistas/RocketApplication.h
-                ./include/Vistas/SystemInterfaceOgre3D.h
-                ./include/Vistas/Escena.h
-                ./include/Vistas/ObjetoOgre.h
-        #	./include/Vistas/Tablero.h
-                ./include/Vistas/EventListeners.h
-        #	./include/Vistas/OgreStaticPluginLoader.h
+        ./include/Vistas/MenuRocket.h
+		./include/Vistas/Escena.h
+
+                 ./include/Vistas/UI/RocketFrameListener.h
+                 ./include/Vistas/UI/RenderInterfaceOgre3D.h
+                ./include/Vistas/UI/SystemInterfaceOgre3D.h
+                ./include/Vistas/UI/RocketEventListener.h
+
+			./include/Vistas/Ogre/OgreFramework.h
+			./include/Vistas/Ogre/ObjetoOgre.h
+			./include/Vistas/Ogre/FrameListeners.h
+
+
+			#  ./include/Vistas/MenuInicio.h
+			#	./include/Vistas/Ogre/OgreStaticPluginLoader.h
+			#	./include/Vistas/Tablero.h
+			#./include/Vistas/UI/RocketApplication.h
 
 
 
@@ -293,15 +298,18 @@ set(SRCVIEW
         ./src/Vistas/VistaAjedrez.cpp
         ./src/Vistas/VistaAjedrezSolo.cpp
         ./src/Vistas/Ventana.cpp
-                ./src/Vistas/MenuRocket.cpp
-        ./src/Vistas/FrameListeners.cpp
-                ./src/Vistas/RocketListener.cpp
-                ./src/Vistas/RenderInterfaceOgre3D.cpp
-                ./src/Vistas/SystemInterfaceOgre3D.cpp
-                        ./src/Vistas/Escena.cpp
-                         ./src/Vistas/ObjetoOgre.cpp
+        ./src/Vistas/MenuRocket.cpp
+		./src/Vistas/Escena.cpp
 
-                        ./src/Vistas/EventListeners.cpp
+                ./src/Vistas/UI/RocketFrameListener.cpp
+                ./src/Vistas/UI/RenderInterfaceOgre3D.cpp
+                ./src/Vistas/UI/SystemInterfaceOgre3D.cpp
+				./src/Vistas/UI/RocketEventListener.cpp
+
+
+		./src/Vistas/Ogre/FrameListeners.cpp
+		./src/Vistas/Ogre/OgreFramework.cpp
+		./src/Vistas/Ogre/ObjetoOgre.cpp
 
 )
 
@@ -468,9 +476,9 @@ endif ()
  
    # target_link_libraries(ChessView ChessViewModel)
 
-	   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Vistas)
-
-
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Vistas)
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Vistas/UI)
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Vistas/Ogre)
 
        # add_dependencies(ChessView ChessViewModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
       #  add_dependencies(ChessView Plugin_OctreeSceneManager)

@@ -7,7 +7,8 @@ ObjetoEscena::ObjetoEscena(std::string nombre, int mascara, std::string meshName
     //  tipo_ObjetoEscena(tipo),
     //seleccionada(0)
     // salto(false)
-    nombreMalla(meshName)
+	vectorHijos(NULL)
+   , nombreMalla(meshName)
   , nombreObjeto(nombre)
   , mask(mascara)
 

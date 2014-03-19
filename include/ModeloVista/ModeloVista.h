@@ -18,7 +18,7 @@ public:
     bool getApagar();
 
     void generaJugadores();
-    void creaEscenaYModelo();
+ //   void creaEscenaYModelo();
 
 	  //  ObjetoEscena* getScene();
 
@@ -41,7 +41,10 @@ public:
 			void cambiaOpciones(std::string difficulty, std::string resolution, bool fullsreen);
 
 	  	void procesaNodoPulsado(std::string nombreNodo);
-		    bool reiniciar;
+		   // bool reiniciar;
+
+		void borraJugadores();
+		void borraTablero();
 
 
 private:   

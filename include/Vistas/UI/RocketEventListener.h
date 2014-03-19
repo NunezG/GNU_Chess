@@ -1,10 +1,7 @@
-#ifndef __EventListeners_
-#define __EventListeners_
+#ifndef __RocketEventListener_
+#define __RocketEventListener_
 
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
+#include "OgreFramework.h"
 
 //#include <CEGUI-CEGUIUI/CEGUISystem.h>
 //#include <CEGUI-CEGUIUI/CEGUIWindow.h>
@@ -16,21 +13,14 @@
 
 //#include <CEGUI/RendererModules/Ogre/Renderer.h>
 
-#include "ModeloVista.h"
-
-#include "RocketListener.h"
-
-#include <OgreRoot.h>
-#include <OgreConfigFile.h>
-
+//#include "RocketFrameListener.h"
 
 //#include "MenuRocket.h"
 //#include "VistaAjedrez.h"
 //#include "VistaAjedrezSolo.h"
 
-#include <OgreWindowEventUtilities.h>
 
-#ifdef USAROCKET
+
 
 #include <Rocket/Core/Context.h>
 #include <Rocket/Controls.h>
@@ -43,7 +33,7 @@
 
 #include "RenderInterfaceOgre3D.h"
 #include "SystemInterfaceOgre3D.h"
-#endif
+
 #if (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
 
 #include "Android/OgreAPKFileSystemArchive.h"
@@ -52,12 +42,13 @@
 
 
 
-class EventListeners : 
-#ifdef USAROCKET
+
+
+
+class RocketEventListener : 
 	public Rocket::Core::EventListener,
-#endif
+	public OIS::KeyListener,
 #if (OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS) && (OGRE_PLATFORM != OGRE_PLATFORM_ANDROID)
-		public OIS::KeyListener,
 		public OIS::MouseListener
 #else
         public OIS::MultiTouchListener
@@ -65,24 +56,27 @@ class EventListeners :
 
 {
 public:
-	   EventListeners(RocketListener* vistaOgre);
+	   RocketEventListener(OgreFramework* fw);
 
-    ~EventListeners(void);
+    ~RocketEventListener(void);
 
 	
     // Ogre::SceneNode* mTarget;
     //Ogre::Camera* mCamera;
 	//Ogre::Ray getCameraToViewportRay();
 
- #ifdef USAROCKET
+					void BuildKeyMaps();
 
 		virtual void ProcessEvent(Rocket::Core::Event& event) = 0;
 
 		void initEventListener();
 		Rocket::Core::Context* context;
+				typedef std::map< OIS::KeyCode, Rocket::Core::Input::KeyIdentifier > KeyIdentifierMap;
 
-#endif
+					KeyIdentifierMap key_identifiers;
 
+
+ 
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
 		virtual bool touchMoved(const OIS::MultiTouchEvent& evt);
 		virtual bool touchPressed(const OIS::MultiTouchEvent& evt);
@@ -102,8 +96,8 @@ public:
      virtual bool keyPressed(const OIS::KeyEvent& e);
      virtual bool keyReleased(const OIS::KeyEvent& e);
 
-	void DistanciaCamara(int distanciaRelativa);
-    void rotacionCamara(Ogre::Degree angulo);
+	//void DistanciaCamara(int distanciaRelativa);
+   // void rotacionCamara(Ogre::Degree angulo);
 
    
  //  #if (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
@@ -112,12 +106,13 @@ public:
 
 //	AAssetManager* mAssetMgr;       // Android asset manager to access files inside apk
 //#endif
-
-
-			RocketListener* vistaOgre; 
+	 OgreFramework* framework;
+	 bool running;
+			ModeloVista* modeloVista; 
 			bool reinicia;
 
 			virtual void createView() = 0;
+				
 
 protected:
    
@@ -127,14 +122,13 @@ protected:
 		  //  Ogre::RenderWindow* mWindow;
 			
 
-				    OIS::InputManager* mInputManager;
 
 	//	 OIS::Mouse*    mMouse;
    // OIS::Keyboard* mKeyboard;
 		 
 		
 		
-						      Ogre::SceneManager* mSceneMgr;
+						    //  Ogre::SceneManager* mSceneMgr;
 
 		//void createFrameListener();
 
@@ -146,7 +140,6 @@ private:
 
 	
    // CEGUI::OgreRenderer* renderer;
-		bool running;
 	
 		
 		

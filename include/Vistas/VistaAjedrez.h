@@ -2,25 +2,23 @@
 #define __VistaAjedrez_h_
 #include "Escena.h"
 
-#include "EventListeners.h"
+#include "RocketEventListener.h"
 
 
-class VistaAjedrez : public Escena, public EventListeners
+class VistaAjedrez : public Escena, public RocketEventListener
 {
 public:
-    VistaAjedrez(RocketListener* vistaOgre);
+    VistaAjedrez(OgreFramework* fw);
     ~VistaAjedrez(void);
 
 	     Ogre::RaySceneQuery *mRaySceneQuery;
 // ModeloVista* modeloVista;
 	  //  Ogre::RenderWindow* mWindow;
 
-		    std::string encuentraCasillaSobrevolada(int posx, int posy);
+            std::string encuentraCasillaSobrevolada();
 
-				 #ifdef USAROCKET
 
 					void ProcessEvent(Rocket::Core::Event& event);
-#endif
 			/// Called from Ogre before a queue group is rendered.
 	//virtual void renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& skipThisInvocation);
 	/// Called from Ogre after a queue group is rendered.
@@ -43,10 +41,10 @@ public:
 		virtual bool mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 		// KeyListener interface.
 		virtual bool keyPressed(const OIS::KeyEvent& e);
-		virtual bool keyReleased(const OIS::KeyEvent& e);
 
 #endif
 		
+    virtual bool keyReleased(const OIS::KeyEvent& e);
 
 
    // virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);

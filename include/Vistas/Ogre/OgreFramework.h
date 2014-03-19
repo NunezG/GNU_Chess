@@ -1,5 +1,5 @@
-#ifndef __FrameListeners_
-#define __FrameListeners_
+#ifndef __OgreFramework_
+#define __OgreFramework_
 
 #define OGRE_STATIC_OctreeSceneManager
 #define STATIC_LIB
@@ -8,15 +8,9 @@
 #define _RTSS_WRITE_SHADERS_TO_DISK
 //#define ENABLE_SHADERS_CACHE_SAVE 1
 //#define ENABLE_SHADERS_CACHE_LOAD 1
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
-#include <OISMultiTouch.h>
-#include <OISJoyStick.h>
 
 
-#include "ModeloVista.h"
+//#include "RocketEventListener.h"
 
 
 #include <OgreRoot.h>
@@ -33,35 +27,91 @@
 #include "RTShaderSystem/OgreShaderGenerator.h"
 #include "RTShaderSystem/OgreRTShaderSystem.h"
 
-
-//#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-#define USAROCKET
-//#endif
-
-#ifdef USAROCKET
-#include <Rocket/Core/Context.h>
-#include <Rocket/Controls.h>
-#include <Rocket/Core.h>
-
-#include <Rocket/Core/String.h>
-
-#include <Rocket/Core/Core.h>
-#include <Rocket/Debugger.h>
-
-
-
-#include "RenderInterfaceOgre3D.h"
-#include "SystemInterfaceOgre3D.h"
-#endif
-
+#include <OISEvents.h>
+#include <OISKeyboard.h>
+#include <OISMouse.h>
+#include <OISMultiTouch.h>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+
+#include <OISInputManager.h>
 #define OGRE_STATIC_GL
+
 #elif OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
+
 #define OGRE_STATIC_GLES2
+
 #endif
 
 #include <OgreStaticPluginLoader.h>
+
+
+#include "ModeloVista.h"
+
+
+
+/*=============================================================================
+	| Utility structure for passing OIS devices. Does not own them.
+	=============================================================================*/
+	struct InputContext
+	{
+		InputContext()
+		{
+			mKeyboard = 0;
+			mMouse = 0;
+			mMultiTouch = 0;
+		//	mAccelerometer = 0;
+		}
+
+		void capture() const
+		{
+			if(mKeyboard)
+				mKeyboard->capture();
+			if(mMouse)
+				mMouse->capture();
+			if(mMultiTouch)
+				mMultiTouch->capture();
+		//	if(mAccelerometer)
+	     //       mAccelerometer->capture();
+		}
+
+		bool isKeyDown(OIS::KeyCode key) const
+		{
+			return mKeyboard && mKeyboard->isKeyDown(key);
+		}
+
+		bool getCursorPosition(Ogre::Real& x, Ogre::Real& y) const
+		{
+			// prefer mouse
+			if(mMouse)
+			{
+				x = (Ogre::Real)mMouse->getMouseState().X.abs;
+				y = (Ogre::Real)mMouse->getMouseState().Y.abs;
+				return true;
+			}
+			
+			// than touch device
+			if(mMultiTouch)
+			{
+	            std::vector<OIS::MultiTouchState> states = mMultiTouch->getMultiTouchStates();
+		        if(states.size() > 0)
+		        {
+		        	x = (Ogre::Real)states[0].X.abs;
+		        	y = (Ogre::Real)states[0].Y.abs;
+		        	return true;
+			    }
+			}
+
+			// fallback
+			x = y = 0.0;
+			return false;
+		}
+
+		OIS::Keyboard* mKeyboard;         // context keyboard device
+		OIS::Mouse* mMouse;               // context mouse device
+		OIS::MultiTouch* mMultiTouch;     // context multitouch device
+		//OIS::JoyStick* mAccelerometer;    // context accelerometer device
+	};
 
 
 
@@ -138,79 +188,17 @@ protected:
 
 
 
-/*=============================================================================
-	| Utility structure for passing OIS devices. Does not own them.
-	=============================================================================*/
-	struct InputContext
-	{
-		InputContext()
-		{
-			mKeyboard = 0;
-			mMouse = 0;
-			mMultiTouch = 0;
-			mAccelerometer = 0;
-		}
-
-		void capture() const
-		{
-			if(mKeyboard)
-				mKeyboard->capture();
-			if(mMouse)
-				mMouse->capture();
-			if(mMultiTouch)
-				mMultiTouch->capture();
-			if(mAccelerometer)
-	            mAccelerometer->capture();
-		}
-
-		bool isKeyDown(OIS::KeyCode key) const
-		{
-			return mKeyboard && mKeyboard->isKeyDown(key);
-		}
-
-		bool getCursorPosition(Ogre::Real& x, Ogre::Real& y) const
-		{
-			// prefer mouse
-			if(mMouse)
-			{
-				x = (Ogre::Real)mMouse->getMouseState().X.abs;
-				y = (Ogre::Real)mMouse->getMouseState().Y.abs;
-				return true;
-			}
-			
-			// than touch device
-			if(mMultiTouch)
-			{
-	            std::vector<OIS::MultiTouchState> states = mMultiTouch->getMultiTouchStates();
-		        if(states.size() > 0)
-		        {
-		        	x = (Ogre::Real)states[0].X.abs;
-		        	y = (Ogre::Real)states[0].Y.abs;
-		        	return true;
-			    }
-			}
-
-			// fallback
-			x = y = 0.0;
-			return false;
-		}
-
-		OIS::Keyboard* mKeyboard;         // context keyboard device
-		OIS::Mouse* mMouse;               // context mouse device
-		OIS::MultiTouch* mMultiTouch;     // context multitouch device
-		OIS::JoyStick* mAccelerometer;    // context accelerometer device
-	};
-
-
-class FrameListeners : public Ogre::RenderQueueListener, public Ogre::FrameListener
+class OgreFramework
 {
 public:
-	   FrameListeners(ModeloVista* modeloV);
+	   OgreFramework();
 
-    ~FrameListeners(void);
+    ~OgreFramework(void);
 
 
-	void init();
+	virtual void init();
+	void startScene();
+
     void locateResources();
 
 
@@ -219,35 +207,20 @@ public:
     void createViewports(Ogre::RenderWindow* window);
      Ogre::SceneNode* mTarget;
     Ogre::Camera* mCamera;
-	//Ogre::Ray getCameraToViewportRay();
-	 ModeloVista* modeloVista;
+	Ogre::Viewport* vp;
 
 	void DistanciaCamara(int distanciaRelativa);
     void rotacionCamara(Ogre::Degree angulo);
 
-		// FrameListener interface.
-		virtual bool frameStarted(const Ogre::FrameEvent& evt);
+		
+			  void empieza();
 
-
-    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
-
-	 #ifdef USAROCKET
-			/// Called from Ogre before a queue group is rendered.
-	virtual void renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& skipThisInvocation);
-	/// Called from Ogre after a queue group is rendered.
-    virtual void renderQueueEnded(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& repeatThisInvocation);
-Rocket::Core::Context* context;
-
-		bool configuraRocket();
-		typedef std::map< OIS::KeyCode, Rocket::Core::Input::KeyIdentifier > KeyIdentifierMap;
-			KeyIdentifierMap key_identifiers;
-#endif
+	 
 		    Ogre::RenderWindow* mWindow;
 			//	 OIS::Mouse*    mMouse;
  //   OIS::Keyboard* mKeyboard;
 		 
 	    Ogre::Root *mRoot;
-							InputContext mInputContext;		// all OIS devices are here
 		Ogre::StaticPluginLoader*  mStaticPluginLoader;
    
 
@@ -255,26 +228,22 @@ Rocket::Core::Context* context;
 
 		Ogre::FileSystemLayer* mFSLayer; // File system abstraction layer
 								bool configuraOgre();
-								bool configuraGraficos();
+								virtual bool configuraGraficos();
+										 ModeloVista* modeloVista;
+										 						      Ogre::SceneManager* mSceneMgr;
+												InputContext mInputContext;		// all OIS devices are here
 
+	#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+
+				    OIS::InputManager* mInputManager;
+
+#endif
+	
 protected:
    
 	 //   ModeloVista* modeloVista;
 
-			
-
-				    OIS::InputManager* mInputManager;
-
-		 #ifdef USAROCKET
-	// Configures Ogre's rendering system for rendering Rocket.
-		void configureRenderSystem();
-
-		#endif
-
 		
-	
-		
-						      Ogre::SceneManager* mSceneMgr;
 
 		//void createFrameListener();
 
@@ -283,25 +252,20 @@ protected:
    bool initialiseRTShaderSystem(Ogre::SceneManager* sceneMgr);
 	   void destroyRTShaderSystem();
 		
+
+
 private:
 	  
-	
 		// Builds an OpenGL-style orthographic projection matrix.
 		void buildProjectionMatrix(Ogre::Matrix4& matrix);
 
   //  int getFPS();
 				bool configuraOIS();
-		 #ifdef USAROCKET
-			SystemInterfaceOgre3D* ogre_system;
-		RenderInterfaceOgre3D* ogre_renderer;
-			void BuildKeyMaps();
-		int GetKeyModifierState();
-#endif
+	
 		
 		//	SystemInterfaceOgre3D* ogre_system;
 	//	RenderInterfaceOgre3D* ogre_renderer;
 	
-		bool running;
 		
 	
 	//	typedef std::map< OIS::KeyCode, Rocket::Core::Input::KeyIdentifier > KeyIdentifierMap;

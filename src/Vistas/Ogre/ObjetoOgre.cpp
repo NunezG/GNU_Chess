@@ -3,32 +3,30 @@
 
 ObjetoOgre::ObjetoOgre(std::string name, int mask, std::string mesh, std::vector<std::string> materials, Ogre::SceneManager* sceneMgr) : ObjetoEscena(name,mask,mesh,materials)
   // ,vectorHijos(0),
-  //  nodoEscena(NULL)
+  ,  nodoEscena(NULL)
   , entidad(NULL)
   , activo(true)
+  , mSceneMgr(NULL)
 {
 
-    //  //COUTCOMENTADOstd::cout << "crea objetoogree"<<std::endl;
 
     mSceneMgr = sceneMgr;
 
     //materials
     creaModelo3D(mSceneMgr, mesh, mask);
-    // //COUTCOMENTADOstd::cout << "pe y ja"<<std::endl;
 
     cambiaMaterial(0);
-    //   //COUTCOMENTADOstd::cout << "medio"<<std::endl;
-
 
     nombreObjeto = name;
-    // //COUTCOMENTADOstd::cout << "objetoogre"<<std::endl;
 
 }
 
 ObjetoOgre::~ObjetoOgre()
 {
+
     if (nodoEscena)
     {
+
         nodoEscena->detachAllObjects();
 
         for(int i = 0; i < vectorHijos.size(); i++)
@@ -37,10 +35,17 @@ ObjetoOgre::~ObjetoOgre()
             vectorHijos.at(i) = NULL;
         }
         vectorHijos.clear();
+				
+
+		//clearscene()
         nodoEscena->removeAndDestroyAllChildren();
+		nodoEscena->detachAllObjects();
         mSceneMgr->destroySceneNode(nodoEscena);
 
-        delete entidad;
+		mSceneMgr->destroyEntity(entidad);
+		//delete entidad;
+
+        entidad = NULL;
         nodoEscena = NULL;
     }
 }
@@ -48,27 +53,40 @@ ObjetoOgre::~ObjetoOgre()
 
 void ObjetoOgre::cambiaMaterial(int material)
 {
-    ////COUTCOMENTADOstd::cout << "obj: "<<getNombre()<<std::endl;
 
-    //	//COUTCOMENTADOstd::cout << "cambiaMaterial aaaa: "<<material<<std::endl;
-    ////COUTCOMENTADOstd::cout << "que es: "<<materialNames[material]<<std::endl;
+
     if (materialNames.size() > material)
         entidad->setMaterialName(materialNames[material]);
 }
 
 void ObjetoOgre::creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask)
 {
-    // //COUTCOMENTADOstd::cout << "crea modelito"<<std::endl;
 
     //  entidad = mSceneMgr->createEntity("test12", "Tablero.mesh");
     mSceneMgr = sceneMgr;
+	
     nodoEscena = mSceneMgr->createSceneNode(nombreObjeto);
 
     nombreMalla.append(".mesh");
 
-    entidad = mSceneMgr->createEntity(nombreObjeto, nombreMalla);
+
+	if (mSceneMgr->hasEntity(nombreObjeto))
+	{
+		entidad = mSceneMgr->getEntity(nombreObjeto);
+
+	}
+	else
+	{
+      entidad = mSceneMgr->createEntity(nombreObjeto, nombreMalla);
+	}
+
+
     nodoEscena->attachObject(entidad);
+
+
+
     entidad->setQueryFlags(mask);
+
 }
 
 

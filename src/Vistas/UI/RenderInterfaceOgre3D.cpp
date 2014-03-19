@@ -56,6 +56,9 @@ struct RocketOgre3DCompiledGeometry
 
 RenderInterfaceOgre3D::RenderInterfaceOgre3D(unsigned int window_width, unsigned int window_height)
 {
+
+
+
 	hecho = false;
 
 	projection_matrix = Ogre::Matrix4::ZERO;
@@ -95,6 +98,9 @@ RenderInterfaceOgre3D::RenderInterfaceOgre3D(unsigned int window_width, unsigned
 
 RenderInterfaceOgre3D::~RenderInterfaceOgre3D()
 {
+
+render_system = NULL;
+
 }
 
 // Called by Rocket when it wants to render geometry that it does not wish to optimise.
@@ -233,6 +239,15 @@ void RenderInterfaceOgre3D::RenderCompiledGeometry(Rocket::Core::CompiledGeometr
 
    render_system = Ogre::Root::getSingleton().getRenderSystem();
      
+	   
+	// Load the blank 1x1 texture used for colour pass through
+	/*Ogre::TextureManager* texture_manager = Ogre::TextureManager::getSingletonPtr();
+	m_blankTexture = texture_manager->load("blank.png",
+											"General",
+											Ogre::TEX_TYPE_2D,
+											0);	 
+
+*/
 	 render_system->bindGpuProgram( mVertexProgram->_getBindingDelegate() );
      render_system->bindGpuProgram( mFragmentProgram->_getBindingDelegate() );
 
@@ -240,13 +255,6 @@ void RenderInterfaceOgre3D::RenderCompiledGeometry(Rocket::Core::CompiledGeometr
       // transform.makeTrans(translation.x, translation.y, 0);
      //  render_system->_setWorldMatrix(transform);
 
-	   
-	// Load the blank 1x1 texture used for colour pass through
-	Ogre::TextureManager* texture_manager = Ogre::TextureManager::getSingletonPtr();
-	m_blankTexture = texture_manager->load("blank.png",
-											"General",
-											Ogre::TEX_TYPE_2D,
-											0);	 
    //Ogre::Matrix4 projection_matrix;
    
    
@@ -262,8 +270,8 @@ void RenderInterfaceOgre3D::RenderCompiledGeometry(Rocket::Core::CompiledGeometr
           render_system->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_POINT);
           // Ogre can change the blending modes when textures are disabled - so in case the last render had no texture,
           // we need to re-specify them.
-        //  render_system->_setTextureBlendMode(0, colour_blend_mode);
-         // render_system->_setTextureBlendMode(0, alpha_blend_mode);
+         // render_system->_setTextureBlendMode(0, colour_blend_mode);
+          //render_system->_setTextureBlendMode(0, alpha_blend_mode);
 	}
 	else
 	{
@@ -274,7 +282,7 @@ void RenderInterfaceOgre3D::RenderCompiledGeometry(Rocket::Core::CompiledGeometr
 
 		// Background elements don't use textures, and just have a pure colour element. So, rather than creating a different shader
 		// for colour pass-through, just have the fragment shader sample a 1x1 texture with colour values of ( 1.0, 1.0, 1.0, 1.0 )
-		render_system->_setTexture( 0, true, m_blankTexture );
+		//render_system->_setTexture( 0, true, m_blankTexture );
 	}
 
 	if  (projection_matrix == Ogre::Matrix4::ZERO)
@@ -369,8 +377,10 @@ void RenderInterfaceOgre3D::RenderCompiledGeometry(Rocket::Core::CompiledGeometr
 // Called by Rocket when it wants to release application-compiled geometry.
 void RenderInterfaceOgre3D::ReleaseCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry)
 {
+                std::cout << "ReleaseCompiledGeometry!!!! "<<std::endl;
 
-	RocketOgre3DCompiledGeometry* ogre3d_geometry = reinterpret_cast<RocketOgre3DCompiledGeometry*>(geometry);
+
+    RocketOgre3DCompiledGeometry* ogre3d_geometry = reinterpret_cast<RocketOgre3DCompiledGeometry*>(geometry);
 	delete ogre3d_geometry->render_operation.vertexData;
 	delete ogre3d_geometry->render_operation.indexData;
 	delete ogre3d_geometry;

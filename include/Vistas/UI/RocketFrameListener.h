@@ -1,59 +1,66 @@
-#ifndef RocketListener_H
-#define RocketListener_H
+#ifndef RocketFrameListener_H
+#define RocketFrameListener_H
 
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
 
-#include <OgreFrameListener.h>
+//#include <OgreFrameListener.h>
 
-#ifdef USAROCKET
 
-#include <Rocket/Core/Context.h>
-#include <Rocket/Controls.h>
-#include <Rocket/Core.h>
-
-#include <Rocket/Core/String.h>
-
-#include <Rocket/Core/Core.h>
-#include <Rocket/Core/Event.h>
-#include <Rocket/Debugger.h>
-#endif
 //class RocketApplication;
 
-#include <OgreRoot.h>
-#include <OgreConfigFile.h>
+
+//#include <Rocket/Core.h>
+
+//#include <Rocket/Core/Context.h>
+//#include <Rocket/Controls.h>
+
+
+#include <Rocket/Core/ElementDocument.h>
+#include <Rocket/Core/ElementUtilities.h>
+
+//#include <Rocket/Core/String.h>
+
+#include <Rocket/Core/Event.h>
+
+//#include <Rocket/Core/Core.h>
+//#include <Rocket/Debugger.h>
+
+#include "RenderInterfaceOgre3D.h"
+#include "SystemInterfaceOgre3D.h"
+
 
 //#include "MenuRocket.h"
 //#include "VistaAjedrez.h"
 //#include "VistaAjedrezSolo.h"
 #include "FrameListeners.h"
 
-#include <OgreWindowEventUtilities.h>
 
 
-class RocketListener: public FrameListeners
+class RocketFrameListener: public FrameListeners,  public Ogre::RenderQueueListener
 {
 	public:
-		RocketListener(ModeloVista* modeloV);
-		virtual ~RocketListener();
+		RocketFrameListener(OgreFramework* fw);
+		~RocketFrameListener();
 
 		
 
   //  Ogre::RenderWindow* mWindow;
 	   // ModeloVista* modeloVista;
-		  void empieza();
 
-   
-
-
-
+   	void init();
+void borraVistaActiva();
+void setVistaActiva(RocketEventListener* vista);
 
 
 
+			/// Called from Ogre before a queue group is rendered.
+	 void renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& skipThisInvocation);
+	/// Called from Ogre after a queue group is rendered.
+     void renderQueueEnded(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& repeatThisInvocation);
+     Rocket::Core::Context* context;
 
-	
+		bool configuraRocket();
+		
+		//bool configuraGraficos();
 
 	/// Releases all event handlers registered with the manager.
 	//static void Shutdown();
@@ -71,7 +78,6 @@ class RocketListener: public FrameListeners
 	/// @param[in] window_name The name of the window to load.
 	//static bool LoadWindow(const Rocket::Core::String& window_name);
 
-	
 
 // The game's element context (declared in main.cpp).
 //Rocket::Core::Context* context;
@@ -84,15 +90,20 @@ class RocketListener: public FrameListeners
 //typedef std::map< Rocket::Core::String, EventHandler* > EventHandlerMap;
 //EventHandlerMap event_handlers;
 
+protected:
 
-
-
-	
 	private:
 
 	
+		
+	// Configures Ogre's rendering system for rendering Rocket.
+		void configureRenderSystem();
 
 
+
+			SystemInterfaceOgre3D* ogre_system;
+		RenderInterfaceOgre3D* ogre_renderer;
+		//int GetKeyModifierState();
 
 
 

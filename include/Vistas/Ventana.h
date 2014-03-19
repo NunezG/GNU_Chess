@@ -1,11 +1,16 @@
 #ifndef __Ventana_
 #define __Ventana_
 
-#include "RocketListener.h"
+//#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+#define USAROCKET
+//#endif
+ 
+
+#include "RocketFrameListener.h"
 #include "VistaAjedrez.h"
 #include "VistaAjedrezSolo.h"
 #include "MenuRocket.h"
-
+#include "OgreFramework.h"
 
 
 
@@ -18,11 +23,16 @@ class Ventana
 {
 public:
     Ventana();
+	~Ventana();
+
 	void init();
     void go();
-		  RocketListener* listener;
-          EventListeners* vista;
-	  	   ModeloVista* modeloVista;
+
+	      OgreFramework* framework;
+
+		  RocketFrameListener* listener;
+         // RocketEventListener* vista;
+	  	  // ModeloVista* modeloVista;
 	  	void creaVista();
 
 private:

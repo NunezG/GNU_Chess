@@ -28,8 +28,8 @@
 #if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
 //SampleBrowser* OgreAndroidBridge::mBrowser = NULL;
 AndroidInputInjector* OgreAndroidBridge::mInputInjector = NULL;
-AndroidMultiTouch* OgreAndroidBridge::mTouch = NULL;
-AndroidKeyboard* OgreAndroidBridge::mKeyboard = NULL;
+//AndroidMultiTouch* OgreAndroidBridge::mTouch = NULL;
+//AndroidKeyboard* OgreAndroidBridge::mKeyboard = NULL;
 Ogre::RenderWindow* OgreAndroidBridge::mRenderWnd = NULL;
 Ogre::Root* OgreAndroidBridge::mRoot = NULL;
 bool OgreAndroidBridge::mInit = false;
@@ -37,9 +37,6 @@ Ventana* OgreAndroidBridge::mVentana = NULL;
 AAssetManager* OgreAndroidBridge::mAssetMgr = NULL;
 
 
-#   ifdef OGRE_STATIC_LIB
-Ogre::StaticPluginLoader* OgreAndroidBridge::mStaticPluginLoader = NULL;
-#   endif
 #endif
 
 
@@ -65,6 +62,7 @@ int main(int argc, char *argv[])
 
     OgreAndroidBridge::init(state);
     OgreAndroidBridge::go(state);
+    
 
 #else
 
@@ -76,9 +74,9 @@ int main(int argc, char *argv[])
 
         Ventana* punteroVentana= new Ventana();
 
-        //punteroVentana->init();
+        punteroVentana->init();
         punteroVentana->go();
-
+		
         delete punteroVentana;
 
         // Inicio& init = new Inicio();
@@ -95,7 +93,6 @@ int main(int argc, char *argv[])
     return 0;
 
 #endif
-
 
 }
 

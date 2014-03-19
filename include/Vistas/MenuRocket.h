@@ -1,12 +1,12 @@
 #ifndef __MenuRocket_
 #define __MenuRocket_
 
-#include "EventListeners.h"
+#include "RocketEventListener.h"
 
-class MenuRocket : public EventListeners
+class MenuRocket : public RocketEventListener
 {
 public:
-    MenuRocket(RocketListener* vistaOgre);//Ventana* mFrameListener);
+    MenuRocket(OgreFramework* fw);//Ventana* mFrameListener);
     ~MenuRocket(void);
 
    // CEGUI::FrameWindow* createGUI(void);
@@ -21,10 +21,9 @@ public:
 				void createView();
 
 
-							   #ifdef USAROCKET
 
 	void ProcessEvent(Rocket::Core::Event& event);
-#endif
+
 
 	
 

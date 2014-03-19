@@ -150,7 +150,6 @@ bool JugadorHumano::fichaPulsada()
 
         //AUTORIZA
         jugadasResaltadas =  Autorizaciones::casillasAutorizadas();
-        std::cout << "casca?"<<std::endl;
 
         // int resultado = Autorizaciones::autorizaCasilla();
 

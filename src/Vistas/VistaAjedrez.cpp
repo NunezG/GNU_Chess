@@ -2,12 +2,14 @@
 #include "VistaAjedrez.h"
 
 //-------------------------------------------------------------------------------------
-VistaAjedrez::VistaAjedrez(RocketListener* vistaOgre) : EventListeners( vistaOgre), Escena(vistaOgre)
+VistaAjedrez::VistaAjedrez(OgreFramework* fw) : RocketEventListener( fw), Escena(fw->modeloVista->escenaMV)
 {  
     //  modelo =Modelo::getSingletonPtr();
     //  mWindow = mRoot->initialise(true, "Root Ajedrez");
     // Escena = Escena::getSingletonPtr();
-    //  EventListeners::iniciaOIS();
+    //  RocketEventListener::iniciaOIS();
+
+		  	  Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("General");
 
 
 }
@@ -15,8 +17,17 @@ VistaAjedrez::VistaAjedrez(RocketListener* vistaOgre) : EventListeners( vistaOgr
 VistaAjedrez::~VistaAjedrez(void)
 {    
    
-    mSceneMgr->destroyQuery(mRaySceneQuery);
+	
+    //sceneMgr = Ogre::Root::getSingletonPtr()->getSceneManager("MANAGER");
 
+
+    framework->mSceneMgr->destroyQuery(mRaySceneQuery);
+
+    framework->modeloVista->borraJugadores();
+   
+			//delete objetoInicio;
+
+  
 }
 
 
@@ -30,13 +41,15 @@ void VistaAjedrez::actualizaNodo()
 
 
 
-std::string VistaAjedrez::encuentraCasillaSobrevolada(int posx, int posy)
+std::string VistaAjedrez::encuentraCasillaSobrevolada()
 {
-  
+    Ogre::Real posx, posy;
+    framework->mInputContext.getCursorPosition(posx,posy);
+
     Ogre::uint32 mask = CASILLA;
 
-    Ogre::Ray rayMouse = vistaOgre->mCamera->getCameraToViewportRay
-            (posx/float(vistaOgre->mWindow->getWidth()), posy/float(vistaOgre->mWindow->getHeight()));
+    Ogre::Ray rayMouse = framework->mCamera->getCameraToViewportRay
+            (posx/float(framework->mWindow->getWidth()), posy/float(framework->mWindow->getHeight()));
 
     mRaySceneQuery->setRay(rayMouse);
     mRaySceneQuery->setSortByDistance(true);
@@ -66,27 +79,28 @@ std::string VistaAjedrez::encuentraCasillaSobrevolada(int posx, int posy)
 bool VistaAjedrez::touchMoved(const OIS::MultiTouchEvent& evt)
 {
  
-    EventListeners::touchMoved(evt);
+    RocketEventListener::touchMoved(evt);
     return true;
 
 }
 /*
 bool VistaAjedrez::touchPressed(const OIS::MultiTouchEvent& evt)
 {
-    EventListeners::touchPressed(evt);
+    RocketEventListener::touchPressed(evt);
     return true;
 
 }
 */
 bool VistaAjedrez::touchReleased(const OIS::MultiTouchEvent& evt)
 {
-    EventListeners::touchReleased(evt);
+
+    RocketEventListener::touchReleased(evt);
     return true;
 }
 bool VistaAjedrez::touchCancelled(const OIS::MultiTouchEvent& evt)
 {
 
-    EventListeners::touchCancelled(evt);
+    RocketEventListener::touchCancelled(evt);
     return true;
 
 }
@@ -97,25 +111,24 @@ bool VistaAjedrez::touchCancelled(const OIS::MultiTouchEvent& evt)
 
 bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
 {  
-
-    EventListeners::mouseMoved(arg);
+	//Ogre::Root::getSingleton().getSceneManager()
+    RocketEventListener::mouseMoved(arg);
     
     if (getModoCamara())   // yaw around the target, and pitch locally
     {
-        rotacionCamara(Ogre::Degree(arg.state.X.rel/6));
+        framework->rotacionCamara(Ogre::Degree(arg.state.X.rel/6));
     }
     else if (arg.state.Z.rel != 0)  // move the camera toward or away from the target
     {
-        DistanciaCamara(arg.state.Z.rel);
+        framework->DistanciaCamara(arg.state.Z.rel);
     }
     else{
-
-        const std::string casilla = encuentraCasillaSobrevolada(arg.state.X.abs, arg.state.Y.abs);
+        const std::string casilla = encuentraCasillaSobrevolada();
 
         if (casilla != "")
         {
 
-            vistaOgre->modeloVista->JugadorActivo->casillaSobrevolada(casilla);
+            modeloVista->JugadorActivo->casillaSobrevolada(casilla);
             actualizaNodo();
         }
 
@@ -126,7 +139,7 @@ bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
 
 bool VistaAjedrez::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {   
-    EventListeners::mouseReleased(arg, id);
+    RocketEventListener::mouseReleased(arg, id);
     bool mbMiddle= (id == OIS::MB_Middle);
     
     if(mbMiddle) setModoCamara(false);
@@ -139,8 +152,8 @@ bool VistaAjedrez::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID 
 //-------------------------------------------------------------------------------------
 bool VistaAjedrez::keyPressed(const OIS::KeyEvent &arg)
 {    
-    
-    EventListeners::keyPressed(arg);
+
+    RocketEventListener::keyPressed(arg);
     
     if (arg.key == OIS::KC_A || arg.key == OIS::KC_LEFT)
     {
@@ -171,24 +184,25 @@ bool VistaAjedrez::keyPressed(const OIS::KeyEvent &arg)
 //void VistaAjedrez::rotar
 
 
+#endif
+
 bool VistaAjedrez::keyReleased( const OIS::KeyEvent &arg )
 { 
 
     if (arg.key == OIS::KC_ESCAPE)// Pulsa Esc
     {
 
-        vistaOgre->modeloVista->setNumPantalla(0);
-        vistaOgre->modeloVista->reiniciar = true;
+        modeloVista->setNumPantalla(0);
+       // modeloVista->reiniciar = true;
 
         //  modeloVista->setApagar(true);
     }
 
-    EventListeners::keyReleased(arg);
+    RocketEventListener::keyReleased(arg);
     noMueveCamara();
     return true;
 }
 
-#endif
 
 
 
@@ -199,13 +213,11 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID i
 #endif
 {  
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-    EventListeners::mousePressed(evt, id);
+    RocketEventListener::mousePressed(evt, id);
 #else 
-    EventListeners::touchPressed(evt);
+    RocketEventListener::touchPressed(evt);
 #endif
 
-    int posx = evt.state.X.abs;   // Posicion del puntero
-    int posy = evt.state.Y.abs;   //  en pixeles.
 
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -215,12 +227,12 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID i
 
 
         //ObjetoOgre* tableroOgre = tablero
-        std::string nombreCasilla = encuentraCasillaSobrevolada(posx, posy);
+        std::string nombreCasilla = encuentraCasillaSobrevolada();
 
 
         if (nombreCasilla!="")
         {
-            vistaOgre->modeloVista->procesaNodoPulsado(nombreCasilla);
+            framework->modeloVista->procesaNodoPulsado(nombreCasilla);
 
             //HAY QUE ACTUALIZAR EL ESTADO DE LA VISTA DEL TABLERO
             //   tablero->getHijo(nombreCasilla);
@@ -246,20 +258,19 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID i
     return true;
 }
 
-#ifdef USAROCKET
 
 void VistaAjedrez::ProcessEvent(Rocket::Core::Event& event)
 {
-    // EventListeners::ProcessEvent(event);
+    // RocketEventListener::ProcessEvent(event);
 
 
 }
-#endif
+
 
 void VistaAjedrez::createView()
 {
 
-    mRaySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());
+    mRaySceneQuery = framework->mSceneMgr->createRayQuery(Ogre::Ray());
 
     // Escena = new Escena();
    
@@ -275,13 +286,11 @@ void VistaAjedrez::createView()
 
     //escenaMV = new EscenaAjedrez();
 
-	
-    vistaOgre->modeloVista->generaJugadores();
+    framework->modeloVista->generaJugadores();
    
-    vistaOgre->modeloVista->creaEscenaYModelo();
+    //framework->modeloVista->creaEscenaYModelo();
     
     Escena::createScene();
-
 
 }
 

@@ -6,7 +6,7 @@
 class VistaAjedrezSolo : public VistaAjedrez
 {
 public:
-    VistaAjedrezSolo(RocketListener* vistaOgre);
+    VistaAjedrezSolo(OgreFramework* fw);
     ~VistaAjedrezSolo(void);
 
 

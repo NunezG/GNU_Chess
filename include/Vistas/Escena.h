@@ -13,15 +13,17 @@
 #include <CEGUI/System.h>
 */
 //#include "Tablero.h"
-#include "ObjetoOgre.h"
-#include "RocketListener.h"
-
 #include "EscenaAjedrez.h"
+
+#include "ObjetoOgre.h"
+//#include "RocketFrameListener.h"
+
+//#include "EscenaAjedrez.h"
 
 class  Escena
 {
 public:
-    Escena(RocketListener* vistaOgre);
+    Escena(EscenaAjedrez* sceneModel);
     ~Escena(void);
    // Tablero* getTablero();
     void setModoCamara(bool modo);
@@ -50,7 +52,7 @@ public:
 	//void creaPiezas();
 	void generaEscena();
 		
-	RocketListener* rocketL;
+	//ModeloVista* modeloVista;
 protected:
 	//EscenaAjedrez* escenaMV;
 	    ObjetoOgre* objetoInicio;
@@ -60,6 +62,9 @@ protected:
 
 
 private:
+
+	EscenaAjedrez* modeloEscena;
+
   //  CEGUI::Window *ventanaEmergente;
   //  Ogre::RenderWindow* mWindow;
     bool camaraIzquierda;

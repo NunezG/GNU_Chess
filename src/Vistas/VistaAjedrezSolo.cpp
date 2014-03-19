@@ -1,15 +1,14 @@
 #include "VistaAjedrezSolo.h"
 
 //-------------------------------------------------------------------------------------
-VistaAjedrezSolo::VistaAjedrezSolo(RocketListener* vistaOgre)
-    : VistaAjedrez(vistaOgre)
+VistaAjedrezSolo::VistaAjedrezSolo(OgreFramework* fw)
+    : VistaAjedrez(fw)
 
 {
 }
 
 VistaAjedrezSolo::~VistaAjedrezSolo(void)
 {    
-    //COUTCOMENTADOstd::cout << "del VistaAjedrez"<<std::endl;
 
 }
 
