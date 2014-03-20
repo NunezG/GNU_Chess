@@ -45,11 +45,11 @@ void Escena::createScene()
     sceneMgr = Ogre::Root::getSingletonPtr()->getSceneManager("MANAGER");
 
 
-    sceneMgr->setAmbientLight(Ogre::ColourValue(0.95, 0.95, 0.95));
+    sceneMgr->setAmbientLight(Ogre::ColourValue(0.88, 0.88, 0.88));
 
     //CREA LA ILUMINACIÓN
-     sceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
-     sceneMgr->setShadowColour(Ogre::ColourValue(0.5,0.5, 0.5) );
+     //sceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+     //sceneMgr->setShadowColour(Ogre::ColourValue(0.5,0.5, 0.5) );
     //sceneMgr->setShadowTextureFadeStart(0.1);
     //	    sceneMgr->setShadowTextureFadeEnd(0.6);
     //sceneMgr->setShadowTextureSelfShadow(true);
