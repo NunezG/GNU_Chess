@@ -290,14 +290,14 @@ bool ModeloTablero::cambiaTurno()
 
 
 
-    //ESTO PODRIA SEPARARSE
+    //ESTO PODRIA SEPARARSE E IRIA MEJOR EN MODELO!!!
 
     // MUEVE
     //	for(std::vector<unsigned char[2]>::iterator it = jugadas.begin(); it != jugadas.end(); ++it)
 
     std::cout << "jugadas.size() "<< jugadas.size()   <<std::endl;
 
-    for(int i =0; i< jugadas.size();i = i+2)
+    for(int i =0; i< jugadas.size()-1;i = i+2)
     {
 
         std::cout << "jugada "<< i<<"/"<< (int)jugadas[i]<< "/" <<(int)jugadas[i+1]   <<std::endl;
@@ -346,6 +346,9 @@ bool ModeloTablero::cambiaTurno()
         {
 
             casillasInt[jugadaPrincipal[1]] = 5;
+			
+
+
         }
 
         //DOBLE SALTO (LO MARCA PARA CAPTURAR AL PASO)

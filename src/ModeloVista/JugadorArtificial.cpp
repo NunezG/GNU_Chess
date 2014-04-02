@@ -25,7 +25,7 @@ bool JugadorArtificial::iniciaTurno()
 
     // resultado = resultado;
 
-    if (modelo->jugadasElegidas[0] == modelo->jugadasElegidas[1])
+    if (modelo->jugadasElegidas == "")
     {//SIN RESULTADO
         return false;
     }

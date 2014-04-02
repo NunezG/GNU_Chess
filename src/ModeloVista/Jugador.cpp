@@ -126,7 +126,7 @@ bool Jugador::aplicaSeleccion()
 
 
     //HABRA QUE BORRAR BIEN LOS PUNTEROS O NO USARLOS
-    modelo->jugadasElegidas.clear();
+    modelo->jugadasElegidas = "";
 
 
 

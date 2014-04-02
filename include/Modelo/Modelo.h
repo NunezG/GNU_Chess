@@ -19,6 +19,10 @@ public:
     ModeloTablero* tableroModelo;
 
 	std::string jugadasElegidas;
+	std::string listaCambios;
+
+
+
 
 	    int dificultad;
 

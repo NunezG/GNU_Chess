@@ -24,7 +24,8 @@ ObjetoEscena::~ObjetoEscena()
 {
 }
 
-ObjetoEscena::ObjetoEscena( const ObjetoEscena& ObjetoEscenaOriginal, std::string nombre, int tipo )
+//Objeto inicial
+ObjetoEscena::ObjetoEscena( )
 // esNegra(ObjetoEscenaOriginal.esNegra),
 // muerta(0),
 // tipo_ObjetoEscena(tipo),
@@ -33,6 +34,8 @@ ObjetoEscena::ObjetoEscena( const ObjetoEscena& ObjetoEscenaOriginal, std::strin
 // salto(false)
 //  tipo_ObjetoEscena = ObjetoEscenaOriginal
 {
+	
+
 }
 
 /*void ObjetoEscena::creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask)

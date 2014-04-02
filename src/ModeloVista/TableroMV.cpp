@@ -18,9 +18,6 @@ TableroMV::TableroMV() : //ObjetoEscena(nombre, tipo, "Tablero", "MaterialTabler
     //listaNodos.push_back(this);
     modelo = Modelo::getSingletonPtr();
 
-    //creaCasillas();
-
-    //creaPiezas();
 
 }
 
@@ -341,130 +338,64 @@ void TableroMV::actualizaTablero()
     //	setCasillaSeleccionada(-1);
 
     ObjetoEscena* objEsc;
-
-    char casillasInt2 = modelo->tableroModelo->casillasInt[1];
-    // mira jugadaelegida para ver la posicion de las fichas
-
-    //inicial (la ficha a mover), posicion en el tablero de 144 casillas
-    // modelo->jugadaElegida[0];
-    //	final (la ficha a eliminar o casilla vacia)
-    // modelo->jugadaElegida[1];
-
-    /*
-      posicion inicial;
-    posicion final;
-
-    inicial.Fila = (modelo->jugadaElegida[0]/12)-2;
-    inicial.Columna = (modelo->jugadaElegida[0]%12)-2;
-    final.Fila = (modelo->jugadaElegida[1]/12)-2;
-    final.Columna = (modelo->jugadaElegida[1]%12)-2;
-*/
-    //POSICION INICIAL EN EL TABLERO NUEVO (inicial.Fila * 8) + inicial.Columna
-
-
-
-    //for (std::vector<ObjetoEscena*>::iterator it = listaNodos.begin(); it!=listaNodos.end(); it++)
-    //	 {
-
-    //casilla anterior de la vista donde se encuentra el nodo a mover
-    //	ObjetoEscena* nodo = *it;
-    //	ObjetoEscena* nodo = objetoPadre->getHijo((inicial.Fila * 8) + inicial.Columna);
-    //	objEsc = objetoPadre->getHijo((final.Fila * 8) + final.Columna);
-
-    //	if (!nodo->sinHijos() && static_cast<Ficha*>(nodo->getHijo(0))->tipo_Ficha ==  modelo->tableroModelo->casillasInt[(i*12)+y])
-    //	{
-
-    /*
-                    ObjetoEscena* nodoFicha = nodo->getHijo(0);
-
-                    nodo->eliminaHijo(0);
-
-                if (!objEsc->sinHijos() )	objEsc->eliminaHijo(0);
-
-                    //nodo->eliminaHijo(0);
-                    objEsc->agregaHijo(nodoFicha);
-
-*/
-    //	}
-
-
-    // }
-
-
-
-    // se puede hacer manipulando la posicion de la ficha en objetoescena y actualizandola en cada movimiento,
-    // asi se puede tener una lista de nodos desactualizados comparandolos ese valor con el valor que hay en esa posicion del tablero
-    // (que nunca sera reemplazado por otro igual). Luego habria que buscar la nueva posicion en el tablero, siempre que no haya dos fichas del mismo tipo
-    // cambiadas a la vez
-
-    for (int i = 2; i < 10; i++)
-    {
-        for (int y = 2; y < 10; y++)
-        {
-
-            //					casilla a mirar
-            objEsc = objetoPadre->getHijo(((i-2)*8)+y-2);
-
-
-            // (!objEsc->sinHijos() && objToRemove->sinHijos()) || (objEsc->sinHijos() && !objToRemove->sinHijos()) || (!objEsc->sinHijos() && !objToRemove->sinHijos() && objToRemove->getHijo(0)->getNombre() != objEsc->getHijo(0)->getNombre()))
-
-
-            if (objEsc->numHijos() > 0 &&  modelo->tableroModelo->casillasInt[(i*12)+y] != objEsc->getHijo(0)->idGrupo)
-            {
-
-                //// AQUI BUSCA OTRA CASILLA EN LA QUE FALTE O SE AÑADA EL MISMO TIPO DE FICHA
-
-                //aqui va la ficha encontrada
-                //  posicion final;
-
-                // final.Fila = (modelo->jugadaElegida[1]/12)-2;
-                // final.Columna = (modelo->jugadaElegida[1]%12)-2;
-
+	
                 ObjetoEscena* objSrch ;
+    char casillasInt2 = modelo->tableroModelo->casillasInt[1];
+  
+    // MUCHO MAS RAPIDO MIRAR LA LISTA DE MOVIMIENTOS EN EL MODELO, TRADUCRILAS A NOMBRE DE CASILLA O POSICION EN EL TABLERO Y APLICAR LOS NECESARIOS!!
+	// TAMBIEN EL CASO ESPECIAL DE PROMOCION A REINA, QUE CON LOS NUEVOS CAMBIOS BASTRA CON UN CAMBIO DE ENTIDAD
 
-                for (int x = 2; x < 10; x++)
-                {
-                    for (int z = 2; z < 10; z++)
-                    {
+		 std::cout << "jugadas.size() en actualizaTableromv "<< modelo->jugadasElegidas.size()   <<std::endl;
 
-                        objSrch  = objetoPadre->getHijo(((x-2)*8)+z-2);
+    for(int i =0; i< modelo->jugadasElegidas.size()-1;i = i+2)
+    {
 
-                        int tipoFicha = modelo->tableroModelo->casillasInt[(x*12)+z];
+		//EN LUGAR DE ESTO SE PUEDE COMPROBAR EL NUMERO DE LA FICHA MOVIDA
+		if (modelo->jugadasElegidas[i] != 100)
+		{
 
+        std::cout << "jugada en actualizaTableromv"<< i<<"/"<< (int)modelo->jugadasElegidas[i]<< "/" <<(int)modelo->jugadasElegidas[i+1]   <<std::endl;
+		int posInicial = ((((int)modelo->jugadasElegidas[i]/12)-2)*8) + (((int)modelo->jugadasElegidas[i]%12)-2);
 
+				        std::cout << "nueva jugada en actualizaTableromv"<< i<<"/"<< posInicial  <<std::endl;
 
-                        if ((x != i || z != y) && objEsc->numHijos() > 0 && tipoFicha == objEsc->getHijo(0)->idGrupo && ((objSrch->numHijos() >0 &&  tipoFicha != objSrch->getHijo(0)->idGrupo) ||(objSrch->numHijos() == 0 &&  tipoFicha != 0)))
-                        {
-
-                            ObjetoEscena* nodoFicha = objEsc->getHijo(0);
-
-
-                            if (objSrch->numHijos() > 0 )	objSrch->eliminaHijo(0);
-                            objEsc->eliminaHijo(0);
-
-                            objSrch->agregaHijo(nodoFicha);
-
-                            //nodo->eliminaHijo(0);
-
-                        }
-                    }
-                }
+        //	unsigned char* jugada = *it;
+		objEsc = objetoPadre->getHijo(posInicial)->getHijo(0);
+		objetoPadre->getHijo(posInicial)->eliminaHijo(0);
 
 
-                //if (modelo->tableroModelo->casillasInt[(i*12)+y] == 0)
-                //{
+        if (modelo->jugadasElegidas[i+1] != 0)
+		{
+					int posFinal = ((((int)modelo->jugadasElegidas[i+1]/12)-2)*8) + (((int)modelo->jugadasElegidas[i+1]%12)-2);
+							        std::cout << "nueva jugada final en actualizaTableromv"<< i+1<<"/"<< posFinal  <<std::endl;
+			objSrch = objetoPadre->getHijo(posFinal);
+			if (objSrch->numHijos() > 0)
+			{
+			
+			objSrch->eliminaHijo(0);
+			}
+			objSrch->agregaHijo(objEsc);
+           // casillasInt[modelo->jugadasElegidas[i+1]]= casillasInt[modelo->jugadasElegidas[i]];
 
-                //	objEsc->eliminaHijo(0);
-
-                //			}
-
-            }
+		}
+		}else
+	{
 
 
-            //HAY QUE HACER PARA CAMBIO DE FORMA Y ESOOOO !!!!!!!!!!!!!!
 
-        }
-    }
+
+
+
+	}
+
+		//objEsc = objetoPadre->getHijo(i);
+
+
+       // casillasInt[modelo->jugadasElegidas[i]] = 0;
+
+    } 
+
+
 
 }
 

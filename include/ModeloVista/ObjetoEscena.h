@@ -40,7 +40,9 @@ public:
 	       // ObjetoEscena(std::string nombre);
 
     //constructor de copia
-    ObjetoEscena(const ObjetoEscena& ObjetoEscenaOriginal, std::string nombre, int tipo);
+    ObjetoEscena();
+	ObjetoEscena( std::string nombre, int mascara, std::string meshName, std::vector<std::string> materials);
+	 
     //void creaModelo3D(Ogre::SceneManager* sceneMgr, Ogre::String nombreMalla, Ogre::uint32 mask);
    // int tipo_ObjetoEscena;
     //bool esNegra;
@@ -67,7 +69,6 @@ public:
 	virtual void eliminaHijo(int hijo);
     virtual void agregaHijo(ObjetoEscena* objetoHijo);
    virtual int numHijos();
-	ObjetoEscena( std::string nombre, int mascara, std::string meshName, std::vector<std::string> materials);
 		std::string nombreObjeto;
 		   virtual void cambiaMaterial(int material) = 0;
 		   virtual void rota(int grados) = 0;

@@ -197,13 +197,18 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
         // miTablero->jugada[0] = casilla;
         miTablero->jugadaPrincipal[1] = nuevaCasilla;
         miTablero->jugadas = miTablero->jugadas + miTablero->jugadaPrincipal[0] + miTablero->jugadaPrincipal[1];
-        std::cout << "MUEVE NORMAL : "  <<  miTablero->jugadas  <<std::endl;
+        //std::cout << "MUEVE NORMAL : "  <<  miTablero->jugadas  <<std::endl;
 
-        std::cout << "MUEVE NORMAL2 : "  <<  miTablero->jugadaPrincipal  <<std::endl;
+        //std::cout << "MUEVE NORMAL2 : "  <<  miTablero->jugadaPrincipal  <<std::endl;
 
-        std::cout << "MUEVE NORMAL4 : "  <<  miTablero->jugadaPrincipal[0]  << " / "<< miTablero->jugadaPrincipal[1]  <<std::endl;
+       // std::cout << "MUEVE NORMAL4 : "  <<  miTablero->jugadaPrincipal[0]  << " / "<< miTablero->jugadaPrincipal[1]  <<std::endl;
 
-        std::cout << "MUEVE NORMAL4 : "  <<  (int)miTablero->jugadaPrincipal[0]  << " / "<< (int)miTablero->jugadaPrincipal[1]  <<std::endl;
+        //std::cout << "MUEVE NORMAL4 : "  <<  (int)miTablero->jugadaPrincipal[0]  << " / "<< (int)miTablero->jugadaPrincipal[1]  <<std::endl;
+
+		if((miTablero->turnoN && miTablero->jugadaPrincipal[1]/12 == 2) || (!miTablero->turnoN && miTablero->jugadaPrincipal[1]/12 == 9))
+		{
+			miTablero->jugadas = miTablero->jugadas + (char)100;
+		}
 
 
         nuevoMovimiento(miTablero);
@@ -231,6 +236,10 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
         // miTablero->jugada[0] = casilla;
         miTablero->jugadaPrincipal[1] = casillaCome;
         miTablero->jugadas = miTablero->jugadas + miTablero->jugadaPrincipal[0] + miTablero->jugadaPrincipal[1];
+		if((miTablero->turnoN && miTablero->jugadaPrincipal[1]/12 == 2) || (!miTablero->turnoN && miTablero->jugadaPrincipal[1]/12 == 9))
+		{
+			miTablero->jugadas = miTablero->jugadas + (char)100;
+		}
         nuevoMovimiento(miTablero);
         muevePeon = true;
 
@@ -253,6 +262,12 @@ bool Movimientos::muevePeon(ModeloTablero* miTablero)
         // miTablero->jugada[0] = casilla;
         miTablero->jugadaPrincipal[1] = casillaComeSec;
         miTablero->jugadas = miTablero->jugadas + miTablero->jugadaPrincipal[0] + miTablero->jugadaPrincipal[1];
+
+		if((miTablero->turnoN && miTablero->jugadaPrincipal[1]/12 == 2) || (!miTablero->turnoN && miTablero->jugadaPrincipal[1]/12 == 9))
+		{
+			miTablero->jugadas = miTablero->jugadas + (char)100;
+		}
+
         nuevoMovimiento(miTablero);
         muevePeon = true;
         // miTablero->casillasInt[casilla] = 1;

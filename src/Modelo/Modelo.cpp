@@ -7,6 +7,7 @@ Modelo::Modelo():
     //,  jugadores(NULL)
     dificultad(3)
   , posInicial("bcdefdcbaaaaaaaa00000000000000000000000000000000zzzzzzzzyxwvuwxy")
+  , jugadasElegidas("")
 
 {   
     //mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "MIMANAGERDEESCENA");
