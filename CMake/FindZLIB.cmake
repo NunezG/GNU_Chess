@@ -21,7 +21,7 @@ findpkg_begin(ZLIB)
 getenv_path(ZLIB_HOME)
 
 # construct search paths
-set(ZLIB_PREFIX_PATH ${ZLIB_HOME} ${ENV_ZLIB_HOME})
+set(ZLIB_PREFIX_PATH ${ZLIB_HOME} ${ENV_ZLIB_HOME} ${ENV_OGRE_SOURCE}/Dependencies)
 create_search_paths(ZLIB)
 # redo search if prefix path changed
 clear_if_changed(ZLIB_PREFIX_PATH

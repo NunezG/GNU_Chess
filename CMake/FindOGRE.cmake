@@ -174,7 +174,7 @@ message("WINDOOWOWOWO")
 set(OGRE_COMPONENTS RTShaderSystem #Paging Terrain Volume Overlay 
   Plugin_OctreeSceneManager #Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
  # Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
- RenderSystem_GL # RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2
+ RenderSystem_Direct3D9 # RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2
  )
 
 
@@ -418,6 +418,12 @@ macro(ogre_find_component COMPONENT HEADER)
   find_library(OGRE_${COMPONENT}_LIBRARY_DBG NAMES ${OGRE_${COMPONENT}_LIBRARY_NAMES_DBG} HINTS ${OGRE_LIBRARY_DIR_DBG} PATH_SUFFIXES "" "Debug")
   make_library_set(OGRE_${COMPONENT}_LIBRARY)
   set(OGRE_${COMPONENT}_LIBRARIES ${OGRE_${COMPONENT}_LIBRARY})
+  
+	IF (OGRE_${COMPONENT}_LIBRARY)
+
+	set(OGRE_INCLUDE_DIR ${OGRE_INCLUDE_DIR} ${OGRE_${COMPONENT}_INCLUDE_DIR})
+    ENDIF()
+	
   set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${OGRE_${COMPONENT}_LIBRARIES})
   findpkg_finish(OGRE_${COMPONENT})
   if (OGRE_${COMPONENT}_FOUND)
@@ -538,12 +544,13 @@ endmacro(ogre_find_plugin)
 #ogre_find_plugin(Plugin_OctreeZone OgreOctreeZone.h PCZ PlugIns/OctreeZone/include)
 #ogre_find_plugin(Plugin_BSPSceneManager OgreBspSceneManager.h PlugIns/BSPSceneManager/include)
 #ogre_find_plugin(Plugin_CgProgramManager OgreCgProgram.h PlugIns/CgProgramManager/include)
-ogre_find_plugin(Plugin_OctreeSceneManager OgreOctreeSceneManager.h Plugins/OctreeSceneManager)
+ogre_find_plugin(Plugin_OctreeSceneManager OgreOctreeSceneManager.h PlugIns/OctreeSceneManager/include)
 #ogre_find_plugin(Plugin_ParticleFX OgreParticleFXPrerequisites.h PlugIns/ParticleFX/include)
 if (WIN32)
-ogre_find_plugin(RenderSystem_GL OgreGLRenderSystem.h RenderSystems/GL)
+ogre_find_plugin(RenderSystem_Direct3D9 OgreD3D9RenderSystem.h RenderSystems/Direct3D9/include)
+#ogre_find_plugin(RenderSystem_GL OgreGLRenderSystem.h RenderSystems/GL/include)
 elseif(ANDROID)
-ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2)
+ogre_find_plugin(RenderSystem_GLES2 OgreGLES2RenderSystem.h RenderSystems/GLES2/include)
 endif()
 #ogre_find_plugin(RenderSystem_GL3Plus OgreGL3PlusRenderSystem.h RenderSystems/GL3Plus/include)
 #ogre_find_plugin(RenderSystem_GLES OgreGLESRenderSystem.h RenderSystems/GLES/include)

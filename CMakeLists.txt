@@ -105,6 +105,9 @@ message("ACABA FINDOGRE.")
  
  find_package(OIS REQUIRED)
  
+  find_package(DirectX REQUIRED)
+
+ 
  if(NOT OIS_FOUND)
 	 message(SEND_ERROR "Failed to find OIS.")
  endif()
@@ -174,7 +177,8 @@ endif()
 endif()
 
 if(WIN32)
-set(OGRE_LIBRARIES ${OGRE_LIBRARIES} "opengl32.lib" "glu32.lib" "dinput8.lib" "dxguid.lib")
+# "opengl32.lib" "glu32.lib" "dxguid.lib"
+set(OGRE_LIBRARIES ${OGRE_LIBRARIES} "dinput8.lib")
 endif()
 
 
@@ -254,8 +258,11 @@ set(HDRVIEW
 
                  ./include/Vistas/UI/RocketFrameListener.h
                  ./include/Vistas/UI/RenderInterfaceOgre3D.h
+				                  ./include/Vistas/UI/RenderInterfaceOgreDirectX.h
                 ./include/Vistas/UI/SystemInterfaceOgre3D.h
                 ./include/Vistas/UI/RocketEventListener.h
+
+
 
 			./include/Vistas/Ogre/OgreFramework.h
 			./include/Vistas/Ogre/ObjetoOgre.h
@@ -303,8 +310,11 @@ set(SRCVIEW
 
                 ./src/Vistas/UI/RocketFrameListener.cpp
                 ./src/Vistas/UI/RenderInterfaceOgre3D.cpp
+				./src/Vistas/UI/RenderInterfaceOgreDirectX.cpp
+
                 ./src/Vistas/UI/SystemInterfaceOgre3D.cpp
 				./src/Vistas/UI/RocketEventListener.cpp
+
 
 
 		./src/Vistas/Ogre/FrameListeners.cpp
@@ -377,6 +387,7 @@ include_directories(
     ${ANDROID_NATIVE_APP_GLUE_DIR}
     ${OIS_INCLUDE_DIR}
 	${OGRE_INCLUDE_DIR}
+	${DirectX9_INCLUDE_DIR}
 	#${OGRE_SAMPLES_INCLUDEPATH}
 	#NUEVA SECCIÓN
 
@@ -511,7 +522,7 @@ endif ()
  else()
     add_executable(OgreApp WIN32  ${SRCSAPP})
 
-    target_link_libraries(OgreApp ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES})
+    target_link_libraries(OgreApp ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES} ${DirectX9_LIBRARIES})
 
 
     add_dependencies(OgreApp ChessView)

@@ -21,7 +21,7 @@ findpkg_begin(FREETYPE)
 getenv_path(FREETYPE_HOME)
 
 # construct search paths
-set(FREETYPE_PREFIX_PATH ${FREETYPE_HOME} ${ENV_FREETYPE_HOME})
+set(FREETYPE_PREFIX_PATH ${FREETYPE_HOME} ${ENV_FREETYPE_HOME} ${ENV_OGRE_SOURCE}/Dependencies )
 create_search_paths(FREETYPE)
 # redo search if prefix path changed
 clear_if_changed(FREETYPE_PREFIX_PATH

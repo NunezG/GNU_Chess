@@ -22,7 +22,7 @@ getenv_path(ZZIP_HOME)
 
 
 # construct search paths
-set(ZZip_PREFIX_PATH ${ZZIP_HOME} ${ENV_ZZIP_HOME})
+set(ZZip_PREFIX_PATH ${ZZIP_HOME} ${ENV_ZZIP_HOME} ${ENV_OGRE_SOURCE}/Dependencies)
 create_search_paths(ZZip)
 # redo search if prefix path changed
 clear_if_changed(ZZip_PREFIX_PATH
