@@ -9,7 +9,7 @@ ModeloVista::ModeloVista():
   , JugadorActivo(0)
   // , dificultad(1)
   , modoJuego(0)
-  ,resolucion("854 x 480")
+  ,resolucion("1024 x 768 @ 32-bit colour")
   , pantallaCompleta(false)
   //,reiniciar(1)
   , jugadores(0)

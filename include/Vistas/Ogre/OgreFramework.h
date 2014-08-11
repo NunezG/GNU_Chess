@@ -24,8 +24,8 @@
 #include <OgreWindowEventUtilities.h>
 
 
-#include "RTShaderSystem/OgreShaderGenerator.h"
-#include "RTShaderSystem/OgreRTShaderSystem.h"
+#include "OgreShaderGenerator.h"
+#include "OgreRTShaderSystem.h"
 
 #include <OISEvents.h>
 #include <OISKeyboard.h>
@@ -35,7 +35,7 @@
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 
 #include <OISInputManager.h>
-#define OGRE_STATIC_GL
+#define OGRE_STATIC_Direct3D9 
 
 #elif OGRE_PLATFORM == OGRE_PLATFORM_ANDROID
 

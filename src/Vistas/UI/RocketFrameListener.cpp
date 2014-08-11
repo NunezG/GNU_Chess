@@ -55,77 +55,51 @@ RocketFrameListener::~RocketFrameListener()
 
 }
 
+
 // Called from Ogre before a queue group is rendered.
-void RocketFrameListener::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& ROCKET_UNUSED(skipThisInvocation))
+void RocketFrameListener::renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& ROCKET_UNUSED_PARAMETER(skipThisInvocation))
 {
+	ROCKET_UNUSED(skipThisInvocation);
 
-    if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && Ogre::Root::getSingleton().getRenderSystem()->_getViewport()->getOverlaysEnabled())
-    {
+	if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && Ogre::Root::getSingleton().getRenderSystem()->_getViewport()->getOverlaysEnabled())
+	{
+		context->Update();
 
-        context->Update();
+		configureRenderSystem();
+		context->Render();
+		//ogre_renderer->hecho = true;
 
-        // #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-        configureRenderSystem();
-        //	#endif
-        // #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-        context->Render();
-        ogre_renderer->hecho = true;
-
-        //#endif
-
-
-
-    }
-
-
+	}
 }
 
 // Called from Ogre after a queue group is rendered.
-void RocketFrameListener::renderQueueEnded(Ogre::uint8 ROCKET_UNUSED(queueGroupId), const Ogre::String& ROCKET_UNUSED(invocation), bool& ROCKET_UNUSED(repeatThisInvocation))
+void RocketFrameListener::renderQueueEnded(Ogre::uint8 ROCKET_UNUSED_PARAMETER(queueGroupId), const Ogre::String& ROCKET_UNUSED_PARAMETER(invocation), bool& ROCKET_UNUSED_PARAMETER(repeatThisInvocation))
 {
-
-
+	ROCKET_UNUSED(queueGroupId);
+	ROCKET_UNUSED(invocation);
+	ROCKET_UNUSED(repeatThisInvocation);
 }
-/*
-// Builds an OpenGL-style orthographic projection matrix.
-void FrameListeners::buildProjectionMatrix(Ogre::Matrix4& projection_matrix)
-{					
-    float z_near = -1;
-    float z_far = 1;
-
-    projection_matrix = Ogre::Matrix4::ZERO;
-
-    // Set up matrices.
-    projection_matrix[0][0] = 2.0f / mWindow->getWidth();
-    projection_matrix[0][3]= -1.0000000f;
-    projection_matrix[1][1]= -2.0f / mWindow->getHeight();
-    projection_matrix[1][3]= 1.0000000f;
-    projection_matrix[2][2]= -2.0f / (z_far - z_near);
-    projection_matrix[3][3]= 1.0000000f;
-}
-*/
 
 
 // Configures Ogre's rendering system for rendering Rocket.
 void RocketFrameListener::configureRenderSystem()
 {
 
+	Ogre::RenderSystem* render_system = Ogre::Root::getSingleton().getRenderSystem();
+
+	// Set up the projection and view matrices.
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 
 
-    Ogre::RenderSystem* render_system = Ogre::Root::getSingleton().getRenderSystem();
-
-    // Set up the projection and view matrices.
-    
-
-
+	Ogre::Matrix4 projection_matrix;
+	BuildProjectionMatrix(projection_matrix);
+	render_system->_setProjectionMatrix(projection_matrix);
+	render_system->_setViewMatrix(Ogre::Matrix4::IDENTITY);
 
 
-    // buildProjectionMatrix(projection_matrix);
 
-    //   render_system->_setProjectionMatrix(projection_matrix);
-    //  render_system->_setViewMatrix(Ogre::Matrix4::IDENTITY);
-
-
+#endif
 
 
     // Disable lighting, as all of Rocket's geometry is unlit.
@@ -140,8 +114,6 @@ void RocketFrameListener::configureRenderSystem()
     // Enable writing to all four channels.
     render_system->_setColourBufferWriteEnabled(true, true, true, true);
     // Unbind any vertex or fragment programs bound previously by the application.
-    // render_system->unbindGpuProgram(Ogre::GPT_FRAGMENT_PROGRAM);
-    // render_system->unbindGpuProgram(Ogre::GPT_VERTEX_PROGRAM);
 
 
     // Set texture settings to clamp along both axes.
@@ -157,7 +129,6 @@ void RocketFrameListener::configureRenderSystem()
     render_system->_setTextureCoordCalculation(0, Ogre::TEXCALC_NONE);
     // Enable linear filtering; images should be rendering 1 texel == 1 pixel, so point filtering could be used
     // except in the case of scaling tiled decorators.
-    // render_system->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_POINT);
     // Disable texture coordinate transforms.
     render_system->_setTextureMatrix(0, Ogre::Matrix4::IDENTITY);
     // Reject pixels with an alpha of 0.
@@ -170,6 +141,9 @@ void RocketFrameListener::configureRenderSystem()
 
     // Disable depth bias.
     render_system->_setDepthBias(0, 0);
+	render_system->unbindGpuProgram(Ogre::GPT_FRAGMENT_PROGRAM);
+	render_system->unbindGpuProgram(Ogre::GPT_VERTEX_PROGRAM);
+	render_system->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_POINT);
 
 
 }
@@ -177,6 +151,22 @@ void RocketFrameListener::configureRenderSystem()
 
 
 
+// Builds an OpenGL-style orthographic projection matrix.
+void RocketFrameListener::BuildProjectionMatrix(Ogre::Matrix4& projection_matrix)
+{
+	float z_near = -1;
+	float z_far = 1;
+
+	projection_matrix = Ogre::Matrix4::ZERO;
+
+	// Set up matrices.
+	projection_matrix[0][0] = 2.0f / framework->mWindow->getWidth();
+	projection_matrix[0][3] = -1.0000000f;
+	projection_matrix[1][1] = -2.0f / framework->mWindow->getHeight();
+	projection_matrix[1][3] = 1.0000000f;
+	projection_matrix[2][2] = -2.0f / (z_far - z_near);
+	projection_matrix[3][3] = 1.0000000f;
+}
 
 
 bool RocketFrameListener::configuraRocket()
@@ -187,7 +177,7 @@ bool RocketFrameListener::configuraRocket()
     // Rocket initialisation.
 
 
-    ogre_renderer = new RenderInterfaceOgre3D(framework->mWindow->getWidth(), framework->mWindow->getHeight());
+    ogre_renderer = new RenderInterfaceOgreDirectX(framework->mWindow->getWidth(), framework->mWindow->getHeight());
 
     //ogre_renderer->setCustomProjectionMatrix(projection_matrix);
 

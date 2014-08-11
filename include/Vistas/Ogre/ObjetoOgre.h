@@ -2,8 +2,10 @@
 #define __ObjetoOgre_
 
 #include <OgreSceneManager.h>
+#include <OgreSceneNode.h>
+
 #include <OgreEntity.h>
-#include "ObjetoEscena.h"
+#include <ObjetoEscena.h>
 
 #define CASILLA 1 << 0  // Mascara para el escenario
 #define NEGRAS 1 << 1  // Mascara para objetos de tipo 1

@@ -1,4 +1,4 @@
-# This is my README
+li# This is my README
 
 In Windows, the following env variables should be added so CMake can find the dependencies:
 
@@ -11,10 +11,7 @@ Ogre:
 	OGRE_BUILD (OGRE Source directory)
 	OGRE_DEPENDENCIES_DIR is also suitable in this case
 
-CEGUI:
-	CEGUI_HOME (CEGUI Build directory, Example: D:/cegui-0.8.2-build)
-	CEGUI_DIR (CEGUI Source directory, Example: D:/cegui-0.8.2)
+LIBROCKET:
 
+	LIBROCKET (ROCKET INSTALL directory)
 
-BOOST:
-BOOST_ROOT

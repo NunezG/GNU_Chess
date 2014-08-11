@@ -27,7 +27,7 @@
 
 #include "RenderInterfaceOgre3D.h"
 //#include "OgreFramework.h"
-#include <Ogre.h>
+//#include <Ogre.h>
 
 struct RocketOgre3DVertex
 {
@@ -104,7 +104,7 @@ render_system = NULL;
 }
 
 // Called by Rocket when it wants to render geometry that it does not wish to optimise.
-void RenderInterfaceOgre3D::RenderGeometry(Rocket::Core::Vertex* ROCKET_UNUSED(vertices), int ROCKET_UNUSED(num_vertices), int* ROCKET_UNUSED(indices), int ROCKET_UNUSED(num_indices), Rocket::Core::TextureHandle ROCKET_UNUSED(texture), const Rocket::Core::Vector2f& ROCKET_UNUSED(translation))
+void RenderInterfaceOgre3D::RenderGeometry(Rocket::Core::Vertex* ROCKET_UNUSED_PARAMETER(vertices), int ROCKET_UNUSED_PARAMETER(num_vertices), int* ROCKET_UNUSED_PARAMETER(indices), int ROCKET_UNUSED_PARAMETER(num_indices), Rocket::Core::TextureHandle ROCKET_UNUSED_PARAMETER(texture), const Rocket::Core::Vector2f& ROCKET_UNUSED_PARAMETER(translation))
 {
 
 	// We've chosen to not support non-compiled geometry in the Ogre3D renderer.
@@ -377,7 +377,7 @@ void RenderInterfaceOgre3D::RenderCompiledGeometry(Rocket::Core::CompiledGeometr
 // Called by Rocket when it wants to release application-compiled geometry.
 void RenderInterfaceOgre3D::ReleaseCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry)
 {
-                std::cout << "ReleaseCompiledGeometry!!!! "<<std::endl;
+           //     std::cout << "ReleaseCompiledGeometry!!!! "<<std::endl;
 
 
     RocketOgre3DCompiledGeometry* ogre3d_geometry = reinterpret_cast<RocketOgre3DCompiledGeometry*>(geometry);

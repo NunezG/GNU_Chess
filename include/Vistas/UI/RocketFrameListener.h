@@ -24,9 +24,8 @@
 //#include <Rocket/Core/Core.h>
 //#include <Rocket/Debugger.h>
 
-#include "RenderInterfaceOgre3D.h"
+#include "RenderInterfaceOgreDirectX.h"
 #include "SystemInterfaceOgre3D.h"
-
 
 //#include "MenuRocket.h"
 //#include "VistaAjedrez.h"
@@ -50,6 +49,7 @@ class RocketFrameListener: public FrameListeners,  public Ogre::RenderQueueListe
 void borraVistaActiva();
 void setVistaActiva(RocketEventListener* vista);
 
+void BuildProjectionMatrix(Ogre::Matrix4& matrix);
 
 
 			/// Called from Ogre before a queue group is rendered.
@@ -102,7 +102,7 @@ protected:
 
 
 			SystemInterfaceOgre3D* ogre_system;
-		RenderInterfaceOgre3D* ogre_renderer;
+			RenderInterfaceOgreDirectX* ogre_renderer;
 		//int GetKeyModifierState();
 
 

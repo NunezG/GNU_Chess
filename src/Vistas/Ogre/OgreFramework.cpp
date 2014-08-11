@@ -16,7 +16,7 @@ OgreFramework::OgreFramework() :
   , vp(0)
   
   ,mMaterialMgrListener(0)
-  , mFSLayer (OGRE_NEW_T(Ogre::FileSystemLayer, Ogre::MEMCATEGORY_GENERAL)(OGRE_VERSION_NAME))
+  //, mFSLayer (OGRE_NEW(Ogre::FileSystemLayer, Ogre::MEMCATEGORY_GENERAL)(OGRE_VERSION_NAME))
 
 {  
     modeloVista = new ModeloVista();

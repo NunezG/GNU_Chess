@@ -1,0 +1,70 @@
+Pasa esto bien a la memoria.
+
+Puede que haya que compilar con cmake todo en RelWithDebInfo para poder ver el codigo fuente (no confirmado, basta con ponerlo todo en sus carpetas de /src).
+
+- Primero compilar las dependencias (creo que todas, prueba quitar alguna para reducir espacio), se instalan donde se quiera. Puede ser buena idea dejarlas en /src/local/
+FreeType y ZLib ya son usados por otras aplicaciones por lo que conviene no compilarlos. FreeImage, OIS y ZZipLib si que hay que instalarlos a traves de aptitude o compilando las dependencias. Ten cuidado de no tener librerias de aptitude (en /src) e instaladas (en /src/local/) para no generar conflictos.
+
+
+
+- Luego compilar un ogre, es posible que haya otras dependencias sin resolver que se tienen que bajar con aptitude. (Muy probablemente esten en las instrucciones de la pagina de Ogre, miralas bien y ponlo en la Memoria que queda de puta madre)
+
+Enrte otroscandidatos: sudo apt-get install cmake pkg-config libfreeimage-dev libfreetype6-dev libz-dev libzzip-dev libgl-dev libxrandr-dev libxaw7-dev libxt-dev nvidia-cg-toolkit doxygen graphviz libois-dev libboost-dev mercurial wget unzip build-essential
+
+No olvidar los archivos "Find..." de CMAKE.
+
+
+
+- El OIS necesario para el proyecto no es el mismo de Ogre, para compilar Ogre solo se necesita el include y lib instalados, para el proyecto se necesita el include y lib que hay en el "src" de OIS (no se si es necesario hacer cmake o make para eso), porque creo que al instalar Las dependencias solo estan las que necesita Ogre para su construccion. En principio valdria con el de aptitude ya que es al ultima version (necesarios los dev).
+
+
+
+- Para CEGUI te lo bajas, compilas e instalas, no deberia de haber problema aunque puede que le cueste detectarlo y tengas que poner el FindCEGUI.cmake y FindCEGUIOGRE.cmake (mira varios, si no prueba el que tenga CEGUI_INCLUDE_DIR, CEGUI_LIBRARY_DBG y CEGUI_LIBRARY_REL CEGUI_LIBRARY_OPTIMIZED)
+
+
+
+- Es probable que se necesite la librerÃa FreeType para CEGUI, pero no es seguro. Tambien es posible que se necesite zzip y zlib.
+
+
+
+
+Para cambiar el directorio de compilado hay que cambiarlo en CMakeLists.txt.user
+
+1.8.1 no parece ir bien.
+
+para debugear se esecita GDB (GNU Debugger) y compilar GCC.
+
+
+
+
+
+
+
+WINDOWS
+///////////////////////////////
+(todas las librerias se compilan estáticas)
+
+Para Windows hay que hacer unos cambios, sobre todo no te olvides del path de OGRE que esta en dist/plugins.cfg  (ya no hace falta)
+Se recomienda compilar ogre desde el codigo fuente.
+
+- Dependencias necesarias para Ogre: OIS, FreeType, FreeImage, LibRocket
+
+- Para compilar OIS en static, buscar if(NOT APPLE AND NOT ANDROID) en el cmakeLists.txt de ois y añade AND NOT WIN32, hay que desactivar los samples de ogre para que este compile sin dinamicos.
+
+- Primero compilar Ogredeps (sin CG) o los componentes por separado. Luego se compila librocket.
+
+- Despues ya se puede compilar Ogre y la aplicación, mete ogredeps en Dependencies, ogre se instala en la carpeta sdk
+
+- Ogre necesita los componentes: RtShader, GL y OctreeSceneManager
+
+Despues de compilarlo, hay que añadir variables de entorno para la generacion con Cmake:
+
+OGRE_SOURCE = DONDE ESTA LA SRC DE OGRE
+OGRE_BUILD = DONDE ESTA OGRE COMPILADO 
+OGRE_DIR /OGRE_HOME / OGRE_SDK = La opcion del sdk que se instala, SI ES UN SDK ESTARA todo EN EL MISO SITIO (en OgreBuild/sdk, incluso los componentes y plugins) por lo tanto es mas limpio
+
+LIBROCKET = apunta al directorio de librocket
+
+OIS ESTA EN LAS DEPENDENCIAS DE OGRE
+
+Despues de generar el proyecto, este se abre con visual studio y se compila por pirmera vez.

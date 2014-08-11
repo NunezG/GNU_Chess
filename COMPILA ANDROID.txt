@@ -1,0 +1,40 @@
+Primero se compila el codigo C++ con NDK, luego se compila con ADT como una aplicacion normal, luego ant
+
+
+dependencias:
+cmake -G"NMake Makefiles" -DCMAKE_TOOLCHAIN_FILE=..\cmake\android.toolchain.cmake ..
+
+
+Ogre:
+cmake -G"NMake Makefiles" -DCMAKE_TOOLCHAIN_FILE=..\cmake\toolchain\android.toolchain.cmake -DOGRE_DEPENDENCIES_DIR=C:/Android/ndk/toolchains/arm-linux-androideabi-4.6/prebuilt/windows/user -DANDROID_NATIVE_API_LEVEL=14 ..
+jom -j4
+jom install
+
+PARA NDK:
+ndk-build all
+
+
+UPDATE ANTES DE NDK BUILD?
+
+PARA ADT:
+//target android-14????
+$ android update project --path ./ --target 10 --subprojects
+$ ant debug install
+You have to choose the target according to your system. It's possible to pick one id from the list you get with this command
+
+$ android list targets
+
+
+mi movil: ICS 4.0.4
+
+
+
+adb shell
+su
+stop
+setprop log.redirect-stdio true
+start
+
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore NativeActivity-release-unsigned.apk gnusoft
+
