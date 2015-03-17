@@ -6,7 +6,7 @@ TableroMV::TableroMV() : //ObjetoEscena(nombre, tipo, "Tablero", "MaterialTabler
     seleccionada(0)
   // salto(false)
   // ,casilla(0)
-  ,  casillaSobrevolada(0)
+ // ,  casillaSobrevolada(0)
   , casillaSeleccionada(0)
   ,peonesPromocionados(0)
   ,    fichaSeleccionada(false)
@@ -37,10 +37,10 @@ ObjetoEscena* TableroMV::getCasillaSeleccionada()
     return casillaSeleccionada;
 }
 
-ObjetoEscena* TableroMV::getCasillaSobrevolada()
-{
-    return casillaSobrevolada;
-}
+//ObjetoEscena* TableroMV::getCasillaSobrevolada()
+//{
+   // return casillaSobrevolada;
+//}
 
 int TableroMV::getAlPaso()
 {
@@ -71,10 +71,10 @@ void TableroMV::setCasillaSeleccionada(ObjetoEscena* nodo)
     ficha->cambiaMaterial(1);
 
 }
-void TableroMV::setCasillaSobrevolada(ObjetoEscena* nodo)
-{
-    casillaSobrevolada = nodo;
-}
+//void TableroMV::setCasillaSobrevolada(ObjetoEscena* nodo)
+//{
+  //  casillaSobrevolada = nodo;
+//}
 
 void TableroMV::setCasillaSeleccionada(int posicion)
 {
@@ -113,7 +113,7 @@ void TableroMV::setCasillaSeleccionada(int posicion)
     }
 
 }
-
+/*
 void TableroMV::setCasillaSobrevolada(int posicion)
 {
     if (posicion < 0)
@@ -122,7 +122,7 @@ void TableroMV::setCasillaSobrevolada(int posicion)
     }
     else casillaSobrevolada = objetoPadre->getHijo(posicion);
 }
-
+*/
 
 void TableroMV::creaCasillas()
 {
@@ -332,7 +332,7 @@ void TableroMV::creaPiezas()
 }
 
 
-void TableroMV::actualizaTablero()
+void TableroMV::actualizaTablero(static std::vector<int> jugadasElegidas)
 {  
 
     //	setCasillaSeleccionada(-1);
@@ -340,34 +340,34 @@ void TableroMV::actualizaTablero()
     ObjetoEscena* objEsc;
 	
                 ObjetoEscena* objSrch ;
-    char casillasInt2 = modelo->tableroModelo->casillasInt[1];
+    //char casillasInt2 = modelo->mainModelBoard->casillasInt[1];
   
     // MUCHO MAS RAPIDO MIRAR LA LISTA DE MOVIMIENTOS EN EL MODELO, TRADUCRILAS A NOMBRE DE CASILLA O POSICION EN EL TABLERO Y APLICAR LOS NECESARIOS!!
 	// TAMBIEN EL CASO ESPECIAL DE PROMOCION A REINA, QUE CON LOS NUEVOS CAMBIOS BASTRA CON UN CAMBIO DE ENTIDAD
 
-		 std::cout << "jugadas.size() en actualizaTableromv "<< modelo->jugadasElegidas.size()   <<std::endl;
+		 std::cout << "jugadas.size() en actualizaTableromv "<< jugadasElegidas.size()   <<std::endl;
 
-    for(int i =0; i< modelo->jugadasElegidas.size()-1;i = i+2)
+    for(int i =0; i< jugadasElegidas.size()-1;i = i+2)
     {
 
 		//EN LUGAR DE ESTO SE PUEDE COMPROBAR EL NUMERO DE LA FICHA MOVIDA
-		if (modelo->jugadasElegidas[i] != 100)
+		if (jugadasElegidas[i] != 100)
 		{
 
-        std::cout << "jugada en actualizaTableromv"<< i<<"/"<< (int)modelo->jugadasElegidas[i]<< "/" <<(int)modelo->jugadasElegidas[i+1]   <<std::endl;
-		int posInicial = ((((int)modelo->jugadasElegidas[i]/12)-2)*8) + (((int)modelo->jugadasElegidas[i]%12)-2);
+        std::cout << "jugada en actualizaTableromv "<< i<<": "<< (int)jugadasElegidas[i]<< "/" <<(int)jugadasElegidas[i+1]   <<std::endl;
+		int posInicial = ((((int)jugadasElegidas[i]/12)-2)*8) + (((int)jugadasElegidas[i]%12)-2);
 
-				        std::cout << "nueva jugada en actualizaTableromv"<< i<<"/"<< posInicial  <<std::endl;
+				        std::cout << "nueva jugada en actualizaTableromv "<< i<<": "<< posInicial  <<std::endl;
 
         //	unsigned char* jugada = *it;
 		objEsc = objetoPadre->getHijo(posInicial)->getHijo(0);
 		objetoPadre->getHijo(posInicial)->eliminaHijo(0);
 
 
-        if (modelo->jugadasElegidas[i+1] != 0)
+        if (jugadasElegidas[i+1] != 0)
 		{
-					int posFinal = ((((int)modelo->jugadasElegidas[i+1]/12)-2)*8) + (((int)modelo->jugadasElegidas[i+1]%12)-2);
-							        std::cout << "nueva jugada final en actualizaTableromv"<< i+1<<"/"<< posFinal  <<std::endl;
+					int posFinal = ((((int)jugadasElegidas[i+1]/12)-2)*8) + (((int)jugadasElegidas[i+1]%12)-2);
+							        std::cout << "nueva jugada final en actualizaTableromv "<< i+1<<": "<< posFinal  <<std::endl;
 			objSrch = objetoPadre->getHijo(posFinal);
 			if (objSrch->numHijos() > 0)
 			{
@@ -395,7 +395,7 @@ void TableroMV::actualizaTablero()
 
     } 
 
-
+	std::cout << "ACABA JUGADAS " << std::endl;
 
 }
 

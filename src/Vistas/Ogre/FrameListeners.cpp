@@ -57,6 +57,16 @@ bool FrameListeners::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     }
 
+
+	//el thread se comprueba aqui
+	//std::thread t1(lanzaArbol, 1);
+	
+	//if ()
+//	t1.join();
+
+	//Modelo::
+
+
     //Ogre::Entity* ent = mSceneMgr->getEntity("Casilla");
     // ent->getMesh()->reload();
 
@@ -103,21 +113,27 @@ bool FrameListeners::frameRenderingQueued(const Ogre::FrameEvent& evt)
             modeloVista->escenaMV->rotaCamara = modeloVista->escenaMV->rotaCamara - fRot;
         }
 
-	}else{
-
-		framework->mInputContext.capture();      // capture input
 	}
 
+		framework->mInputContext.capture();      // capture input
+	
 
 
 
 
-    if (modeloVista->jugadaElegida()){
+
+   // if (modeloVista->jugadaElegida())
+	//{
         //ESTO EN UN FUTURO HABRA QUE HACERLO EN OTRO THREAD
-        modeloVista->aplicaCambio();
+		//std::cout << "INICIA APLICA CAMBIO" << std::endl;
+		
 
 
-    }
+        modeloVista->compruebaCambio();
+		//std::cout << "ACABA APLICA CAMBIO" << std::endl;
+
+
+   // }
 
 
 

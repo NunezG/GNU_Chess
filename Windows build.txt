@@ -1,0 +1,20 @@
+compile with STATIC libraries, (in Visual studio you should always change /MD to /MT for releases and /MDd to /MTd for debug)
+
+1) download ogredeps. http://bitbucket.org/cabalistic/ogredeps
+
+2) edit OIS cmakeLists.txt and add "AND NOT WIN32" inside "if(NOT APPLE AND NOT ANDROID)". 
+Make static Visual Studio files with Cmake selecting only OIS, Freetype and Freeimage. Compile and install with VS.
+
+3) Download librocket and make static files for visual studio (disable BUILD_SHARED_LIBS), put path to the same freetype from dependencies. Compile and install.
+
+4) Download Ogre3D source (v2.0 and previous versions works fine) and move dependencies to "Dependencies" folder inside it. Make with the following components: (meshlodgenerator?) RtShader, a rendersystem (GL or Direct3D9) and OctreeSceneManager. install to make sdk.
+
+
+5) Add env variables: OGRE_SDK, LIBROCKET.
+
+6) make project with cmake and compile in VS.
+
+
+----------
+
+With dynamic libraries, the Ogre precompiled SDK with dependencies can be used.

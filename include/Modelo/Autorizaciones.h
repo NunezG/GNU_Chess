@@ -10,7 +10,7 @@ public:
 
 
 	  static int autorizaCasilla();
-	  static std::vector<int> casillasAutorizadas();
+	  static std::vector<int> casillasAutorizadas(ModeloTablero* mainModelBoard, int posicion);
 /*
     static int autorizaRey(ModeloTablero* miTablero);
     static int autorizaReina(ModeloTablero* miTablero);

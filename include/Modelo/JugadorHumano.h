@@ -9,18 +9,18 @@ class JugadorHumano : public Jugador
 {
 public:
     ~JugadorHumano();
-    JugadorHumano(EscenaAjedrez* miEscena, Modelo* modelo, std::string nombreJugador);
+	JugadorHumano(ModeloTablero* modelo, std::string nombreJugador);
 //bool iniciaTurno();
+//	bool confirmaJugada(int posicion);
 private:  
     bool esHumano();
   // bool casillaSobrevolada(const std::string nombreCasilla);
 
-  bool botonIzquierdo(ObjetoEscena* obj);
+  //bool botonIzquierdo(ObjetoEscena* obj);
    int jaqueMate();
-   bool apagaCasillas();
 
-   bool fichaPulsada();
-   std::vector<int> jugadasResaltadas;
+ 
+
 };
 
 

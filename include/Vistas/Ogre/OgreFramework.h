@@ -12,6 +12,17 @@
 
 //#include "RocketEventListener.h"
 
+#include <OgreMaterialManager.h>
+#include <OgreCamera.h>
+#include <OgreRenderWindow.h>
+#include <OgreViewport.h>
+#include <OgreSceneNode.h>
+
+
+#include <OgreTechnique.h>
+
+#include <OgreTextureManager.h>
+#include <OgreWindowEventUtilities.h>
 
 #include <OgreRoot.h>
 #include <OgreConfigFile.h>

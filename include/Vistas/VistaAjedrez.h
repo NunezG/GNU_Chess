@@ -15,7 +15,7 @@ public:
 // ModeloVista* modeloVista;
 	  //  Ogre::RenderWindow* mWindow;
 
-            std::string encuentraCasillaSobrevolada();
+		 std::string findPointedNode();
 
 
 					void ProcessEvent(Rocket::Core::Event& event);
@@ -23,7 +23,7 @@ public:
 	//virtual void renderQueueStarted(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& skipThisInvocation);
 	/// Called from Ogre after a queue group is rendered.
    // virtual void renderQueueEnded(Ogre::uint8 queueGroupId, const Ogre::String& invocation, bool& repeatThisInvocation);
-	void actualizaNodo();
+	//void actualizaNodo();
     void createView();
 
 

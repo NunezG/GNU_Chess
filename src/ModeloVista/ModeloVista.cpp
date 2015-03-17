@@ -4,15 +4,13 @@ ModeloVista::ModeloVista():
     numPantalla(0)
   // , escenaMV(0)
   , mShutDown(0)
-  ,  numJugadores(0)
   // , modelo(0)
-  , JugadorActivo(0)
   // , dificultad(1)
   , modoJuego(0)
   ,resolucion("1024 x 768 @ 32-bit colour")
   , pantallaCompleta(false)
   //,reiniciar(1)
-  , jugadores(0)
+
   ,voltea(0)
 
   //#endif
@@ -25,14 +23,11 @@ ModeloVista::ModeloVista():
     modelo = Modelo::getSingletonPtr();
     escenaMV = new EscenaAjedrez();
 
-    nombres[0] = "Jugador 1";
-    nombres[1] = "Jugador 2";
 
 }
 
 ModeloVista::~ModeloVista(void)
 {
-    borraJugadores();
 }
 
 bool ModeloVista::getApagar()
@@ -52,53 +47,15 @@ int ModeloVista::getNumPantalla()
 
 void ModeloVista::setNumPantalla(int pantalla)
 {
-    numPantalla = pantalla;
+
+	if (pantalla > 0) {
+		modelo->setTipoJuego(pantalla);
+		numPantalla = 1;
+	}
+	else numPantalla = 0;
+    
 }
 
-void ModeloVista::generaJugadores()
-{
-
-
-    jugadores.push_back(new JugadorHumano(escenaMV, modelo, nombres[0]));
-
-
-    //HAY QUE CAMBIAR LO DE MODELOTABKERO PORQUE LOS JUGADORES ESTAN EN UN VECTOR Y ESE ES EL PROBLEMA
-    if (getNumPantalla() == 1)
-    {
-        jugadores.push_back(new JugadorHumano(escenaMV, modelo, nombres[1]));
-    }
-    else
-    {
-        jugadores.push_back(new JugadorArtificial(escenaMV, modelo, nombres[1]));
-        //modelo->dificultad = (2 * dificultad) + 1;
-    }
-
-    if (JugadorActivo == NULL)
-    {
-        JugadorActivo = jugadores.at(0);
-        //  jugadores.at(num)->jugadorNegras = 0;
-    }
-    numJugadores++;
-}
-
-
-void ModeloVista::borraJugadores()
-{
-
-
-	 for (std::vector<Jugador*>::iterator it = jugadores.begin(); it!=jugadores.end(); it++)
-        {
-			Jugador* jugador = *it;
-			delete jugador;
-			jugador = NULL;
-	 }
-
-
-
-	jugadores.clear();
-
-   
-}
 
 
 void ModeloVista::borraTablero()
@@ -108,11 +65,19 @@ void ModeloVista::borraTablero()
    
 }
 
+bool ModeloVista::iniciaModelo()
 
-bool ModeloVista::jugadaElegida()
+
 {
-    return modelo->jugadasElegidas.size() > 0;
+
+	modelo->generaJugadores();
+
+
+	return true;
 }
+
+
+
 /*
 void ModeloVista::creaEscenaYModelo()
 {
@@ -120,13 +85,13 @@ void ModeloVista::creaEscenaYModelo()
     // escenaMV->createSceneMV();
 
 
-    if (modelo->tableroModelo != NULL)
+    if (modelo->mainModelBoard != NULL)
     {
         // traduceTablero();
 
-        modelo->tableroModelo->alPaso = escenaMV->getTablero()->getAlPaso();
+        modelo->mainModelBoard->alPaso = escenaMV->getTablero()->getAlPaso();
 
-        modelo->tableroModelo->turnoN = getTurnoNegras();
+        modelo->mainModelBoard->turnoN = getTurnoNegras();
 
     }
 
@@ -151,7 +116,7 @@ void ModeloVista::traduceTablero()
                     || (y < 2))
             {
 
-                modelo->tableroModelo->casillasInt[(i*12)+y] = 99;
+                modelo->mainModelBoard->casillasInt[(i*12)+y] = 99;
 
             }else
             {
@@ -170,11 +135,11 @@ void ModeloVista::traduceTablero()
                     if (ficha->esNegra && !getTurnoNegras() || !ficha->esNegra && getTurnoNegras())
                     {
 
-                        modelo->tableroModelo->casillasInt[numeroCasilla] = -ficha->tipo_Ficha;
+                        modelo->mainModelBoard->casillasInt[numeroCasilla] = -ficha->tipo_Ficha;
                     }
-                    else modelo->tableroModelo->casillasInt[numeroCasilla] = ficha->tipo_Ficha;
+                    else modelo->mainModelBoard->casillasInt[numeroCasilla] = ficha->tipo_Ficha;
 
-                }else modelo->tableroModelo->casillasInt[numeroCasilla] = 0;
+                }else modelo->mainModelBoard->casillasInt[numeroCasilla] = 0;
                 numCasilla++;
 
             }
@@ -189,13 +154,15 @@ void ModeloVista::traduceTablero()
 
 void ModeloVista::cambiaOpciones(std::string difficulty, std::string resolution, bool fullsreen)
 {
+	//unsigned char test::X = 1;
+	//unsigned char test::Y = 2;
 
     resolucion = resolution;
     pantallaCompleta = fullsreen;
     if (difficulty == "easy")
         modelo->dificultad = 3;
     else
-        modelo->dificultad = 5;
+		modelo->dificultad = 5;
 
     //modelo-> resolu
     //escenaMV->
@@ -206,43 +173,208 @@ void ModeloVista::cambiaOpciones(std::string difficulty, std::string resolution,
 
 bool ModeloVista::getTurnoNegras()
 {
-    return modelo->tableroModelo->turnoN;
+    return modelo->mainModelBoard->turnoN;
 }
-void ModeloVista::aplicaCambio()
+
+
+
+void ModeloVista::compruebaCambio()
 {
-    escenaMV->getTablero()->setCasillaSeleccionada(-1);
+	if (modelo->jugadaElegida())
+	{
+		int resultado = modelo->JugadorActivo->ejecutaJugada();
 
-    //MUEVE FICHA Y A LA VEZ COMPRUEBA EL FIN DE PARTIDA O SI EL JUGADOR CONTRARIO ESTA EN JAQUE JUSTO DESPUES DE MOVER FICHA
-    bool resultado = JugadorActivo->aplicaSeleccion();
+		escenaMV->getTablero()->setCasillaSeleccionada(-1);
 
-    if (resultado == true)
-    {//FICHA MOVIDA
+		std::cout << "aplicaCambio" << std::endl;
 
-        if (getNumPantalla() == 1)
-        {
+		//MUEVE FICHA Y A LA VEZ COMPRUEBA EL FIN DE PARTIDA O SI EL JUGADOR CONTRARIO ESTA EN JAQUE JUSTO DESPUES DE MOVER FICHA
+		//bool resultado = aplicaSeleccion();
 
-            if (getTurnoNegras()) escenaMV->rotaCamara = voltea;
-            else
-                escenaMV->rotaCamara = -voltea;
+		escenaMV->apagaVentanaEmergente();
+		escenaMV->getTablero()->actualizaTablero(modelo->JugadorActivo->jugadasElegidas);
+	
+		std::cout << "jaquemate" << std::endl;
+		modelo->JugadorActivo->jugadasElegidas.clear();
 
-        }
+		switch (resultado)
+		{
+		case 2:
+			std::cout << "HAY JAQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe" << std::endl;
 
-        //CAMBIA JUGADOR ACTIVO
-        JugadorActivo = jugadores.at(getTurnoNegras());
+			escenaMV->muestraVentanaEmergente("Jaque");
+			//return true;
+		case 3:
+			std::cout << "JaqueMateEEESESEESE" << std::endl;
 
-        //HABRA QUE USAR OTRO THREAD
-        JugadorActivo->iniciaTurno();
-        
-    }
+			//escena->nom
+			escenaMV->muestraVentanaEmergente("JaqueMate");
+			//return false;
+		case 4:
+			std::cout << "TablaAAAASASASDASDASDASD" << std::endl;
+
+			escenaMV->muestraVentanaEmergente("Tablas");
+			//return false;
+		default: //MOVIMIENTO NORMAL
+			std::cout << "MUEVE N AMMAL" << std::endl;
+			//return true;
+		}
 
 
+		if (resultado == true)
+		{//FICHA MOVIDA
+
+			if (modelo->getTipoJuego() == 1)
+			{
+
+				if (getTurnoNegras()) escenaMV->rotaCamara = voltea;
+				else
+					escenaMV->rotaCamara = -voltea;
+
+			}
+
+			modelo->cambiaTurno();
+
+		}
+	}
 }
-void ModeloVista::procesaNodoPulsado(std::string nombreNodo)
+
+
+bool ModeloVista::procesaNodoPulsado(std::string nombreNodo)
 {
-    ObjetoEscena* tablero = escenaMV->getTablero()->objetoPadre;
-    ObjetoEscena* casilla = tablero->getHijo(nombreNodo);
+	apagaCasillas();
+
+	ObjetoEscena* tablero = escenaMV->getTablero()->objetoPadre;
+	ObjetoEscena* casilla = tablero->getHijo(nombreNodo);
+	escenaMV->getTablero()->setCasillaSeleccionada(-1);
+
+		//ObjetoEscena* nodoSeleccionado = escenaMV->getTablero()->getCasillaSeleccionada();
+
 
     //ESTO PONDRA LA CASILLA SELECCIONADA
-    JugadorActivo->botonIzquierdo(casilla);
+  //  JugadorActivo->botonIzquierdo(casilla);
+	std::cout << "NODO PULSADODODODODO" << std::endl;
+
+
+	if (casilla != NULL)
+	{
+
+			std::cout << "CASILLA TIENE JIJO" << std::endl;
+	
+		//	if (modelo->jugadaElegida())
+			//{
+
+				bool movido = modelo->JugadorActivo->confirmaJugada(24 + (casilla->getPosicion().Fila * 12) + casilla->getPosicion().Columna + 2);
+
+		//	}
+				if (movido == false && casilla->numHijos() != 0)
+				{
+				std::cout << "SELECCIONA!!!!" << std::endl;
+
+				//JugadorActivo->seleccionaCasilla();
+
+				//if ((modelo->mainModelBoard->casillaSeleccionada())
+				//{
+
+				if (modelo->JugadorActivo->seleccionaFicha(24 + (casilla->getPosicion().Fila * 12) + casilla->getPosicion().Columna + 2))
+				{
+
+					escenaMV->getTablero()->setCasillaSeleccionada(casilla);
+
+
+					//ENCIENDE CASILLAS
+					if (!modelo->JugadorActivo->jugadasPermitidas.empty())
+					{
+						std::cout << "jugadasPermitidas: " << modelo->JugadorActivo->jugadasPermitidas.size() << std::endl;
+
+
+						for (std::vector<int>::iterator it = modelo->JugadorActivo->jugadasPermitidas.begin(); it != modelo->JugadorActivo->jugadasPermitidas.end(); it++)
+						{
+							int jugada = *it;
+							std::cout << "jugada: " << jugada << std::endl;
+
+							ObjetoEscena* ob = escenaMV->getTablero()->objetoPadre->getHijo(((jugada / 12) - 2) * 8 + ((jugada % 12) - 2));
+
+							if (ob->numHijos() > 0)
+								ob->cambiaMaterial(2);
+							else ob->cambiaMaterial(1);
+
+							// CASILLA AUTORIZADA
+							//  escenaMV->getTablero()->getCasillaSobrevolada()->cambiaMaterial(1);
+
+						}
+
+						return true;
+					}
+					else return false;
+
+					return true;
+
+				}
+
+			}
+
+		//	std::cout << "seleccionado" << std::endl;
+
+		//AUTORIZA
+		//jugadasPermitidas = Autorizaciones::casillasAutorizadas(modelo->mainModelBoard, posicion);
+
+		// int resultado = Autorizaciones::autorizaCasilla();
+
+	}
+
+	
+
+
+
+
 
 }
+
+/*
+bool ModeloVista::casillaSobrevolada(const std::string nombreCasilla)
+{
+	ObjetoEscena* casillaSobre = escenaMV->getTablero()->objetoPadre->getHijo(nombreCasilla);
+	ObjetoEscena* casillaSobreAnterior = escenaMV->getTablero()->getCasillaSobrevolada();
+
+	//devulve true si ha cambiado de casilla
+	if (!casillaSobreAnterior || casillaSobre->getNombre() != casillaSobreAnterior->getNombre())
+	{
+
+		//   if (casillaSobreAnterior )
+		//   {
+		//       escenaMV->apagaVentanaEmergente();
+
+		//       casillaSobreAnterior->cambiaMaterial(0);
+		//tablero->setNodoCasillaSobrevolada(-1);
+		//    }
+
+		escenaMV->getTablero()->setCasillaSobrevolada(casillaSobre);
+
+		return true;
+	}
+
+	return false;
+}
+*/
+
+
+bool ModeloVista::apagaCasillas()
+{
+	
+	//Apaga casillas
+	if (!modelo->JugadorActivo->jugadasPermitidas.empty())
+	{
+		for (std::vector<int>::iterator it = modelo->JugadorActivo->jugadasPermitidas.begin(); it != modelo->JugadorActivo->jugadasPermitidas.end(); it++)
+		{
+			int jugada = *it;
+
+			ObjetoEscena* ob = escenaMV->getTablero()->objetoPadre->getHijo(((jugada / 12) - 2) * 8 + ((jugada % 12) - 2));
+			ob->cambiaMaterial(0);
+
+		}
+	}
+
+	return true;
+}
+

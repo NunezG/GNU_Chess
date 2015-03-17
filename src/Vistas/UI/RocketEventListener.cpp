@@ -222,6 +222,7 @@ bool RocketEventListener::keyReleased( const OIS::KeyEvent &e )
 
         running = false;
         framework->mWindow->setActive(false);
+		
     }
 
 

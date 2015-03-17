@@ -3,28 +3,47 @@
 
 //#include "ArbolBusqueda.h"
 //#include "Autorizaciones.h"
-#include "ModeloTablero.h"
+#include "JugadorArtificial.h"
+#include "JugadorHumano.h"
 
-
-class Modelo
+class Modelo 
 {
 public:
     ~Modelo(void);
     //Singleton
     static Modelo* getSingletonPtr();
-			  		std::string posInicial;
+			  		static std::string posInicial;
 
-    void mueveTablero();
 
-    ModeloTablero* tableroModelo;
+    std::string nombres[2];
 
-	std::string jugadasElegidas;
+  //  void mueveTablero();
+
+    static ModeloTablero* mainModelBoard;
+	//static ModeloTablero* mainModelBoard;
+
+	bool jugadaElegida();
+
 	std::string listaCambios;
 
+	void cambiaTurno();
 
 
+	int getTipoJuego();
+	void setTipoJuego(int tipo);
 
-	    int dificultad;
+	int tipoJuego;
+
+	Jugador* JugadorActivo;
+	std::vector<Jugador*> jugadores;
+
+
+	void borraJugadores();
+
+	void generaJugadores();
+
+
+	int dificultad;
 
 private:
 	int jaqueMate();

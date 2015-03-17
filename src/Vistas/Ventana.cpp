@@ -76,6 +76,9 @@ void Ventana::go(void)
     //CREA VISTA
     while(!framework->modeloVista->getApagar())
     {
+		std::cout << "REINICIA CREAVISTA!!! "  << std::endl;
+
+
 
         creaVista();
 
@@ -133,19 +136,12 @@ void Ventana::creaVista()
 
     }else
     {
-
-        if (framework->modeloVista->getNumPantalla() == 1)
-        {
-
+  
             vista =  new VistaAjedrez(framework);
 
 
-        }
-        else if (framework->modeloVista->getNumPantalla() == 2) {//EL CONTRUCTOR DE FrameListeners CONFIGURA OPENGL, INICIA mWINDOW, INICIA OIS Y CEGUI
-
-            vista =  new VistaAjedrezSolo(framework);
-        }
-
+        
+ 
         //static_cast<VistaAjedrez*>(vista)->createScene();
 
     }

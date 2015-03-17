@@ -8,7 +8,7 @@
 
 #include "RocketFrameListener.h"
 #include "VistaAjedrez.h"
-#include "VistaAjedrezSolo.h"
+//#include "VistaAjedrezSolo.h"
 #include "MenuRocket.h"
 #include "OgreFramework.h"
 

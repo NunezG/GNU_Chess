@@ -1,8 +1,8 @@
 #ifndef __ModeloVista_
 #define __ModeloVista_
 
-#include "JugadorArtificial.h"
-#include "JugadorHumano.h"
+//#include "JugadorArtificial.h"
+//#include "JugadorHumano.h"
 #include "EscenaAjedrez.h"
 //#include "Casilla.h"
 
@@ -16,14 +16,12 @@ public:
     void setApagar(bool apaga);
     int getNumPantalla();
     bool getApagar();
-
-    void generaJugadores();
+	
  //   void creaEscenaYModelo();
 
 	  //  ObjetoEscena* getScene();
+	//virtual bool casillaSobrevolada(const std::string nombreCasilla);
 
-
-    Jugador* JugadorActivo;
     EscenaAjedrez* escenaMV;
     Modelo* modelo;
     std::string resolucion;
@@ -32,27 +30,25 @@ public:
     int modoJuego;
 	int voltea;
 
-    void aplicaCambio();
-		std::string nombres[2];
-		bool jugadaElegida();
+	void compruebaCambio();
+		bool iniciaModelo();
 
 		    bool getTurnoNegras();
 
 			void cambiaOpciones(std::string difficulty, std::string resolution, bool fullsreen);
 
-	  	void procesaNodoPulsado(std::string nombreNodo);
+			bool procesaNodoPulsado(std::string nombreNodo);
 		   // bool reiniciar;
 
-		void borraJugadores();
 		void borraTablero();
+		bool apagaCasillas();
+		//virtual bool botonIzquierdo(ObjetoEscena* obj) = 0;
 
 
 private:   
     void traduceTablero();
   //  virtual bool aplicaSeleccion();
 
-    std::vector<Jugador*> jugadores;
-    int numJugadores;
     bool mShutDown;
     int numPantalla;
 		std::string posInicial;

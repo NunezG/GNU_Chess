@@ -59,16 +59,16 @@ public:
 	  int getAlPaso();
     void setAlPaso(int casilla);
     ObjetoEscena* getCasillaSeleccionada();
-    ObjetoEscena* getCasillaSobrevolada();
+   // ObjetoEscena* getCasillaSobrevolada();
     void setCasillaSeleccionada(ObjetoEscena* nodo);
-    void setCasillaSobrevolada(ObjetoEscena* nodo);
+   // void setCasillaSobrevolada(ObjetoEscena* nodo);
     void setCasillaSeleccionada(int posicion);
-    void setCasillaSobrevolada(int posicion);
+   // void setCasillaSobrevolada(int posicion);
 	    TableroMV();
 			void creaPiezas();
 			Modelo* modelo;
 			    void creaCasillas();
-				 void actualizaTablero();
+				void actualizaTablero(static std::vector<int> jugadasElegidas);
 
 				 		std::vector<ObjetoEscena*> listaNodos;
 						
@@ -92,7 +92,7 @@ private:
     //int casilla[2];
 	int alPaso;
     ObjetoEscena* casillaSeleccionada;
-    ObjetoEscena* casillaSobrevolada;
+  //  ObjetoEscena* casillaSobrevolada;
 
 	    bool fichaSeleccionada;
 		int peonesPromocionados;

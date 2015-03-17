@@ -4,9 +4,12 @@
 #include <algorithm>    // std::for_each
 #include <deque>       // std::deque
 #include <vector>       // std::list
+#include <array>
+#include <unordered_map>
 
 #include <iostream>
 #include <string>
+#include <map>
 //#include "Autorizaciones.h"
 
 /*
@@ -52,26 +55,34 @@ struct ModeloTablero
     bool evaluaJaque();
 
    // std::vector<ModeloTablero*> vectorMov;
-    bool cambiaTurno();
+	bool cambiaTurno(std::vector<int> vectorJugada);
 	void generaTablero();
     //* movIniciales;
 
     // unsigned char* test[2];
 
-    std::vector<std::string> vectorJugadas;
-    std::vector<std::string> vectorJugadasPeores;
-    std::vector<std::string> vectorJugadasNormales;
+	//int casillaSeleccionada;
+	//std::vector<int> vectorJugada;
+
+	//std::vector<std::vector<int>> vectorJugadas2;
+
+
+	
+	std::map < int, std::vector<std::vector<int>> > testMapJugadas;
 
     //std::vector<unsigned char[]> vectorJugadas2;
 	void borraJugadas();
 
-    int numCasillasProtegidas;
+   // int numCasillasProtegidas;
 
     //HACER EN LISTA O VECTOR PARA QUE HAYA TAMAÑO??
-    std::vector<char*> casillasProtegidas;
-    char casillasInt[144];
-    std::string jugadas;
-	char jugadaPrincipal[2];
+	//std::vector<std::array<int, 2>> casillasProtegidas;
+	std::unordered_map<int, int> casillasProtegidas;
+	//std::array<int, 16> casillasProtegidas = std::array<int, 16>();
+
+	std::array<char, 144> casillasInt;
+    //std::string jugadas;
+	//char jugadaPrincipal[2];
     unsigned char alPaso;
     bool turnoN;
     bool nodoInicial;
@@ -81,11 +92,11 @@ struct ModeloTablero
     // Ficha* fichasBlancas[16];
     short valorAtaque; //ligado al movimiento, la suma de valores de las fichas implicadas
     short valorAmenaza; //por si amenaza a una pieza enemiga
-    short valorDefensivo; //por si defiende una pieza amiga
+    //short valorDefensivo; //por si defiende una pieza amiga
 
-	char* invierteTablero(char casillas[144]);
+	std::array<char, 144> invierteTablero(std::array<char, 144> casillasInt);
 
-
+	int score;
 private:
 
 };

@@ -23,25 +23,25 @@ VistaAjedrez::~VistaAjedrez(void)
 
     framework->mSceneMgr->destroyQuery(mRaySceneQuery);
 
-    framework->modeloVista->borraJugadores();
-   
+	//framework->modeloVista->borraJugadores();
+
 			//delete objetoInicio;
 
   
 }
 
 
-void VistaAjedrez::actualizaNodo()
-{
+//void VistaAjedrez::actualizaNodo()
+//{
 
 
 
-}
+//}
 
 
 
 
-std::string VistaAjedrez::encuentraCasillaSobrevolada()
+std::string VistaAjedrez::findPointedNode()
 {
     Ogre::Real posx, posy;
     framework->mInputContext.getCursorPosition(posx,posy);
@@ -122,17 +122,17 @@ bool VistaAjedrez::mouseMoved( const OIS::MouseEvent &arg )
     {
         framework->DistanciaCamara(arg.state.Z.rel);
     }
-    else{
-        const std::string casilla = encuentraCasillaSobrevolada();
+   // else{
+       // const std::string casilla = encuentraCasillaSobrevolada();
 
-        if (casilla != "")
-        {
+       // if (casilla != "")
+       // {
 
-            modeloVista->JugadorActivo->casillaSobrevolada(casilla);
-            actualizaNodo();
-        }
+          //  modeloVista->JugadorActivo->casillaSobrevolada(casilla);
+           // actualizaNodo();
+       // }
 
-    }
+  //  }
 
     return true;
 }
@@ -192,7 +192,7 @@ bool VistaAjedrez::keyReleased( const OIS::KeyEvent &arg )
     if (arg.key == OIS::KC_ESCAPE)// Pulsa Esc
     {
 
-        modeloVista->setNumPantalla(0);
+		modeloVista->setNumPantalla(0);
        // modeloVista->reiniciar = true;
 
         //  modeloVista->setApagar(true);
@@ -227,21 +227,19 @@ bool VistaAjedrez::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID i
 
 
         //ObjetoOgre* tableroOgre = tablero
-        std::string nombreCasilla = encuentraCasillaSobrevolada();
+		std::string nombreNodo = findPointedNode();
 
 
-        if (nombreCasilla!="")
+		if (nombreNodo != "")
         {
-            framework->modeloVista->procesaNodoPulsado(nombreCasilla);
+			if (framework->modeloVista->procesaNodoPulsado(nombreNodo))
+			{
+				//HAY QUE ACTUALIZAR EL ESTADO DE LA VISTA DEL TABLERO
+				//   tablero->getHijo(nombreCasilla);
 
-            //HAY QUE ACTUALIZAR EL ESTADO DE LA VISTA DEL TABLERO
-            //   tablero->getHijo(nombreCasilla);
-
-            ObjetoOgre* casilla = static_cast<ObjetoOgre*>(objetoInicio->getHijo(nombreCasilla));
-
-
-
-            actualizaNodo();
+				//ObjetoOgre* casilla = static_cast<ObjetoOgre*>(objetoInicio->getHijo(nombreCasilla));
+				//actualizaNodo();
+			}
         }
        
         
@@ -286,7 +284,7 @@ void VistaAjedrez::createView()
 
     //escenaMV = new EscenaAjedrez();
 
-    framework->modeloVista->generaJugadores();
+	framework->modeloVista->iniciaModelo();
    
     //framework->modeloVista->creaEscenaYModelo();
     

@@ -8,8 +8,9 @@
 class ArbolBusqueda
 {
 public:
-    static int alphaBeta(ModeloTablero* table,const int alpha,const int beta,const int depthleft );
+	static int alphaBeta(ModeloTablero* table, const int alpha, const int beta, const int depthleft, std::vector<int>& result);
 
+	
 private:
     static short CalculatePieceActionValue(int pieceType);
     static int evaluaTablero(ModeloTablero* tablero);

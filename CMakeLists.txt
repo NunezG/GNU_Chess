@@ -117,8 +117,8 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/dist")
  
  if(WIN32)
  
-# #Find Boost
-if (OGRE_BUILD_PLATFORM_IPHONE)
+ #Find Boost
+#if (OGRE_BUILD_PLATFORM_IPHONE)
 
 set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 
@@ -134,7 +134,7 @@ set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 		# search names with "lib". This is the workaround.
 		set(CMAKE_FIND_LIBRARY_PREFIXES ${CMAKE_FIND_LIBRARY_PREFIXES} "")
 	endif ()
-	set(Boost_ADDITIONAL_VERSIONS "1.54" "1.54.0" "1.42" "1.42.0" "1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37" )
+	set(Boost_ADDITIONAL_VERSIONS "1.57" "1.57.0" "1.54" "1.54.0" "1.42" "1.42.0" "1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37" )
 	# Components that need linking (NB does not include header-only components like bind)
 	set(OGRE_BOOST_COMPONENTS system thread date_time regex chrono)
 	find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS} QUIET)
@@ -143,8 +143,6 @@ set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 		set(Boost_USE_STATIC_LIBS NOT ${Boost_USE_STATIC_LIBS})
 		find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS} QUIET)
 	endif()
-	
-
 	find_package(Boost QUIET)
  
 
@@ -174,7 +172,6 @@ set(Boost_INCLUDE_DIR $ENV{BOOST_ROOT})
 ##################################################
 endif()
 
-endif()
 
 if(WIN32)
 # "opengl32.lib" "glu32.lib" "dxguid.lib"
@@ -212,6 +209,11 @@ endif()
  
 # NUEVA SECCIÓN
 
+message("INICIA RAKNET.")
+find_package(RAKNET REQUIRED)
+if(NOT RAKNET_FOUND)
+	message("Failed to find RAKNET.")
+endif()
 
 message("INICIA LIBROCKET.")
 find_package(LIBROCKET REQUIRED)
@@ -230,7 +232,9 @@ set(HDRMODEL
         ./include/Modelo/Modelo.h
         ./include/Modelo/ModeloTablero.h
         ./include/Modelo/ArbolBusqueda.h
-
+ ./include/Modelo/Jugador.h
+        ./include/Modelo/JugadorHumano.h
+        ./include/Modelo/JugadorArtificial.h
 
 )
 
@@ -238,9 +242,7 @@ set(HDRMODEL
 set(HDRVIEWMODEL
         ./include/ModeloVista/EscenaAjedrez.h
         ./include/ModeloVista/ModeloVista.h
-        ./include/ModeloVista/Jugador.h
-        ./include/ModeloVista/JugadorHumano.h
-        ./include/ModeloVista/JugadorArtificial.h
+       
                 ./include/ModeloVista/TableroMV.h
                 ./include/ModeloVista/ObjetoEscena.h
 
@@ -252,7 +254,7 @@ set(HDRVIEW
 
         ./include/Vistas/Ventana.h
         ./include/Vistas/VistaAjedrez.h
-        ./include/Vistas/VistaAjedrezSolo.h
+        #   ./include/Vistas/VistaAjedrezSolo.h
         ./include/Vistas/MenuRocket.h
 		./include/Vistas/Escena.h
 
@@ -288,14 +290,15 @@ set(SRCMODEL
         ./src/Modelo/Modelo.cpp
         ./src/Modelo/ModeloTablero.cpp
        ./src/Modelo/ArbolBusqueda.cpp
+	      ./src/Modelo/Jugador.cpp
+      ./src/Modelo/JugadorHumano.cpp
+       ./src/Modelo/JugadorArtificial.cpp
 )
 
 set(SRCMODELVIEW
         ./src/ModeloVista/EscenaAjedrez.cpp
         ./src/ModeloVista/ModeloVista.cpp
-       ./src/ModeloVista/Jugador.cpp
-      ./src/ModeloVista/JugadorHumano.cpp
-       ./src/ModeloVista/JugadorArtificial.cpp
+    
            ./src/ModeloVista/TableroMV.cpp
          ./src/ModeloVista/ObjetoEscena.cpp
 
@@ -303,7 +306,7 @@ set(SRCMODELVIEW
  
 set(SRCVIEW
         ./src/Vistas/VistaAjedrez.cpp
-        ./src/Vistas/VistaAjedrezSolo.cpp
+      #     ./src/Vistas/VistaAjedrezSolo.cpp
         ./src/Vistas/Ventana.cpp
         ./src/Vistas/MenuRocket.cpp
 		./src/Vistas/Escena.cpp
@@ -393,6 +396,7 @@ include_directories(
 
 #${BOOST_INCLUDE_DIR} 
 	${LIBROCKET_INCLUDE_DIR}
+	${RAKNET_INCLUDE_DIR}
 	# FIN NUEVA SECCIÓN
 )
  
@@ -404,6 +408,7 @@ include_directories(
   ${OGRE_LIBRARY_DIRS} 
   ${OIS_LIBRARY_DIRS} 
 
+   ${RAKNET_LIBRARY_DIRS}
  ${LIBROCKET_LIBRARY_DIRS} 
   )
  
@@ -522,7 +527,7 @@ endif ()
  else()
     add_executable(OgreApp WIN32  ${SRCSAPP})
 
-    target_link_libraries(OgreApp ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES} ${DirectX9_LIBRARIES})
+    target_link_libraries(OgreApp ChessView ChessViewModel ChessModel ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${LIBROCKET_LIBRARIES} ${RAKNET_LIBRARIES} ${DirectX9_LIBRARIES})
 
 
     add_dependencies(OgreApp ChessView)
@@ -546,6 +551,7 @@ endif ()
   ${OGRE_LIBRARY_DIRS} 
   ${OIS_LIBRARY_DIRS} 
 
+  ${RAKNET_LIBRARY_DIRS} 
  ${LIBROCKET_LIBRARY_DIRS} 
   )
 

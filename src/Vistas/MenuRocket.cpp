@@ -363,7 +363,7 @@ void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
     else if (element->GetId().CString() == std::string("twoPlayer"))
     {
 
-        framework->modeloVista->setNumPantalla(1);
+		framework->modeloVista->setNumPantalla(1);
         running = false;
         framework->mWindow->setActive(false);
 
@@ -378,7 +378,7 @@ void MenuRocket::ProcessEvent(Rocket::Core::Event& event)
     }else if (element->GetId().CString() == std::string("onePlayer"))
     {
 
-        framework->modeloVista->setNumPantalla(2);
+		framework->modeloVista->setNumPantalla(2); 
         running = false;
         framework->mWindow->setActive(false);
 

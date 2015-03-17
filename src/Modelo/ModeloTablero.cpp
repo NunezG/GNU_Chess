@@ -9,12 +9,12 @@ ModeloTablero::ModeloTablero(std::string posicion) :
     alPaso(0),
     nodoInicial(true)
   ,valorAtaque(0)
-  , valorDefensivo(0)
-  ,jugadas("")
+ // , valorDefensivo(0)
+ // ,jugadas("")
 
 {
-    jugadaPrincipal[0] = 0;
-    jugadaPrincipal[1] = 1;
+   // jugadaPrincipal[0] = 0;
+   // jugadaPrincipal[1] = 1;
 
     //jugadas.clear();
     //vectorJugadas = new vector
@@ -136,64 +136,84 @@ ModeloTablero::ModeloTablero( const ModeloTablero& original):
   , alPaso(original.alPaso)
   , nodoInicial(false)
   ,valorAtaque(0)
-  , valorDefensivo(0)
+ // , valorDefensivo(0)
   //,casillasInt(original.casillasInt.begin(), original.casillasInt.end())
-  // ,casillasProtegidas(original.casillasProtegidas)
+   ,casillasProtegidas(original.casillasProtegidas)
 
 {
     std::cout << "EMPEEZA" <<std::endl;
     //jugadaPrincipal = new char[2];
 
-    std::cout << "jugadaPrincipal,size " << jugadaPrincipal  <<std::endl;
+   // std::cout << "jugadaPrincipal,size " << jugadaPrincipal.l  <<std::endl;
 
 
+//	casillaSeleccionada= original.casillaSeleccionada;
 
-
-    jugadas = original.jugadas;
-    jugadaPrincipal[0] = original.jugadaPrincipal[0];
-    jugadaPrincipal[1] = original.jugadaPrincipal[1];
+//	vectorJugada = original.vectorJugada;
+  //  jugadaPrincipal[0] = original.jugadaPrincipal[0];
+  //  jugadaPrincipal[1] = original.jugadaPrincipal[1];
     std::cout << "EMPEEZ2222222A" <<std::endl;
+	//std::cout << "original.jugadas: " << original.vectorJugada.size() << std::endl;
+
+	
+//	std::cout << "jugadas.size: " << vectorJugada.size() << std::endl;
 
     for(int i=0; i<144;i++)
     {
         casillasInt[i] = original.casillasInt[i];
     }
     std::cout << "jugadapri" <<std::endl;
-    std::cout <<jugadaPrincipal<<std::endl;
+	//std::cout << jugadaPrincipal << std::endl;
 
-    std::cout <<jugadaPrincipal[1] <<std::endl;
+   // std::cout <<(int)jugadaPrincipal<<std::endl;
 
-    std::cout <<(int)jugadaPrincipal[1] <<std::endl;
+   // std::cout <<jugadaPrincipal[1] <<std::endl;
+	//cada nuevo tablero deberia tener una jugada lista
+//	if (vectorJugada.size() > 1)
+	//{
+	//	std::cout << "int0: " << (int)vectorJugada[0] << std::endl;
 
-    //cuanto menor sea el valor, mejor
-    if (casillasInt[jugadaPrincipal[1]] == 0) valorAtaque = 0;
-    else
-    {
-        std::cout << "jjjuu" <<std::endl;
+	//	std::cout << "int1: " << (int)vectorJugada[1] << std::endl;
 
-        valorAtaque = casillasInt[jugadaPrincipal[0]] + casillasInt[jugadaPrincipal[1]];
-    }
-    std::cout << "PROTEGEEGE" <<std::endl;
+	//	std::cout << "vectorJugada.at(0);: " << vectorJugada.at(0) << std::endl;
 
-    //CUANTAS MAS CASILLAS PROTEGIA ANTES, PEOR ES EL MOVIMIENTO DESPUES
-    std::vector< char*> temp = original.casillasProtegidas;
-    for (std::vector<char*>::iterator it = temp.begin(); it!=temp.end(); it++)
-    {
-        char* protegida = *it;
+	//	std::cout << "vectorJugada.at(1);: " << vectorJugada.at(1) << std::endl;
 
-        if (protegida[0] == jugadaPrincipal[0])
-        {
 
-            int dif = protegida[1] - casillasInt[protegida[0]];
 
-            //SOLO SI LA PROTEGIDA ES MAYOR QUE LA PRIMERA
-            if ((!turnoN && dif > 0) || (turnoN && dif < 0))
-            {
-                valorDefensivo = valorDefensivo + dif;
-            }
-        }
-    }
-    std::cout << "FIN NUEVOTABLERO" <<std::endl;
+
+
+		//MIRO SI LA FICHA QUE ESTOY MOVIENDO ESTABA PROTEGIDA ANTES, no es optimo ya que se calcula por cada movimiento de la misma ficha.
+		//Solucion: cuando muevo ficha mirar que fichas la protenger, mejor pero el primer turno no habra lista fichas protegidas
+		//CUANTAS MAS CASILLAS PROTEGIA ANTES DE MOVER, PEOR ES EL MOVIMIENTO DESPUES
+
+
+
+
+
+		//	int protegida = casillasProtegidas.find(casillaSeleccionada.;
+
+		//std::vector<std::array<int, 2>> temp = casillasProtegidas;
+		//	for (std::vector<std::array<int, 2>>::iterator it = temp.begin(); it != temp.end(); it++)
+		//	{
+		//		std::array<int, 2> protegida = *it;
+
+
+		//if ( == vectorJugada[0])
+		//{
+
+
+
+
+
+		//}
+		//	}
+
+
+	//}
+
+	
+	std::cout << "FIN NUEVOTABLERO" <<std::endl;
 
     //  cambiaTurno();
     // jugada = new unsigned char[2];
@@ -206,49 +226,76 @@ ModeloTablero::~ModeloTablero()
 {
     borraJugadas();
     
+	std::cout << "~ModeloTablero" << std::endl;
 
     //delete jugada;
     //jugada = NULL;
 }
 
+//void ModeloTablero::borraJugadas(){
+
+
+//}
+
+
+
 void ModeloTablero::borraJugadas()
 {
-    if (!vectorJugadas.empty())
+	std::cout << "borraJugadas" << std::endl;
+
+    if (!testMapJugadas.empty())
     {
 
-        for (std::vector<std::string>::iterator it = vectorJugadas.begin(); it!=vectorJugadas.end(); it++)
+		for (std::map<int,std::vector<std::vector<int>>>::iterator it = testMapJugadas.begin(); it != testMapJugadas.end(); it++)
         {
-            std::string jugada = *it;
-            std::cout << "BORRA JUGADAS FORRR1"<<std::endl;
 
+			std::vector<std::vector<int>> vec = it->second;
+
+
+						std::cout << "testmapjug" << vec.size()<< std::endl;
+
+
+
+
+			for (std::vector<std::vector<int>>::iterator it2 = vec.begin(); it2 != vec.end(); it2++)
+			{
+				std::cout << "it2" << std::endl;
+
+
+				std::vector<int> vecdos = *it2;
+
+				vecdos.clear();
+			
+			}
+
+
+
+			vec.clear();
+
+			//std::vector<int> jugada = *it;
+            std::cout << "BORRA JUGADAS FORRR1"<<std::endl;
 
             //	for (std::vector<unsigned char[2]>::iterator itt = jugada.begin(); itt!=jugada.end(); itt++)
             // {
-            std::cout << "BORRA MOVIMIENTOS FORRR1"<<std::endl;
 
             //unsigned char* movimiento = *itt;
 
 
-            std::cout << "DEL"<<std::endl;
 
             //delete []movimiento;
 
-            std::cout << "nulea"<<std::endl;
 
             //   movimiento = NULL;
-            std::cout << "siguee"<<std::endl;
 
             //}
-            std::cout << "CLEAR"<<std::endl;
 
 
             // jugada.clear();
 
         }
-        std::cout << "CLEAR22222"<<std::endl;
 
         //  numeroHijos=0;
-        vectorJugadas.clear();
+		testMapJugadas.clear();
 
         std::cout << "ENDDD"<<std::endl;
 
@@ -256,10 +303,10 @@ void ModeloTablero::borraJugadas()
 
 
 
-    if (!casillasProtegidas.empty())
-    {
-        for (std::vector<char*>::iterator it = casillasProtegidas.begin(); it!=casillasProtegidas.end(); it++)
-        {
+   // if (!casillasProtegidas.empty())
+  //  {
+		//for (std::unordered_map<int,int>::iterator it = casillasProtegidas.begin(); it != casillasProtegidas.end(); it++)
+       // {
             //  char* jugada = *it;
 
 
@@ -268,10 +315,16 @@ void ModeloTablero::borraJugadas()
             // delete jugada;
             //jugada = NULL;
             // }
-        }
+      //  }
         //  numeroHijos=0;
+
+
+
+	std::cout << "BOORA PROTEGIDAS" << std::endl;
+
         casillasProtegidas.clear();
-    }
+  //  }
+		std::cout << "ENDDD2" << std::endl;
 
 }
 
@@ -284,147 +337,233 @@ void ModeloTablero::generaTablero()
 
 }
 
-bool ModeloTablero::cambiaTurno()
+bool ModeloTablero::cambiaTurno(std::vector<int> vectorJugada)
 {
+	//APLICA LA JUGADA
 
 
-
+	std::cout << "CACACACACACACACACMBIATURNO" << std::endl;
 
     //ESTO PODRIA SEPARARSE E IRIA MEJOR EN MODELO!!!
 
     // MUEVE
     //	for(std::vector<unsigned char[2]>::iterator it = jugadas.begin(); it != jugadas.end(); ++it)
 
-    std::cout << "jugadas.size() "<< jugadas.size()   <<std::endl;
+   // std::cout << "jugadas.size() "<< vectorJugada.size()   <<std::endl;
+	bool movBueno = false;
 
-    for(int i =0; i< jugadas.size()-1;i = i+2)
-    {
-
-        std::cout << "jugada "<< i<<"/"<< (int)jugadas[i]<< "/" <<(int)jugadas[i+1]   <<std::endl;
-
-        //	unsigned char* jugada = *it;
-
-        if (jugadas[i+1] != 0)
-            casillasInt[jugadas[i+1]]= casillasInt[jugadas[i]];
-
-
-        casillasInt[jugadas[i]] = 0;
-
-    }
-    bool movBueno = false;
-    std::cout << "PARPAPAPAPAPRAPAPASSSSSA"<<std::endl;
-
-    //EVALUA JAQUE PARA EL TURNO EN JUEGO, (SI HAY JAQUE SERÁ ELIMINADO)
-    if (!evaluaJaque())
-    {
-        movBueno = true;
-    }
+	std::cout << "ANTES" << std::endl;
+	for (int i = 11; i >= 0; i--){
+		for (int y = 0; y < 12; y++){
+			if ((int)casillasInt[(i * 12) + y] == 0){
+				std::cout << " -" << std::ends;
+			}
+			else if ((int)casillasInt[(i * 12) + y] == 99){
+				std::cout << " " << std::ends;
+			}
+			else if ((int)casillasInt[(i * 12) + y] >= 0){
+				std::cout << " " << (int)casillasInt[(i * 12) + y] << std::ends;
+			}
+			else
+				std::cout << (int)casillasInt[(i * 12) + y] << std::ends;
+		}
+		std::cout << "" << std::endl;
+	}
 
 
 
+	//siempre deberia ser true
+	if (vectorJugada.size() > 1)
+	{
 
-    std::cout << "PE"<<std::endl;
 
-    //PEON
-    if (casillasInt[jugadaPrincipal[1]] == 1)
-    {
 
-        std::cout << "PEOONEENNENEN"<<std::endl;
 
-        int filaReina = 9;
-        int difSalto = 24;
-        if(turnoN)
-        {
-            filaReina = 2;
-            difSalto = -difSalto;
-        }
+		//for (int i = 0; i < vectorJugada.size() - 1; i = i + 2)
+		//{
+		//	std::cout << "jugada " << i << ": " << (int)vectorJugada[i] << "/" << (int)vectorJugada[i + 1] << std::endl;
+			//	unsigned char* jugada = *it;
 
-        //int filaPromocion = 9;
 
-        //PROMOCION A REINA
-        if ((jugadaPrincipal[1])/12 == filaReina)
-        {
+			//si es 0 es un mov especia?
 
-            casillasInt[jugadaPrincipal[1]] = 5;
+		
+		//}
+
+
+
+		//PEON
+
+		if (casillasInt[vectorJugada[0]] == 1)
+		{
+
+			std::cout << "PE" << std::endl;
+
+			int dif = vectorJugada[1] - vectorJugada[0];
+			if (turnoN)
+				dif = -dif;
+
+			//DOBLE SALTO (LO MARCA PARA CAPTURAR AL PASO)
+			if (vectorJugada[1] == 0 && (dif == 24))
+			{
+				alPaso = /*143-*/vectorJugada[1];
+			}
+			else alPaso = 0;
+
+
+
+
+			std::cout << "PEOONEENNENEN" << std::endl;
+			
+			//PROMOCION A REINA
+			if (vectorJugada.size() > 2 && vectorJugada[2] == 100)
+				casillasInt[vectorJugada[0]] = 5;
+		
+
+			/*
+
+			int filaReina = 9;
+			int difSalto = 24;
+			if (turnoN)
+			{
+				filaReina = 2;
+				difSalto = -difSalto;
+			}
+
+			//int filaPromocion = 9;
+
+			if ((vectorJugada[1]) / 12 == filaReina)
+			{
+
+				
+
+
+
+			}
+
+			*/
+
 			
 
 
-        }
-
-        //DOBLE SALTO (LO MARCA PARA CAPTURAR AL PASO)
-        else if (jugadaPrincipal[1] - jugadaPrincipal[0]  == 24)
-        {
-            alPaso = /*143-*/jugadaPrincipal[1];
-        } else alPaso = 0;
-        /* }
-
-
-    else if (casillasInt[jugada[0]] == intRey)
-    {    //ENROQUE!
-
-    int intRey = Rey;
-        if(turnoN)
-        {
-            intRey = -intRey;
-
-        }
-
-
-                                    std::cout << "MIRA ENROQUE !!!!!!!!!!!!!!!!"<< turnoN <<std::endl;
-
-                int intTorre = Torre;
-                        int dif = jugada[1] - jugada[0];
-
-                if(turnoN)
-
-                                    std::cout << "ES TURNO NEGRA !!!!!!!!!!!!!!!!"<<std::endl;
-
-        {
-                            intTorre = -Torre;
-            //	dif = -dif;
-                }
-
-                        std::cout << "jugadas! "<< jugada[0] <<    "/"  <<  jugada[1]<<std::endl;
-
-
-                std::cout << "dif!! "<< dif <<std::endl;
-
-        // if (difCol<0 ) difCol = -difCol;
-        //int fila =casillaDestinoTemp->getPosicion().Fila;
-        //enroque a la derecha (CORTO)
-        if (dif == 2){
-                                std::cout << "ENTRA EN ENROQUE CORTO!!!!!!!!!!!!!!!!"<<std::endl;
-
-                casillasInt[jugada[1] + 1] = 0;
-                casillasInt[jugada[1] - 1] = intTorre;
-
-        }
+			/* }
 
 
 
-        else if	(dif == -2)
-        {//enroque a la IZQUIERDA (LARGO)
-                    std::cout << "ENTRA EN ENROQUE LARGO!!!!!!!!!!!!!!!!"<<std::endl;
-                casillasInt[jugada[1] - 2] = 0;
-                casillasInt[jugada[1] + 1] = intTorre;
-        }
-        alPaso = 0;
-        */
-    } else alPaso = 0;
+		else if (casillasInt[jugada[0]] == intRey)
+		{    //ENROQUE!
+
+		int intRey = Rey;
+		if(turnoN)
+		{
+		intRey = -intRey;
+
+		}
+
+
+		std::cout << "MIRA ENROQUE !!!!!!!!!!!!!!!!"<< turnoN <<std::endl;
+
+		int intTorre = Torre;
+		int dif = jugada[1] - jugada[0];
+
+		if(turnoN)
+
+		std::cout << "ES TURNO NEGRA !!!!!!!!!!!!!!!!"<<std::endl;
+
+		{
+		intTorre = -Torre;
+		//	dif = -dif;
+		}
+
+		std::cout << "jugadas! "<< jugada[0] <<    "/"  <<  jugada[1]<<std::endl;
+
+
+		std::cout << "dif!! "<< dif <<std::endl;
+
+		// if (difCol<0 ) difCol = -difCol;
+		//int fila =casillaDestinoTemp->getPosicion().Fila;
+		//enroque a la derecha (CORTO)
+		if (dif == 2){
+		std::cout << "ENTRA EN ENROQUE CORTO!!!!!!!!!!!!!!!!"<<std::endl;
+
+		casillasInt[jugada[1] + 1] = 0;
+		casillasInt[jugada[1] - 1] = intTorre;
+
+		}
+
+
+
+		else if	(dif == -2)
+		{//enroque a la IZQUIERDA (LARGO)
+		std::cout << "ENTRA EN ENROQUE LARGO!!!!!!!!!!!!!!!!"<<std::endl;
+		casillasInt[jugada[1] - 2] = 0;
+		casillasInt[jugada[1] + 1] = intTorre;
+		}
+		alPaso = 0;
+		*/
+		}
+		else alPaso = 0;
+
+			
+		casillasInt[vectorJugada[1]] = casillasInt[vectorJugada[0]];
+		casillasInt[vectorJugada[0]] = 0;
+
+
+		//SOLO EN CASO DE ENROQUE DE LA REINA O COMER AL PASO
+		if (vectorJugada.size() > 3)
+		{
+			casillasInt[vectorJugada[3]] = casillasInt[vectorJugada[2]];
+		}
+
+		//EVALUA JAQUE PARA EL TURNO EN JUEGO, (SI HAY JAQUE SERÁ ELIMINADO)
+		if (!evaluaJaque())
+		{
+			movBueno = true;
+		}
+	}
+
 
 
 
     turnoN = !turnoN;
 
-    jugadaPrincipal[0] = 0;
-    jugadaPrincipal[1] = 0;
+	std::cout << "DESPUES" << std::endl;
+
+	for (int i = 11; i >= 0; i--){
+		for (int y = 0; y < 12; y++){
+
+
+
+			if ((int)casillasInt[(i * 12) + y] == 0){
+				std::cout << " -" << std::ends;
+
+			}else if ((int)casillasInt[(i * 12) + y] == 99){
+				std::cout << " " << std::ends;
+
+			}
+			else if ((int)casillasInt[(i * 12) + y] >= 0){
+				std::cout << " " << (int)casillasInt[(i * 12) + y] << std::ends;
+			}
+						
+			else
+			std::cout << (int)casillasInt[(i *12)+ y] << std::ends;
+
+
+		}
+		std::cout <<""<< std::endl;
+
+	}
+	vectorJugada.clear();
+	testMapJugadas.clear();
+
+	std::cout << "movBueno" << std::endl;
 
     return movBueno;
 }
 
-char* ModeloTablero::invierteTablero(char casillas[144])
+std::array<char, 144> ModeloTablero::invierteTablero(std::array<char, 144> casillas)
 {
-    char casillasTemp[144];
+	std::array<char, 144> casillasTemp;
     //NORMALIZA EL TABLERO PARA EL CAMBIO DE TURNO
     for(int y=0; y<12;y++)
     {
